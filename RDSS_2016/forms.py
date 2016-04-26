@@ -45,7 +45,6 @@ class CompanyCreationForm(forms.ModelForm):
         user = super(CompanyCreationForm, self).save(commit=False)
         user.last_login=timezone.now()
         user.set_password(self.cleaned_data['password2'])
-        user.is_active=1;
         if commit:
             user.save()
         return user
@@ -95,16 +94,3 @@ class CompanyEditForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-class CompanySelfCreationForm(CompanyCreationForm):
-    class Meta:
-        model=Company
-        fields='__all__'
-        exclude=['password','last_login','date_join','is_active']
-
-class CompanySelfEditForm(CompanyEditForm):
-    class Meta:
-        model=Company
-        fields='__all__'
-        exclude=['cid','password','last_login','date_join','is_active']
-
