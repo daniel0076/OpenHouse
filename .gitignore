@@ -2,4 +2,3 @@
 .*.
 OpenHouse/
 __pycache__/
-migrations/
