@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, UserManager,Group
+from django.contrib.auth.models import AbstractBaseUser, UserManager,Group,PermissionsMixin
 from django.core.validators import RegexValidator,MinLengthValidator,validate_email
 from django.utils import timezone
 
@@ -15,7 +15,7 @@ def validate_phone(string):
 	RegexValidator(regex='^\d+-\d+(#\d+)?$',message='格式：區碼-號碼#分機')(string)
 
 
-class Staff(AbstractBaseUser):
+class Staff(AbstractBaseUser,PermissionsMixin):
 	GENDER = (('M', u'男生'), ('F', u'女生'))
 	ROLE = (
 			(u'就輔組',         u'就輔組'       ),
@@ -41,7 +41,7 @@ class Staff(AbstractBaseUser):
 			)
 
 	id = models.AutoField(primary_key=True)
-	username = models.CharField(u'學號',unique=True,max_length=10)
+	username = models.CharField(u'學號/帳號',unique=True,max_length=10)
 	name = models.CharField(u'姓名',max_length=10)
 	gender = models.CharField(u'性別', choices=GENDER, max_length=1)
 	birthday = models.DateField(u'出生年月日', default=timezone.now)
@@ -51,12 +51,9 @@ class Staff(AbstractBaseUser):
 	email = models.CharField(u'Email',max_length=64,validators=[validate_email])
 	fb_url = models.URLField(u'FB個人首頁連結', default='')
 	account = models.CharField(u'郵局或玉山帳號', max_length=15,help_text='必需為自己的名字')
-	groups = models.ManyToManyField(Group, blank=True, related_name='staff_groups' ,
-			related_query_name='staff_groups')
 	last_update= models.DateTimeField(u'更新時間',auto_now=True,null=True)
 	date_joined = models.DateTimeField(u'date joined', auto_now_add=True)
 	is_active = models.BooleanField(u'啟用', default=False)
-	is_superuser= models.BooleanField(u'最高權限', default=False)
 	is_staff = models.BooleanField(u'後台權限', default=False)
 	objects=UserManager()
 
@@ -90,7 +87,7 @@ class Staff(AbstractBaseUser):
 		# Active superusers have all permissions.
 		if self.is_active and self.is_superuser:
 			return True
-		return False
 
 	def has_perm(self,perm, obj=None):
-		return False
+		if self.is_active and self.is_superuser:
+			return True
