@@ -56,8 +56,8 @@ class Company(AbstractBaseUser):
 		managed = True
 		db_table = 'company'
 
-		verbose_name = u"廠商"
-		verbose_name_plural =u"廠商" #上面的複數ZZZ
+		verbose_name = u"總廠商列表"
+		verbose_name_plural =u"總廠商列表" #上面的複數ZZZ
 
 	def __str__(self):
 		return self.get_full_name()
