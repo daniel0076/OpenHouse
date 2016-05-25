@@ -130,3 +130,17 @@ class Jobfair_Info(models.Model):
 		verbose_name = u"就博會資訊"
 		verbose_name_plural =u"就博會資訊"
 
+class Sponsor_Items(models.Model):
+	id = models.AutoField(primary_key=True)
+	name = models.CharField(u'贊助品名稱',max_length=64,unique=True)
+	description = models.CharField(u'贊助品說明',max_length=64)
+	price = models.IntegerField(u'價格')
+	limit = models.IntegerField(u'數量限制')
+	pic =models.ImageField(u"贊助品預覽圖",upload_to = 'sponsor_items',null=True,help_text='''提供過去做的贊助品圖片，做為參考''')
+
+class Sponsorship(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Activity',to_field='cid',on_delete=models.CASCADE)
+	item = models.ForeignKey('Sponsor_Items',to_field='name',on_delete=models.CASCADE)
+
+
