@@ -137,6 +137,10 @@ class Sponsor_Items(models.Model):
 	price = models.IntegerField(u'價格')
 	limit = models.IntegerField(u'數量限制')
 	pic =models.ImageField(u"贊助品預覽圖",upload_to = 'sponsor_items',null=True,help_text='''提供過去做的贊助品圖片，做為參考''')
+	class Meta:
+		managed = True
+		verbose_name = u"贊助品"
+		verbose_name_plural =u"贊助品"
 
 class Sponsorship(models.Model):
 	id = models.AutoField(primary_key=True)
