@@ -1,4 +1,16 @@
 from django.db import models
+CATEGORYS = (
+		(u'半導體', u'半導體'),
+		(u'消費電子', u'消費電子'),
+		(u'網路通訊', u'網路通訊'),
+		(u'光電光學', u'光電光學'),
+		(u'資訊軟體', u'資訊軟體'),
+		(u'集團', u'集團'),
+		(u'綜合', u'綜合'),
+		(u'人力銀行', u'人力銀行'),
+		(u'機構', u'機構'),
+		(u'通用', u'通用')
+		)
 
 class Activity(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -72,3 +84,49 @@ class Seminar_Info(models.Model):
 		managed = True
 		verbose_name = u"說明會資訊"
 		verbose_name_plural =u"說明會資訊"
+
+#以下為就博會
+
+class Jobfair_Slot(models.Model):
+
+	id = models.AutoField(primary_key=True)
+	serial_no = models.CharField(u'攤位編號',max_length=10)
+	category = models.CharField(u'類別',max_length=37,choices=CATEGORYS)
+	cid=models.OneToOneField('Activity',to_field='cid',on_delete=models.CASCADE)
+	updated = models.DateTimeField(u'更新時間',auto_now=True)
+
+	class Meta:
+		managed = True
+		verbose_name = u"就博會攤位"
+		verbose_name_plural =u"就博會攤位"
+	def __str__(self):
+		return self.cid
+
+class Jobfair_Order(models.Model):
+	id = models.AutoField(primary_key=True)
+	time = models.DateTimeField(u'選位開始時間')
+	cid=models.OneToOneField('Activity',to_field='cid',on_delete=models.CASCADE)
+	updated = models.DateTimeField(u'更新時間',auto_now=True)
+
+	class Meta:
+		managed = True
+		verbose_name = u"就博會選位順序"
+		verbose_name_plural =u"就博會選位順序"
+
+class Jobfair_Info(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid=models.OneToOneField('Activity',to_field='cid',on_delete=models.CASCADE)
+	signname = models.CharField(u'攤位招牌名稱',max_length=30)
+	contact = models.CharField(u'聯絡人',max_length=30)
+	contact_mobile = models.CharField(u'聯絡人手機',max_length=16)
+	contact_email = models.EmailField(u'聯絡人Email',max_length=254)
+	parking_tickets = models.SmallIntegerField(u'停車證數量')
+	power_req = models.CharField(u'用電需求',max_length=256)
+	ps = models.EmailField(u'其它需求',max_length=254)
+	updated = models.DateTimeField(u'更新時間',auto_now=True)
+
+	class Meta:
+		managed = True
+		verbose_name = u"就博會資訊"
+		verbose_name_plural =u"就博會資訊"
+
