@@ -1,0 +1,115 @@
+{% extends 'rdss_base.html' %}
+
+{% block 'content' %}
+
+<div class="ui header">
+	交通大學OpenHouse 研發替代役 活動報名流程
+</div>
+
+<div class="ui ordered steps">
+	<div class="step">
+		<div class="content">
+			<div class="title">線上填寫活動資料</div>
+			<div class="description">報名時間至2016/xx/xx截止</div>
+		</div>
+	</div>
+	<div class="step">
+		<div class="content">
+			<div class="title">線上選時間、位置</div>
+			<div class="description">請按照您的選位時間線上選位</div>
+		</div>
+	</div>
+	<div class="active step">
+		<div class="content">
+			<div class="title">填寫活動相關資料</div>
+			<div class="description">請填妥說明會/就博會資料</div>
+		</div>
+	</div>
+</div>
+
+<div class="ui header">
+	{公司名稱} 報名狀況總覽
+</div>
+<div class="ui two column grid">
+	<div class="column">
+		<table class="ui selectable celled striped table">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>狀態</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>說明會選位時間</td>
+					<td>2016/XX/XX 12:12</i></td>
+				</tr>
+				<tr>
+					<td>就博會選位時間</td>
+					<td>2016/XX/XX 12:12</i></td>
+				</tr>
+				<tr>
+					<td>說明會場次</td>
+					<td>2016/XX/XX 12:12</i></td>
+				</tr>
+				<tr>
+					<td>就博會攤位</td>
+					<td>編號10</i></td>
+				</tr>
+				<tr>
+					<td>活動贊助</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+				<tr>
+					<td>說明會資訊</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+				<tr>
+					<td>就博會資訊</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="column">
+		<table class="ui selectable celled striped table">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>報名狀態</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>說明會中午場</td>
+					<td><i class="large green checkmark icon"></i></td>
+				</tr>
+				<tr>
+					<td>說明會晚上</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+				<tr>
+					<td>就博會攤位數量</td>
+					<td>1000</i></td>
+				</tr>
+				<tr>
+					<td>提供 企業職場導師</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+				<tr>
+					<td>提供 就業力講座</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+				<tr>
+					<td>提供 企業參訪</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</div>
+
+{% endblock %}
