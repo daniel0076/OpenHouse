@@ -1,0 +1,23 @@
+<div class="ui inverted teal segment">
+	<div class="ui inverted teal stackable secondary menu">
+		<div class="header item">OpenHouse 廠商介面</div>
+{% if user.is_authenticated %}
+		<a class="{{nav_index}} item" href="/company">
+			活動概況
+		</a>
+		<a class="{{nav_rdss}} item" href="/rdss">
+			研發替代役
+		</a>
+		<a class="item">
+			校園徵才
+		</a>
+		<a class="item">
+			廠商基本資料
+		</a>
+		<a class="right item" href='/company/logout'>
+			登出 {{request.user.username}}
+		</a>
+{% endif%}
+	</div>
+</div>
+

@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+
+{% block custom_head%}
+<title>OpenHouse 廠商介面</title>
+{% endblock %}
+
+{% block 'body' %}
+{% include 'common/navtop.html'%}
+<div class="ui grid">
+	<div class="three wide column" style="margin-left:1em">
+		<div class="ui vertical menu" style="width:85%">
+			<a class="active item">
+					報名狀況總覽
+			</a>
+			<a class="item">
+					填寫/修改活動資料
+			</a>
+			<a class="item">
+					活動贊助
+			</a>
+			<a class="item">
+					說明會選位
+			</a>
+			<a class="item">
+					說明會資訊填寫
+			</a>
+			<a class="item">
+					就博會選位
+			</a>
+			<a class="item">
+					就博會資訊填寫
+			</a>
+		</div>
+	</div>
+	<div class="twelve wide column">
+	{% block 'content' %}
+
+	{% endblock %}
+	</div>
+</div>
+
+{% endblock %}
+
+
