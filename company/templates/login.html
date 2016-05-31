@@ -1,0 +1,20 @@
+{% extends 'company_base.html' %}
+
+{% block 'custom_head' %}
+<title>OpenHouse 登入</title>
+{% endblock %}
+
+{% block 'content' %}
+<form class="ui form" method="POST" style="margin:auto;margin-top:5em;width:30%">
+	{% csrf_token %}
+	<div class="field">
+		<label>帳號/公司統一編號</label>
+		<input name="username" type="text">
+	</div>
+	<div class="field">
+		<label>密碼</label>
+		<input name="password" type="password">
+	</div>
+	<button class="ui teal button" type="submit">登入</button>
+</form>
+{% endblock %}
