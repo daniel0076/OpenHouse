@@ -4,3 +4,4 @@ OpenHouse/
 __pycache__/
 migrations/
 static/
+tools/
