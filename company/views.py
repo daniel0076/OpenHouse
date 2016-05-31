@@ -6,6 +6,11 @@ from django.contrib.auth import authenticate, login,logout
 
 # Create your views here.
 
+def ControlPanel(request):
+	nav_index="active"
+	return render(request,'index.html',locals())
+
+
 def CompanyCreation(request):
 	if request.POST:
 		form = CompanyCreationForm(request.POST,request.FILES)
@@ -18,7 +23,7 @@ def CompanyCreation(request):
 			#messages.error(request, ("The user could not be created due to errors.") )
 			return render(request,'company/form.html',{'form':form})
 	form = CompanyCreationForm();
-	return render(request,'company/form.html',{'form':form})
+	return render(request,'form.html',{'form':form})
 
 def CompanyEdit(request):
 	if request.user and request.user.is_authenticated():
@@ -35,7 +40,7 @@ def CompanyEdit(request):
 			#messages.error(request, ("The user could not be created due to errors.") )
 			return render(request,'company/form.html',{'form':form})
 	form = CompanyEditForm(instance=user);
-	return render(request,'company/form.html',{'form':form})
+	return render(request,'form.html',{'form':form})
 
 def CompanyLogin(request):
 
@@ -46,26 +51,10 @@ def CompanyLogin(request):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
+				return redirect('/company/')
 
-	if request.user and request.user.is_authenticated():
-		username = request.user.username
-	else: username = "Guest"
-	return render(request,'company/login.html',locals())
-
-def CompanyLogout(request):
-	if request.user and request.user.is_authenticated():
-		username = request.user.username
-
-	if request.POST:
-		username=request.POST.get('username')
-		password=request.POST.get('password')
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			if user.is_active:
-				login(request,user)
-
-	return render(request,'company/login.html',locals())
+	return render(request,'login.html',locals())
 
 def CompanyLogout(request):
 	logout(request)
-	return render(request,'company/login.html',locals())
+	return redirect('/company/login/')

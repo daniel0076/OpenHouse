@@ -6,8 +6,9 @@ urlpatterns = [
     # url(r'^$', 'oh2016_dj.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^create/',views.CompanyCreation,name="create"),
-    url(r'^edit/',views.CompanyEdit,name="edit"),
-    url(r'^login/',views.CompanyLogin,name="login"),
-    url(r'^logout/',views.CompanyLogout,name="logout"),
+    url(r'^$',views.ControlPanel,name="index"),
+    url(r'^create/$',views.CompanyCreation,name="create"),
+    url(r'^edit/$',views.CompanyEdit,name="edit"),
+    url(r'^login/$',views.CompanyLogin,name="login"),
+    url(r'^logout/$',views.CompanyLogout,name="logout"),
 ]
