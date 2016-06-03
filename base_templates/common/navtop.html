@@ -5,17 +5,21 @@
 		<a class="{{nav_index}} item" href="/company">
 			活動概況
 		</a>
-		<a class="{{nav_rdss}} item" href="/rdss">
+		<a class="{{nav_rdss}} item" href="{% url 'rdss_index' %}">
 			研發替代役
 		</a>
 		<a class="item">
 			校園徵才
 		</a>
-		<a class="item">
-			廠商基本資料
+		<a class="item" href="{%url 'info' %}">
+			廠商資料
 		</a>
-		<a class="right item" href='/company/logout'>
+		<a class="right item" href="{% url 'logout' %}">
 			登出 {{request.user.username}}
+		</a>
+{% else %}
+<a class="right item" href="{% url 'login' %}">
+			登入
 		</a>
 {% endif%}
 	</div>

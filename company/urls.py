@@ -8,7 +8,8 @@ urlpatterns = [
 
     url(r'^$',views.ControlPanel,name="index"),
     url(r'^create/$',views.CompanyCreation,name="create"),
-    url(r'^edit/$',views.CompanyEdit,name="edit"),
+    url(r'^edit/$',views.CompanyEdit,name="company_edit"),
     url(r'^login/$',views.CompanyLogin,name="login"),
     url(r'^logout/$',views.CompanyLogout,name="logout"),
+    url(r'^info/$',views.CompanyInfo,name="info"),
 ]
