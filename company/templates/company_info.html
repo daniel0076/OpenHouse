@@ -1,0 +1,103 @@
+{% extends 'company_base.html' %}
+
+{% block 'content' %}
+<div class="ui stackable grid" style="margin:auto;">
+	<div class="four wide column">
+		<div class="ui card">
+			<div class="image">
+				<img src="{{company_info.logo}}">
+			</div>
+			<div class="content">
+				<a class="header">{{company_info.shortname}} - 廠商LOGO</a>
+			</div>
+			<div class="extra content">
+				<div class="ui two buttons">
+					<a class="ui basic red button" href="{% url 'company_edit' %}">修改資料</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="seven wide column">
+		<div class="ui header">基本資料</div>
+		<table class="ui celled striped table">
+			<tbody>
+				<tr>
+					<td>統編</td>
+					<td>{{company_info.cid}}</i></td>
+				</tr>
+				<tr>
+					<td>公司名稱</td>
+					<td>{{company_info.name}}</i></td>
+				</tr>
+				<tr>
+					<td>公司簡稱</td>
+					<td>{{company_info.shortname}}</i></td>
+				</tr>
+				<tr>
+					<td>類別</td>
+					<td>{{company_info.category}}</i></td>
+				</tr>
+				<tr>
+					<td>公司電話</td>
+					<td>{{company_info.phone}}</i></td>
+				</tr>
+				<tr>
+					<td>公司地址</td>
+					<td>{{company_info.address}}</i></td>
+				</tr>
+				<tr>
+					<td>公司網址</td>
+					<td>{{company_info.website}}</i></td>
+				</tr>
+				<tr>
+					<td>人資姓名</td>
+					<td>{{company_info.hr_name}}</i></td>
+				</tr>
+				<tr>
+					<td>人資電話</td>
+					<td>{{company_info.hr_phone}}</i></td>
+				</tr>
+				<tr>
+					<td>人資傳真</td>
+					<td>{{company_info.hr_fax}}</i></td>
+				</tr>
+				<tr>
+					<td>人資Email</td>
+					<td>{{company_info.hr_email}}</i></td>
+				</tr>
+				<tr>
+					<td>人資姓名</td>
+					<td>{{company_info.hr_name}}</i></td>
+				</tr>
+				<tr>
+					<td>人資電話</td>
+					<td>{{company_info.hr_phone}}</i></td>
+				</tr>
+				<tr>
+					<td>人資傳真</td>
+					<td>{{company_info.hr_fax}}</i></td>
+				</tr>
+				<tr>
+					<td>人資Email</td>
+					<td>{{company_info.hr_email}}</i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="five wide column">
+		<div class="ui header">公司介紹</div>
+		<div class="ui segment">
+			<div class="ui header">公司簡介</div>
+					<p>{{company_info.brief}}</p>
+		</div>
+		<div class="ui segment">
+			<div class="ui header">公司介紹</div>
+					<p>{{company_info.introduction}}</p>
+		</div>
+		<div class="ui segment">
+			<div class="ui header">海外徵才資訊</div>
+					<p>{{company_info.abroad}}</p>
+		</div>
+	</div>
+</div>
+{% endblock %}
