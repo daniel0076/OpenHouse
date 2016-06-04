@@ -31,21 +31,22 @@ def CompanyCreation(request):
 	return render(request,'form.html',{'form':form})
 
 def CompanyEdit(request):
+	submit_btn_name = "確認修改"
 	if request.user and request.user.is_authenticated():
 		user=request.user
 	else: user=None
 	if request.POST:
-		form = CompanyEditForm(request.POST,request.FILES,instance=user)
-		if form.is_valid():
-			user=form.save()
+		company_form = CompanyEditForm(request.POST,request.FILES,instance=user)
+		if company_form.is_valid():
+			user = company_form.save()
 	#        messages.success(request, _("User '{0}' created.").format(user))
-			return redirect('/')
+			return redirect('/company/')
 		else:
-			print(form.errors)
+			print(company_form.errors)
 			#messages.error(request, ("The user could not be created due to errors.") )
-			return render(request,'company/form.html',{'form':form})
-	form = CompanyEditForm(instance=user);
-	submit_btn_name = "修改"
+			return render(request,'form.html',locals())
+	company_form = CompanyEditForm(instance=user);
+	company_info = company_model.Company.objects.get(cid=request.user.cid)
 	return render(request,'form.html',locals())
 
 def CompanyLogin(request):

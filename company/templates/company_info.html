@@ -5,7 +5,7 @@
 	<div class="four wide column">
 		<div class="ui card">
 			<div class="image">
-				<img src="{{company_info.logo}}">
+				<img src="{{company_info.logo.url}}">
 			</div>
 			<div class="content">
 				<a class="header">{{company_info.shortname}} - 廠商LOGO</a>
@@ -43,7 +43,7 @@
 				</tr>
 				<tr>
 					<td>公司地址</td>
-					<td>{{company_info.address}}</i></td>
+					<td>{{company_info.postal_code }}  {{company_info.address}}</i></td>
 				</tr>
 				<tr>
 					<td>公司網址</td>
@@ -54,24 +54,12 @@
 					<td>{{company_info.hr_name}}</i></td>
 				</tr>
 				<tr>
-					<td>人資電話</td>
+					<td>人資手機</td>
 					<td>{{company_info.hr_phone}}</i></td>
 				</tr>
 				<tr>
-					<td>人資傳真</td>
-					<td>{{company_info.hr_fax}}</i></td>
-				</tr>
-				<tr>
-					<td>人資Email</td>
-					<td>{{company_info.hr_email}}</i></td>
-				</tr>
-				<tr>
-					<td>人資姓名</td>
-					<td>{{company_info.hr_name}}</i></td>
-				</tr>
-				<tr>
 					<td>人資電話</td>
-					<td>{{company_info.hr_phone}}</i></td>
+					<td>{{company_info.hr_mobile}}</i></td>
 				</tr>
 				<tr>
 					<td>人資傳真</td>
