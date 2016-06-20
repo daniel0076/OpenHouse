@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
 
-{% block custom_head%}
+{% block 'custom_head'%}
 <title>OpenHouse 廠商介面</title>
 {% endblock %}
 
@@ -10,11 +10,11 @@
 <div class="ui grid">
 	<div class="three wide column" style="margin-left:1em">
 		<div class="ui vertical menu" style="width:85%">
-			<a class="active item">
+			<a class="active item" href="{%url 'rdss_index' %}">
 					報名狀況總覽
 			</a>
-			<a class="item" href="{%url 'rdss_act_signup' %}">
-					填寫/修改活動資料
+			<a class="item" href="{%url 'rdss_signup' %}">
+					填寫/修改報名資料
 			</a>
 			<a class="item">
 					活動贊助

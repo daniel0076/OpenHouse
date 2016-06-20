@@ -3,6 +3,7 @@ from rdss import models
 
 # Register your models here.
 admin.site.register(models.Activity)
+admin.site.register(models.RdssConfigs)
 
 admin.site.register(models.Seminar_Info)
 admin.site.register(models.Seminar_Slot)

@@ -7,7 +7,7 @@ class ActivityCreationForm(forms.ModelForm):
 	class Meta:
 		model=rdss.models.Activity
 		fields='__all__'
-		exclude=['payment',]
+		exclude=['cid','payment']
 
 	#def clean_cid(self):
 	#		raise forms.ValidationError(

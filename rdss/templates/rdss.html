@@ -7,19 +7,19 @@
 </div>
 
 <div class="ui ordered steps">
-	<div class="step">
+	<div class="{{step.0}} step">
 		<div class="content">
-			<div class="title">線上填寫活動資料</div>
-			<div class="description">報名時間至2016/xx/xx截止</div>
+			<div class="title">線上報名研替活動</div>
+			<div class="description">報名時間至{{configs.rdss_signup_end}}截止</div>
 		</div>
 	</div>
-	<div class="step">
+	<div class="{{step.1}} step">
 		<div class="content">
 			<div class="title">線上選時間、位置</div>
 			<div class="description">請按照您的選位時間線上選位</div>
 		</div>
 	</div>
-	<div class="active step">
+	<div class="{{step.2}} step">
 		<div class="content">
 			<div class="title">填寫活動相關資料</div>
 			<div class="description">請填妥說明會/就博會資料</div>
@@ -28,8 +28,10 @@
 </div>
 
 <div class="ui header">
-	{公司名稱} 報名狀況總覽
+	{{request.user.shortname}} 報名狀況總覽
 </div>
+
+{%if my_rdss_signup %}
 <div class="ui two column grid">
 	<div class="column">
 		<table class="ui selectable celled striped table">
@@ -109,7 +111,17 @@
 		</table>
 	</div>
 
-
 </div>
+{%else%}
+<div class="ui warning icon message">
+	<i class="warning icon"></i>
+	<div class="content">
+		<div class="header">
+			貴公司尚未報名本年度「研發替代役」徵才活動
+		</div>
+		<p><a href="{% url 'rdss_signup'%}">點此前往活動報名頁面</a>，活動將於{{configs.rdss_signup_end}}截止報名</p>
+	</div>
+</div>
+{%endif%}
 
 {% endblock %}

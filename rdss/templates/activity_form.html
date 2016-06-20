@@ -1,5 +1,73 @@
 {% extends 'rdss_base.html' %}
+{% load staticfiles %}
 
 {% block 'content' %}
-{{form.as_p}}
+<h1 class="ui header">
+	<i class="info circle icon"></i>
+	<div class="content">
+		廠商說明會
+	</div>
+</h1>
+<p>透過說明會提供完善的場地與設備，徵才企業可以近距離傳達公司訊息，解說公司內部企業文化、經營理念、薪資福利制度、徵才職缺以及需求等，也提供學生進一步認識企業的橋樑。</p>
+
+<h3 class="ui header">活動日期、時程</h3>
+
+<div class="ui bulleted list">
+	<div class="item">{{configs.seminar_start_date}} ~ {{configs.seminar_end_date}}（每週一至週五的中午及晚上）</div>
+	<div class="item">
+		每日場次(午間及晚間)：{{configs.session_1_start}}~{{configs.session_1_end}}、
+{{configs.session_2_start}}~{{configs.session_2_end}}、
+{{configs.session_3_start}}~{{configs.session_3_end}}
+	</div>
+	<div class="item">週一至週四舉辦公司說明會,每日舉辦 3 場</div>
+	<div class="item">週五開放專屬企業日(企業可進行公司和職缺介紹說明,另外搭配現場面試活動),當日舉辦一場</div>
+</div>
+
+<h3 class="ui header">活動地點</h3>
+<p>本校國際會議廳</p>
+
+<h3 class="ui header">提供設備、服務</h3>
+<div class="ui bulleted list">
+	<div class="item">可容納200人之國際會議廳</div>
+	<div class="item">單槍投影機、投影幕、麥克風、筆記型電腦、簡報滑鼠等 </div>
+	<div class="item">每場說明會由工作人員協助會場地佈置、資料發放、會場內拍照、QA上傳等相關事宜,並協助場內活動進行及突發狀況處理</div>
+	<div class="item">每場說明會提供2張免費校內停車證</div>
+</div>
+
+<h3 class="ui header">注意事項</h3>
+
+<div class="ui bulleted list">
+	<div class="item">說明會選位順序將由評選積分決定，詳細內容請參照企劃書內參加方式第六點之說明</div>
+	<div class="item">TODO</div>
+</div>
+
+<div class="ui segment">
+	<h3 class="ui header">報名說明會</h3>
+	<p>
+	<div class="ui checkbox">
+		{{form.seminar_noon}}
+		<label>{{form.seminar_noon.label}} ({{configs.session_1_start}}~{{configs.session_1_end}})</label>
+	</div>
+	</p>
+	<p>
+	<div class="ui checkbox">
+		{{form.seminar_night}}
+		<label>
+			{{form.seminar_night.label}}
+			({{configs.session_2_start}}~{{configs.session_2_end}}或
+			{{configs.session_3_start}}~{{configs.session_3_end}})
+		</label>
+	</div>
+	</p>
+	<p>
+	<div class="ui checkbox">
+		{{form.enterprise_day}}
+		<label>{{form.enterprise_day.label}}</label>
+	</div>
+	</p>
+	<div class="ui yellow message">
+		交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
+	</div>
+</div>
+
 {% endblock %}
