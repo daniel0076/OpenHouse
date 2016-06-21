@@ -1,11 +1,16 @@
 {% extends 'rdss_base.html' %}
 {% load staticfiles %}
 
+{% block 'custom_head' %}
+<title>OpenHouse 廠商介面</title>
+<script src={% static "js/rdss/activity_form.js" %}></script>
+{% endblock %}
+
 {% block 'content' %}
 <h1 class="ui header">
-	<i class="info circle icon"></i>
+	<i class="info blue circle icon"></i>
 	<div class="content">
-		廠商說明會
+		研替-廠商說明會
 	</div>
 </h1>
 <p>透過說明會提供完善的場地與設備，徵才企業可以近距離傳達公司訊息，解說公司內部企業文化、經營理念、薪資福利制度、徵才職缺以及需求等，也提供學生進一步認識企業的橋樑。</p>
@@ -16,8 +21,8 @@
 	<div class="item">{{configs.seminar_start_date}} ~ {{configs.seminar_end_date}}（每週一至週五的中午及晚上）</div>
 	<div class="item">
 		每日場次(午間及晚間)：{{configs.session_1_start}}~{{configs.session_1_end}}、
-{{configs.session_2_start}}~{{configs.session_2_end}}、
-{{configs.session_3_start}}~{{configs.session_3_end}}
+		{{configs.session_2_start}}~{{configs.session_2_end}}、
+		{{configs.session_3_start}}~{{configs.session_3_end}}
 	</div>
 	<div class="item">週一至週四舉辦公司說明會,每日舉辦 3 場</div>
 	<div class="item">週五開放專屬企業日(企業可進行公司和職缺介紹說明,另外搭配現場面試活動),當日舉辦一場</div>
@@ -67,6 +72,55 @@
 	</p>
 	<div class="ui yellow message">
 		交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
+	</div>
+</div>
+<div class="ui divider"></div>
+
+<h1 class="ui header">
+	<i class="green student icon"></i>
+	<div class="content">
+		研替-就業博覽會
+	</div>
+</h1>
+
+<p>研發替代役以博覽會的方式呈現,邀請多家企業廠商 到學校設點,展示公司的產品或職務內容,提供研替同學未來就業的參 考依據。徵才企業廠商亦可進行一對一面試方式,詢問學生興趣經歷等 相關問題,藉此篩選出能符合公司文化及經營理念的替代役人選。</p>
+<h3 class="ui header">活動日期、時程</h3>
+
+<div class="ui bulleted list">
+	<div class="item">{{configs.jobfair_start}} ~ {{configs.jobfair_end}}</div>
+	<div class="item">8:30~9:30 廠商報到與廠商會場佈置</div>
+	<div class="item">10:00~16:30 就博會暨面談會</div>
+</div>
+
+<h3 class="ui header">就博會攤位說明</h3>
+<div class="ui bulleted list">
+	<div class="item">設攤地點：本校浩然圖書館B1國際會議廳</div>
+	<div class="item">攤位配備：提供公司名稱看板 1 組、接待桌 1 張、椅子 6 張、攤位投射燈 3 盞、桌巾 1 條、晤談桌 1 桌 3 椅、3 孔 110V 電 源插座 2 個(請自備延長線、3 轉 2 孔轉接頭)、無線網路等。 (攤位設備與 3 月校徵就業博覽會相同)</div>
+	<div class="item">攤位大小：展示空間為 3m*3m</div>
+</div>
+
+<h3 class="ui header">提供服務</h3>
+<div class="ui bulleted list">
+	<div class="item">本校工作人員協助場地佈置、報到協助等,服務台之工作人員處理隨機與突發狀況</div>
+	<div class="item">提供每家企業免費校內停車證,中午提供各廠商便當</div>
+</div>
+
+<h3 class="ui header">注意事項</h3>
+
+<div class="ui bulleted list">
+	<div class="item">TODO</div>
+</div>
+
+<div class="ui segment">
+	<h3 class="ui header">報名就博會</h3>
+	<div class="ui labeled input">
+		<div class="ui label">
+			就博會攤位數量
+		</div>
+		{{form.job_fair}}
+	</div>
+	<div class="ui yellow message">
+		若報名廠商未達 15 家,則以協助借用場地進行面試為宜
 	</div>
 </div>
 

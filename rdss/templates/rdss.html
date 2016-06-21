@@ -31,7 +31,19 @@
 	{{request.user.shortname}} 報名狀況總覽
 </div>
 
-{%if my_rdss_signup %}
+{%if not my_rdss_signup %}
+
+<div class="ui warning icon message">
+	<i class="warning icon"></i>
+	<div class="content">
+		<div class="header">
+			貴公司尚未報名本年度「研發替代役」徵才活動
+		</div>
+		<p><a href="{% url 'rdss_signup'%}">點此前往活動報名頁面</a>，活動將於{{configs.rdss_signup_end}}截止報名</p>
+	</div>
+</div>
+{%endif%}
+
 <div class="ui two column grid">
 	<div class="column">
 		<table class="ui selectable celled striped table">
@@ -112,16 +124,6 @@
 	</div>
 
 </div>
-{%else%}
-<div class="ui warning icon message">
-	<i class="warning icon"></i>
-	<div class="content">
-		<div class="header">
-			貴公司尚未報名本年度「研發替代役」徵才活動
-		</div>
-		<p><a href="{% url 'rdss_signup'%}">點此前往活動報名頁面</a>，活動將於{{configs.rdss_signup_end}}截止報名</p>
-	</div>
-</div>
-{%endif%}
+
 
 {% endblock %}

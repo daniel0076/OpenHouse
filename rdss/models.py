@@ -49,7 +49,7 @@ class Activity(models.Model):
 	seminar_noon = models.BooleanField(u'說明會中午')
 	seminar_night = models.BooleanField(u'說明會晚上')
 	enterprise_day= models.BooleanField(u'專屬企業日')
-	job_fair = models.BooleanField(u'徵才展示會')
+	job_fair = models.IntegerField(u'徵才展示會攤位數量')
 	career_tutor = models.BooleanField(u'企業職場導師')
 	visit = models.BooleanField(u'企業參訪')
 	lecture = models.BooleanField(u'就業力講座')
