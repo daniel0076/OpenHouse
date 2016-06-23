@@ -7,14 +7,7 @@ class ActivityCreationForm(forms.ModelForm):
 	class Meta:
 		model=rdss.models.Activity
 		fields='__all__'
-		exclude=['cid','payment']
-
-	#def clean_cid(self):
-	#		raise forms.ValidationError(
-	#				self.error_messages['cid_error'],
-	#				code='cid_error'
-	#				)
-	#		return cid
+		exclude=['payment']
 
 	def save(self,commit=True):
 		record = super(ActivityCreationForm, self).save(commit=False)
