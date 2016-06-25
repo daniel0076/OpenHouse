@@ -11,14 +11,17 @@ import rdss.models
 @login_required(login_url='/company/login/')
 def ControlPanel(request):
 	# control semantic ui class
-	step=["","",""] # for step ui in template
+	step_ui = ["","",""] # for step ui in template
 	nav_rdss="active"
 	# get the dates from the configs
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	my_rdss_signup = rdss.models.Activity.objects.filter(cid=request.user.cid)
 	# control semanti ui class
 	if not my_rdss_signup:
-		step[0]="active"
+		step_ui[0] = "active"
+	else:
+		step_ui[1] = "active"
+
 	return render(request,'rdss.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -39,6 +42,7 @@ def SignupActivity(request):
 	edit_instance = rdss.models.Activity.objects.filter(cid=request.user.cid)[0]
 	if edit_instance:
 		form = rdss.forms.ActivityCreationForm(instance=edit_instance)
+		signup_edit_ui = True # for semantic ui control
 	else:
 		form = rdss.forms.ActivityCreationForm
 

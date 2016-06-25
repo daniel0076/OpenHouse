@@ -9,9 +9,11 @@
 {% block 'content' %}
 <form class="ui form" method="POST" action="{% url 'rdss_signup' %}" >
 	{% csrf_token %}
+	{% if signup_edit_ui %}
 	<div class="ui teal message">
-		You are now editing
+		報名已完成，您也可以修改報名資料，再次送出。
 	</div>
+	{% endif %}
 	<h1 class="ui header">
 		<i class="info blue circle icon"></i>
 		<div class="content">
