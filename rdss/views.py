@@ -16,10 +16,12 @@ def ControlPanel(request):
 	# get the dates from the configs
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	my_rdss_signup = rdss.models.Activity.objects.filter(cid=request.user.cid)
+	rdss_signup_data = my_rdss_signup[0]
 	# control semanti ui class
 	if not my_rdss_signup:
 		step_ui[0] = "active"
 	else:
+		step_ui[0] = "completed"
 		step_ui[1] = "active"
 
 	return render(request,'rdss.html',locals())
@@ -27,21 +29,24 @@ def ControlPanel(request):
 @login_required(login_url='/company/login/')
 def SignupActivity(request):
 	configs=rdss.models.RdssConfigs.objects.all()[0]
+	edit_instance_list = rdss.models.Activity.objects.filter(cid=request.user.cid)
 	if request.POST:
 		# copy the data from post
 		data = request.POST.copy()
 		# decide cid in the form
 		data['cid']=request.user.cid
-		form = rdss.forms.ActivityCreationForm(data)
+		if edit_instance_list:
+			form = rdss.forms.ActivityCreationForm(data,instance=edit_instance_list[0])
+		else:
+			form = rdss.forms.ActivityCreationForm(data)
 		if form.is_valid():
 			form.save()
 		else:
 			# for debug usage
 			print(form.errors.items())
 	# edit
-	edit_instance = rdss.models.Activity.objects.filter(cid=request.user.cid)[0]
-	if edit_instance:
-		form = rdss.forms.ActivityCreationForm(instance=edit_instance)
+	if edit_instance_list:
+		form = rdss.forms.ActivityCreationForm(instance=edit_instance_list[0])
 		signup_edit_ui = True # for semantic ui control
 	else:
 		form = rdss.forms.ActivityCreationForm
