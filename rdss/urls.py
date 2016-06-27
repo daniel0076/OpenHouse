@@ -8,6 +8,7 @@ urlpatterns = [
 
     url(r'^$',views.ControlPanel,name="rdss_index"),
     url(r'^signup/$',views.SignupActivity,name="rdss_signup"),
-    url(r'^seminar/$',views.SeminarInfo,name="rdss_seminar"),
-    url(r'^jobfair/$',views.JobfairInfo,name="rdss_jobfair"),
+    url(r'^seminar/info$',views.SeminarInfo,name="rdss_seminar_info"),
+    url(r'^seminar/select$',views.SeminarSelect,name="rdss_seminar_select"),
+    url(r'^jobfair/info$',views.JobfairInfo,name="rdss_jobfair_info"),
 ]

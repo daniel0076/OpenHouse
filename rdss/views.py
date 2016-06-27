@@ -62,3 +62,8 @@ def SeminarInfo(request):
 def JobfairInfo(request):
 	form = rdss.forms.JobfairInfoCreationForm
 	return render(request,'jobfair_info_form.html',locals())
+
+@login_required(login_url='/company/login/')
+def SeminarSelect(request):
+	form = rdss.forms.SeminarInfoCreationForm
+	return render(request,'seminar_select.html',locals())

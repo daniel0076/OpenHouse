@@ -63,20 +63,27 @@ class Activity(models.Model):
 
 		verbose_name = u"研替廠商列表"
 		verbose_name_plural =u"研替廠商列表"
+	def __str__(self):
+		return self.cid
 
+SESSIONS =  (
+		("中午場","中午場"),
+		("晚上場1","晚上場1"),
+		("晚上場2","晚上場2"),
+		)
 class Seminar_Slot(models.Model):
 
 	id = models.AutoField(primary_key=True)
-	time = models.DateTimeField(u'場次時間')
-	cid=models.OneToOneField('Activity',to_field='cid',on_delete=models.CASCADE)
+	date = models.DateField(u'日期')
+	session = models.CharField(u'時段',max_length=5,choices=SESSIONS)
+	cid=models.OneToOneField('Activity',to_field='cid',on_delete=models.CASCADE,null=True,blank=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
 		managed = True
 		verbose_name = u"說明會場次"
 		verbose_name_plural =u"說明會場次"
-	def __str__(self):
-		return self.cid
+	#def __str__(self):
 
 class Seminar_Order(models.Model):
 	id = models.AutoField(primary_key=True)
