@@ -53,7 +53,7 @@ def SignupRdss(request):
 	else:
 		form = rdss.forms.SignupCreationForm
 
-	return render(request,'Signup_form.html',locals())
+	return render(request,'signup_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
@@ -67,6 +67,17 @@ def JobfairInfo(request):
 
 @login_required(login_url='/company/login/')
 def SeminarSelectFormGen(request):
+
+	try:
+		my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+		if not (my_signup.seminar_noon or my_signup.seminar_night):
+			error_msg="貴公司已報名本次研替活動，但並末勾選參加說明會選項。"
+			return render(request,'error.html',locals())
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+
+
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	seminar_start_date = configs.seminar_start_date
 	seminar_end_date = configs.seminar_end_date
