@@ -30,7 +30,7 @@
 						<label></label>
 					</div>
 					<p ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.noon_{{day|date:"Ymd"}}.cid $} </p>
-					<p ng-if="!ctrl.slot.noon_{{day|date:"Ymd"}}.cid">X</p>
+					<p ng-if="!ctrl.slot.noon_{{day|date:"Ymd"}}.cid">無活動安排</p>
 				</td>
 				{% endfor %}
 			</tr>
@@ -44,7 +44,7 @@
 						<label></label>
 					</div>
 					<p ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.night1_{{day|date:"Ymd"}}.cid $} </p>
-					<p ng-if="!ctrl.slot.night1_{{day|date:"Ymd"}}">X</p>
+					<p ng-if="!ctrl.slot.night1_{{day|date:"Ymd"}}">無活動安排</p>
 				</td>
 				{% endfor %}
 			</tr>
@@ -58,7 +58,7 @@
 						<label></label>
 					</div>
 					<p ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.night2_{{day|date:"Ymd"}}.cid $} </p>
-					<p ng-if="!ctrl.slot.night2_{{day|date:"Ymd"}}">X</p>
+					<p ng-if="!ctrl.slot.night2_{{day|date:"Ymd"}}">無活動安排</p>
 				</td>
 				{% endfor %}
 			</tr>
