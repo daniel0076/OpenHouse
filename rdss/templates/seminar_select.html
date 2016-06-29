@@ -1,0 +1,71 @@
+{% extends 'rdss_base.html' %}
+{% load staticfiles %}
+{% load self_defined_filters %}
+
+{% block 'custom_head' %}
+<title>說明會選位-OpenHouse</title>
+<script src={% static "js/rdss/Controller.js" %}></script>
+{% endblock %}
+
+{% block 'content' %}
+<div ng-app="oh" ng-controller="rdss_select as ctrl">
+	<table class="ui celled table">
+		{% for week in dates_in_week %}
+		<thead>
+			<tr>
+				<th>時間</th>
+				{% for day in week %}
+				<th>{{day|date:"m/d (D)" }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>{{configs.session_1_start}}~{{configs.session_1_end}}</td>
+				{% for day in week %}
+				<td>
+					<div class="ui radio checkbox" ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid == 'None'">
+						<input ng-model="ctrl.selected" value="noon_{{day|date:"Ymd"}}"  type="radio">
+						<label></label>
+					</div>
+					<p ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.noon_{{day|date:"Ymd"}}.cid $} </p>
+					<p ng-if="!ctrl.slot.noon_{{day|date:"Ymd"}}.cid">X</p>
+				</td>
+				{% endfor %}
+			</tr>
+
+			<tr>
+				<td>{{configs.session_2_start}}~{{configs.session_2_end}}</td>
+				{% for day in week %}
+				<td>
+					<div class="ui radio checkbox" ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid =='None'">
+						<input ng-model="ctrl.selected" value="night1_{{day|date:"Ymd"}}"  type="radio">
+						<label></label>
+					</div>
+					<p ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.night1_{{day|date:"Ymd"}}.cid $} </p>
+					<p ng-if="!ctrl.slot.night1_{{day|date:"Ymd"}}">X</p>
+				</td>
+				{% endfor %}
+			</tr>
+
+			<tr>
+				<td>{{configs.session_3_start}}~{{configs.session_3_end}}</td>
+				{% for day in week %}
+				<td>
+					<div class="ui radio checkbox" ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid=='None'">
+						<input ng-model="ctrl.selected" value="night2_{{day|date:"Ymd"}}"  type="radio">
+						<label></label>
+					</div>
+					<p ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.night2_{{day|date:"Ymd"}}.cid $} </p>
+					<p ng-if="!ctrl.slot.night2_{{day|date:"Ymd"}}">X</p>
+				</td>
+				{% endfor %}
+			</tr>
+
+		</tbody>
+		{% endfor %}
+	</table>
+	<div class="ui button" ng-click="ctrl.submit()">送出選位</div>
+</div>
+{% endblock %}

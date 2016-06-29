@@ -5,7 +5,7 @@ class Seminar_SlotAdmin(admin.ModelAdmin):
 	list_display = ('date', 'session', 'cid')
 
 # Register your models here.
-admin.site.register(models.Activity)
+admin.site.register(models.Signup)
 admin.site.register(models.RdssConfigs)
 
 admin.site.register(models.Seminar_Info)

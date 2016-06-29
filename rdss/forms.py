@@ -2,23 +2,23 @@ from django import forms
 import rdss.models
 from django.utils import timezone
 
-class ActivityCreationForm(forms.ModelForm):
+class SignupCreationForm(forms.ModelForm):
 
 	class Meta:
-		model=rdss.models.Activity
+		model=rdss.models.Signup
 		fields='__all__'
 		exclude=['payment']
 
 	def save(self,commit=True):
-		record = super(ActivityCreationForm, self).save(commit=False)
+		record = super(SignupCreationForm, self).save(commit=False)
 		if commit:
 			record.save()
 		return record
 
-class ActivityEditForm(forms.ModelForm):
+class SignupEditForm(forms.ModelForm):
 
 	class Meta:
-		model=rdss.models.Activity
+		model=rdss.models.Signup
 		fields='__all__'
 		exclude=['payment',]
 
@@ -30,7 +30,7 @@ class ActivityEditForm(forms.ModelForm):
 	#		return cid
 
 	def save(self,commit=True):
-		record = super(ActivityEditForm, self).save(commit=False)
+		record = super(SignupEditForm, self).save(commit=False)
 		if commit:
 			record.save()
 		return record
