@@ -43,6 +43,13 @@ class RdssConfigs(models.Model):
 		verbose_name = u"研替活動設定"
 		verbose_name_plural =u"研替活動設定"
 
+SEMINAR_CHOICES = (
+		(u'無', u'不參加說明會'),
+		(u'說明會中午場', u'說明會中午場'),
+		(u'說明會晚上場', u'說明會晚上場'),
+		(u'專屬企業日', u'專屬企業日'),
+		)
+
 class Signup(models.Model):
 	id = models.AutoField(primary_key=True)
 	cid = models.CharField(u'公司統一編號',unique=True,max_length=8,null=False)

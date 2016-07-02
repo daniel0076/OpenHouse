@@ -31,7 +31,7 @@
 	{{request.user.shortname}} 報名狀況總覽
 </div>
 
-{%if not my_rdss_signup %}
+{%if not rdss_signup_data %}
 
 <div class="ui warning icon message">
 	<i class="warning icon"></i>
@@ -56,19 +56,19 @@
 			<tbody>
 				<tr>
 					<td>說明會選位時間</td>
-					<td>2016/XX/XX 12:12</i></td>
+					<td>{{slot_info.seminar_select_time}}</td>
 				</tr>
 				<tr>
 					<td>就博會選位時間</td>
-					<td>2016/XX/XX 12:12</i></td>
+					<td>{{slot_info.jobfair_select_time}}</td>
 				</tr>
 				<tr>
 					<td>說明會場次</td>
-					<td>2016/XX/XX 12:12</i></td>
+					<td>{{slot_info.seminar_slot}}</td>
 				</tr>
 				<tr>
 					<td>就博會攤位</td>
-					<td>編號10</i></td>
+					<td>{{slot_info.jobfair_slot}}</td>
 				</tr>
 				<tr>
 					<td>活動贊助</td>

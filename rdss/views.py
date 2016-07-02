@@ -12,15 +12,43 @@ import datetime,json
 
 @login_required(login_url='/company/login/')
 def ControlPanel(request):
+	mycid = request.user.cid
 	# control semantic ui class
 	step_ui = ["","",""] # for step ui in template
 	nav_rdss="active"
 	# get the dates from the configs
 	configs=rdss.models.RdssConfigs.objects.all()[0]
-	my_rdss_signup = rdss.models.Signup.objects.filter(cid=request.user.cid)
-	rdss_signup_data = my_rdss_signup[0]
+	rdss_signup_data = rdss.models.Signup.objects.filter(cid=mycid).first()
+
+	slot_info = {
+			"seminar_select_time":"選位時間正在排定中",
+			"jobfair_select_time":"選位時間正在排定中",
+			"seminar_slot":"-",
+			"jobfair_slot":"-",
+			}
+	seminar_session_display = {
+			"noon":"{}~{}".format(configs.session_1_start,configs.session_1_end),
+			"night1":"{}~{}".format(configs.session_2_start,configs.session_2_end),
+			"night2":"{}~{}".format(configs.session_3_start,configs.session_3_end)
+			}
+	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first()
+	jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first()
+	seminar_slot = rdss.models.Seminar_Slot.objects.filter(cid=mycid).first()
+	jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid).first()
+	if seminar_select_time:
+		slot_info['seminar_select_time'] = seminar_select_time.time
+		slot_info['seminar_slot'] = "請依時段於左方選單選位"
+	if jobfair_select_time:
+		slot_info['jobfair_select_time'] = jobfair_select_time.time
+		slot_info['jobfair_slot'] = "請依時段於左方選單選位"
+	if seminar_slot:
+		slot_info['seminar_slot'] = "{} {}".format(seminar_slot.date,
+				seminar_session_display[seminar_slot.session])
+	if jobfair_slot:
+		slot_info['jobfair_slot'] = jobfair_slot
+
 	# control semanti ui class
-	if not my_rdss_signup:
+	if not rdss_signup_data:
 		step_ui[0] = "active"
 	else:
 		step_ui[0] = "completed"
@@ -67,15 +95,27 @@ def JobfairInfo(request):
 
 @login_required(login_url='/company/login/')
 def SeminarSelectFormGen(request):
-
+	mycid = request.user.cid
+	# check the company have signup rdss
 	try:
 		my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+		# check the company have signup seminar
 		if not (my_signup.seminar_noon or my_signup.seminar_night):
 			error_msg="貴公司已報名本次研替活動，但並末勾選參加說明會選項。"
 			return render(request,'error.html',locals())
 	except Exception as e:
 		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
 		return render(request,'error.html',locals())
+
+	#check the company have been assigned a slot select order and time
+	try:
+		my_select_time = rdss.models.Seminar_Order.objects.get(cid=my_signup)
+	except Exception as e:
+		error_msg="選位時間及順序尚未排定，請靜候選位通知"
+		return render(request,'error.html',locals())
+
+	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
+	seminar_session = "中午場" if my_signup.seminar_noon else "晚上場"
 
 
 	configs=rdss.models.RdssConfigs.objects.all()[0]
