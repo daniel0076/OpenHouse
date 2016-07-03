@@ -45,7 +45,7 @@
 		</div>
 	</div>
 	<h2 class="ui header">說明會時間表</h2>
-	<table class="ui celled table">
+	<table class="ui celled table" style="text-align:center">
 		{% for week in dates_in_week %}
 		<thead>
 			<tr>
@@ -61,12 +61,17 @@
 				<td>{{configs.session_1_start}}~{{configs.session_1_end}}</td>
 				{% for day in week %}
 				<td>
-					<div class="ui radio checkbox" ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid == 'None'">
-						<input ng-model="ctrl.selected" value="noon_{{day|date:"Ymd"}}"  type="radio">
-						<label></label>
+					<div class="ui radio checkbox" ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid == 'None' &&
+						ctrl.slot.noon_{{day|date:"Ymd"}}.valid">
+						<input ng-model="ctrl.selected" value="noon_{{day|date:"Ymd"}}" type="radio">
+						<label>可選時段</label>
 					</div>
-					<p ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.noon_{{day|date:"Ymd"}}.cid $} </p>
-					<p ng-if="!ctrl.slot.noon_{{day|date:"Ymd"}}.cid">無活動安排</p>
+					<p ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid == 'None' &&
+					!ctrl.slot.noon_{{day|date:"Ymd"}}.valid">非貴公司時段</p>
+					<p ng-if="ctrl.slot.noon_{{day|date:"Ymd"}}.cid != 'None'">
+						{$ ctrl.slot.noon_{{day|date:"Ymd"}}.cid $}
+					</p>
+					<p ng-if="ctrl.slot.noon_{{day|date:"Ymd"}} == undefined">無活動安排</p>
 				</td>
 				{% endfor %}
 			</tr>
@@ -75,12 +80,17 @@
 				<td>{{configs.session_2_start}}~{{configs.session_2_end}}</td>
 				{% for day in week %}
 				<td>
-					<div class="ui radio checkbox" ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid =='None'">
+					<div class="ui radio checkbox" ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid =='None' &&
+						ctrl.slot.night1_{{day|date:"Ymd"}}.valid">
 						<input ng-model="ctrl.selected" value="night1_{{day|date:"Ymd"}}"  type="radio">
-						<label></label>
+						<label>可選時段</label>
 					</div>
-					<p ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.night1_{{day|date:"Ymd"}}.cid $} </p>
-					<p ng-if="!ctrl.slot.night1_{{day|date:"Ymd"}}">無活動安排</p>
+					<p ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid == 'None' &&
+					!ctrl.slot.night1_{{day|date:"Ymd"}}.valid">非貴公司時段</p>
+					<p ng-if="ctrl.slot.night1_{{day|date:"Ymd"}}.cid != 'None'">
+						{$ ctrl.slot.night1_{{day|date:"Ymd"}}.cid $}
+					</p>
+					<p ng-if="ctrl.slot.night1_{{day|date:"Ymd"}} == undefined">無活動安排</p>
 				</td>
 				{% endfor %}
 			</tr>
@@ -89,12 +99,17 @@
 				<td>{{configs.session_3_start}}~{{configs.session_3_end}}</td>
 				{% for day in week %}
 				<td>
-					<div class="ui radio checkbox" ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid=='None'">
+					<div class="ui radio checkbox" ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid=='None' &&
+						ctrl.slot.night2_{{day|date:"Ymd"}}.valid">
 						<input ng-model="ctrl.selected" value="night2_{{day|date:"Ymd"}}"  type="radio">
-						<label></label>
+						<label>可選時段</label>
 					</div>
-					<p ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid != 'None'">{$ ctrl.slot.night2_{{day|date:"Ymd"}}.cid $} </p>
-					<p ng-if="!ctrl.slot.night2_{{day|date:"Ymd"}}">無活動安排</p>
+					<p ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid == 'None' &&
+					!ctrl.slot.night2_{{day|date:"Ymd"}}.valid">非貴公司時段</p>
+					<p ng-if="ctrl.slot.night2_{{day|date:"Ymd"}}.cid != 'None'">
+						{$ ctrl.slot.night2_{{day|date:"Ymd"}}.cid $}
+					</p>
+					<p ng-if="ctrl.slot.night2_{{day|date:"Ymd"}} == undefined">無活動安排</p>
 				</td>
 				{% endfor %}
 			</tr>

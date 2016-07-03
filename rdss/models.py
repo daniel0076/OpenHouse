@@ -48,9 +48,9 @@ class RdssConfigs(models.Model):
 class Signup(models.Model):
 	SEMINAR_CHOICES = (
 			(u'', u'不參加說明會'),
-			(u'中午場', u'中午場'),
-			(u'晚上場', u'晚上場'),
-			(u'專屬企業日', u'專屬企業日'),
+			(u'noon', u'中午場'),
+			(u'night', u'晚上場'),
+			(u'company_day', u'專屬企業日'),
 			)
 	id = models.AutoField(primary_key=True)
 	cid = models.CharField(u'公司統一編號',unique=True,max_length=8,null=False)
@@ -177,7 +177,9 @@ class Jobfair_Info(models.Model):
 class Sponsor_Items(models.Model):
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(u'贊助品名稱',max_length=64,unique=True)
-	description = models.CharField(u'贊助品說明',max_length=64)
+	description = models.CharField(u'贊助品說明',max_length=250)
+	spec = models.CharField(u'規格',max_length=100,null=True,blank=True)
+	ps = models.CharField(u'備註',max_length=100,null=True,blank=True)
 	price = models.IntegerField(u'價格')
 	limit = models.IntegerField(u'數量限制')
 	pic =models.ImageField(u"贊助品預覽圖",upload_to = 'sponsor_items',null=True,help_text='''提供過去做的贊助品圖片，做為參考''')

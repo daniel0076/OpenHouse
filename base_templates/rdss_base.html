@@ -5,16 +5,16 @@
 <div class="ui grid">
 	<div class="three wide column" style="margin-left:1em">
 		<div class="ui vertical menu" style="width:85%">
-			<a class="active item" href="{%url 'rdss_index' %}">
+			<a class="{{sidebar_ui.index}} item" href="{%url 'rdss_status' %}">
 					報名狀況總覽
 			</a>
-			<a class="item" href="{%url 'rdss_signup' %}">
+			<a class="{{sidebar_ui.signup}} item" href="{%url 'rdss_signup' %}">
 					填寫/修改報名資料
 			</a>
-			<a class="item">
+			<a class="{{sidebar_ui.sponsor}} item" href="{%url 'rdss_sponsor' %}">
 					活動贊助
 			</a>
-			<a class="item" href="{%url 'rdss_seminar_select' %}">
+			<a class="{{sidebar_ui.seminar_select}} item" href="{%url 'rdss_seminar_select' %}">
 					說明會選位
 			</a>
 			<a class="item" href="{%url 'rdss_seminar_info' %}">

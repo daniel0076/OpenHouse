@@ -5,17 +5,16 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 import rdss.forms
+import company.models
 import rdss.models
 import datetime,json
 
 # Create your views here.
+sidebar_ui = dict()
 
 @login_required(login_url='/company/login/')
 def ControlPanel(request):
 	mycid = request.user.cid
-	# control semantic ui class
-	step_ui = ["","",""] # for step ui in template
-	nav_rdss="active"
 	# get the dates from the configs
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	signup_data = rdss.models.Signup.objects.filter(cid=mycid).first()
@@ -47,7 +46,11 @@ def ControlPanel(request):
 	if jobfair_slot:
 		slot_info['jobfair_slot'] = jobfair_slot
 
-	# control semanti ui class
+	# control semantic ui class
+	step_ui = ["","",""] # for step ui in template
+	nav_rdss="active"
+	sidebar_ui = {'index':"active"}
+
 	if not signup_data:
 		step_ui[0] = "active"
 	else:
@@ -58,6 +61,8 @@ def ControlPanel(request):
 
 @login_required(login_url='/company/login/')
 def SignupRdss(request):
+	#semanti ui control
+	sidebar_ui = {'signup':"active"}
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	edit_instance_list = rdss.models.Signup.objects.filter(cid=request.user.cid)
 	if request.POST:
@@ -81,6 +86,8 @@ def SignupRdss(request):
 	else:
 		form = rdss.forms.SignupCreationForm
 
+
+
 	return render(request,'signup_form.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -95,6 +102,9 @@ def JobfairInfo(request):
 
 @login_required(login_url='/company/login/')
 def SeminarSelectFormGen(request):
+	#semanti ui control
+	sidebar_ui = {'seminar_select':"active"}
+
 	mycid = request.user.cid
 	# check the company have signup rdss
 	try:
@@ -147,7 +157,19 @@ def SeminarSelectControl(request):
 			return_data={}
 			for s in slots:
 				#night1_20160707
-				return_data["{}_{}".format(s.session,s.date.strftime("%Y%m%d"))]={"cid":str(s.cid)}
+				index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
+				return_data[index] = {}
+
+				return_data[index]["cid"] = "None" if not s.cid else\
+				company.models.Company.objects.filter(cid=s.cid).first().shortname
+
+				seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
+				if (seminar_session not in s.session) and\
+					rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
+					return_data[index]['valid'] = False
+				else:
+					return_data[index]['valid'] = True
+
 			return JsonResponse({"success":True,"data":return_data})
 
 		#action select
@@ -160,6 +182,12 @@ def SeminarSelectControl(request):
 				my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
 
 				if slot and my_signup:
+
+					#不在公司時段，且該時段未滿
+					if my_signup.seminar not in slot.session and\
+					rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
+						return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
+
 					slot.cid = my_signup
 					slot.save()
 					return JsonResponse({"success":True})
@@ -167,7 +195,13 @@ def SeminarSelectControl(request):
 					return JsonResponse({"success":False})
 
 			except:
-				return JsonResponse({"success":False})
+				ret['success'] = False
+				ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
+				return JsonResponse(ret)
 		else:
 			pass
 	raise Http404("What are u looking for?")
+
+@login_required(login_url='/company/login/')
+def Sponsor(request):
+	return render(request,'sponsor.html',locals())
