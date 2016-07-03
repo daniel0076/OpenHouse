@@ -3,6 +3,11 @@ import rdss.models
 from django.utils import timezone
 
 class SignupCreationForm(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+			super(SignupCreationForm, self).__init__(*args, **kwargs)
+			self.fields['seminar'].widget.attrs.update({
+				'class': 'ui dropdown',
+				})
 
 	class Meta:
 		model=rdss.models.Signup
@@ -16,6 +21,12 @@ class SignupCreationForm(forms.ModelForm):
 		return record
 
 class SignupEditForm(forms.ModelForm):
+
+	def __init__(self, *args, **kwargs):
+			super(SignupCreationForm, self).__init__(*args, **kwargs)
+			self.fields['seminar'].widget.attrs.update({
+				'class': 'ui dropdown',
+				})
 
 	class Meta:
 		model=rdss.models.Signup

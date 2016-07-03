@@ -3,7 +3,7 @@
 
 {% block 'custom_head' %}
 <title>OpenHouse 廠商介面</title>
-<script src={% static "js/rdss/activity_form.js" %}></script>
+<script src={% static "js/rdss/signup_form.js" %}></script>
 {% endblock %}
 
 {% block 'content' %}
@@ -55,9 +55,8 @@
 
 	<div class="ui segment">
 		<h3 class="ui header">選取欲報名說明會時間</h3>
-		<div class="ui dropdown">
 			{{ form.seminar}}
-		</div>
+			<div class="ui red button seminar_clear">清除</div>
 		<div class="ui yellow message">
 			交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
 		</div>
