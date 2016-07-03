@@ -31,7 +31,7 @@
 	{{request.user.shortname}} 報名狀況總覽
 </div>
 
-{%if not rdss_signup_data %}
+{%if not signup_data %}
 
 <div class="ui warning icon message">
 	<i class="warning icon"></i>
@@ -96,33 +96,19 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>說明會中午場</td>
+					<td>說明會場次</td>
 					<td>
-						{% if rdss_signup_data.seminar_noon %}
-						<i class="large green checkmark icon"></i>
-						{% else %}
-						<i class="large red remove icon"></i>
-						{% endif %}
-					</td>
-				</tr>
-				<tr>
-					<td>說明會晚上</td>
-					<td>
-						{% if rdss_signup_data.seminar_night %}
-						<i class="large green checkmark icon"></i>
-						{% else %}
-						<i class="large red remove icon"></i>
-						{% endif %}
+						{{ signup_data.get_seminar_display}}
 					</td>
 				</tr>
 				<tr>
 					<td>就博會攤位數量</td>
-					<td>{{ rdss_signup_data.job_fair }}</td>
+					<td>{{ signup_data.job_fair }}</td>
 				</tr>
 				<tr>
 					<td>提供 企業職場導師</td>
 					<td>
-						{% if rdss_signup_data.career_tutor %}
+						{% if signup_data.career_tutor %}
 						<i class="large green checkmark icon"></i>
 						{% else %}
 						<i class="large red remove icon"></i>
@@ -132,7 +118,7 @@
 				<tr>
 					<td>提供 企業參訪</td>
 					<td>
-						{% if rdss_signup_data.visit %}
+						{% if signup_data.visit %}
 						<i class="large green checkmark icon"></i>
 						{% else %}
 						<i class="large red remove icon"></i>
@@ -142,7 +128,7 @@
 				<tr>
 					<td>提供 就業力講座</td>
 					<td>
-						{% if rdss_signup_data.lecture %}
+						{% if signup_data.lecture %}
 						<i class="large green checkmark icon"></i>
 						{% else %}
 						<i class="large red remove icon"></i>

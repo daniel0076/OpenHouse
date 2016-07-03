@@ -55,28 +55,9 @@
 
 	<div class="ui segment">
 		<h3 class="ui header">選取欲報名說明會時間</h3>
-		<p>
-		<div class="ui checkbox">
-			{{form.seminar_noon}}
-			<label>{{form.seminar_noon.label}} ({{configs.session_1_start}}~{{configs.session_1_end}})</label>
+		<div class="ui dropdown">
+			{{ form.seminar}}
 		</div>
-		</p>
-		<p>
-		<div class="ui checkbox">
-			{{form.seminar_night}}
-			<label>
-				{{form.seminar_night.label}}
-				({{configs.session_2_start}}~{{configs.session_2_end}}或
-				{{configs.session_3_start}}~{{configs.session_3_end}})
-			</label>
-		</div>
-		</p>
-		<p>
-		<div class="ui checkbox">
-			{{form.enterprise_day}}
-			<label>{{form.enterprise_day.label}}</label>
-		</div>
-		</p>
 		<div class="ui yellow message">
 			交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
 		</div>

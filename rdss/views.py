@@ -18,7 +18,7 @@ def ControlPanel(request):
 	nav_rdss="active"
 	# get the dates from the configs
 	configs=rdss.models.RdssConfigs.objects.all()[0]
-	rdss_signup_data = rdss.models.Signup.objects.filter(cid=mycid).first()
+	signup_data = rdss.models.Signup.objects.filter(cid=mycid).first()
 
 	slot_info = {
 			"seminar_select_time":"選位時間正在排定中",
@@ -48,7 +48,7 @@ def ControlPanel(request):
 		slot_info['jobfair_slot'] = jobfair_slot
 
 	# control semanti ui class
-	if not rdss_signup_data:
+	if not signup_data:
 		step_ui[0] = "active"
 	else:
 		step_ui[0] = "completed"
@@ -100,7 +100,7 @@ def SeminarSelectFormGen(request):
 	try:
 		my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
 		# check the company have signup seminar
-		if not (my_signup.seminar_noon or my_signup.seminar_night):
+		if my_signup.seminar == "":
 			error_msg="貴公司已報名本次研替活動，但並末勾選參加說明會選項。"
 			return render(request,'error.html',locals())
 	except Exception as e:
@@ -115,7 +115,7 @@ def SeminarSelectFormGen(request):
 		return render(request,'error.html',locals())
 
 	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
-	seminar_session = "中午場" if my_signup.seminar_noon else "晚上場"
+	seminar_session = my_signup.get_seminar_display()
 
 
 	configs=rdss.models.RdssConfigs.objects.all()[0]
@@ -139,14 +139,18 @@ def SeminarSelectFormGen(request):
 def SeminarSelectControl(request):
 	if request.method =="POST":
 		post_data=json.loads(request.body.decode())
-		print(post_data)
 		action = post_data.get("action")
+
+		#action query
 		if action == "query":
 			slots = rdss.models.Seminar_Slot.objects.all()
 			return_data={}
 			for s in slots:
+				#night1_20160707
 				return_data["{}_{}".format(s.session,s.date.strftime("%Y%m%d"))]={"cid":str(s.cid)}
 			return JsonResponse({"success":True,"data":return_data})
+
+		#action select
 		elif action == "select":
 			slot = post_data.get("slot");
 			slot_session , slot_date_str = slot.split('_')
@@ -158,6 +162,7 @@ def SeminarSelectControl(request):
 				if slot and my_signup:
 					slot.cid = my_signup
 					slot.save()
+					return JsonResponse({"success":True})
 				else:
 					return JsonResponse({"success":False})
 

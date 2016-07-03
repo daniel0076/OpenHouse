@@ -43,19 +43,18 @@ class RdssConfigs(models.Model):
 		verbose_name = u"研替活動設定"
 		verbose_name_plural =u"研替活動設定"
 
-SEMINAR_CHOICES = (
-		(u'無', u'不參加說明會'),
-		(u'說明會中午場', u'說明會中午場'),
-		(u'說明會晚上場', u'說明會晚上場'),
-		(u'專屬企業日', u'專屬企業日'),
-		)
+
 
 class Signup(models.Model):
+	SEMINAR_CHOICES = (
+			(u'', u'不參加說明會'),
+			(u'中午場', u'中午場'),
+			(u'晚上場', u'晚上場'),
+			(u'專屬企業日', u'專屬企業日'),
+			)
 	id = models.AutoField(primary_key=True)
 	cid = models.CharField(u'公司統一編號',unique=True,max_length=8,null=False)
-	seminar_noon = models.BooleanField(u'說明會中午')
-	seminar_night = models.BooleanField(u'說明會晚上')
-	enterprise_day= models.BooleanField(u'專屬企業日')
+	seminar = models.CharField(u'說明會場次',max_length=6,choices=SEMINAR_CHOICES,default='',blank=True)
 	job_fair = models.IntegerField(u'徵才展示會攤位數量',default=0)
 	career_tutor = models.BooleanField(u'企業職場導師')
 	visit = models.BooleanField(u'企業參訪')
@@ -73,13 +72,14 @@ class Signup(models.Model):
 	def __str__(self):
 		return self.cid
 
-SESSIONS =  (
-		("noon","中午場"),
-		("night1","晚上場1"),
-		("night2","晚上場2"),
-		)
-class Seminar_Slot(models.Model):
 
+class Seminar_Slot(models.Model):
+	# (value in db,display name)
+	SESSIONS =  (
+			("noon","中午場"),
+			("night1","晚上場1"),
+			("night2","晚上場2"),
+			)
 	id = models.AutoField(primary_key=True)
 	date = models.DateField(u'日期')
 	session = models.CharField(u'時段',max_length=6,choices=SESSIONS)
