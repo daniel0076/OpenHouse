@@ -84,7 +84,7 @@ class Seminar_Slot(models.Model):
 	id = models.AutoField(primary_key=True)
 	date = models.DateField(u'日期')
 	session = models.CharField(u'時段',max_length=6,choices=SESSIONS)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE,null=True,blank=True)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE,null=True,blank=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -96,7 +96,7 @@ class Seminar_Slot(models.Model):
 class Seminar_Order(models.Model):
 	id = models.AutoField(primary_key=True)
 	time = models.DateTimeField(u'選位開始時間')
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -106,7 +106,7 @@ class Seminar_Order(models.Model):
 
 class Seminar_Info(models.Model):
 	id = models.AutoField(primary_key=True)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	topic = models.CharField(u'說明會主題',max_length=30)
 	speaker = models.CharField(u'主講人',max_length=30)
 	speaker_title = models.CharField(u'主講人稱謂',max_length=30)
@@ -137,7 +137,7 @@ class Jobfair_Slot(models.Model):
 	id = models.AutoField(primary_key=True)
 	serial_no = models.CharField(u'攤位編號',max_length=10)
 	category = models.CharField(u'類別',max_length=37,choices=CATEGORYS)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE,blank=True,null=True)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE,blank=True,null=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -150,7 +150,7 @@ class Jobfair_Slot(models.Model):
 class Jobfair_Order(models.Model):
 	id = models.AutoField(primary_key=True)
 	time = models.DateTimeField(u'選位開始時間')
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -160,7 +160,7 @@ class Jobfair_Order(models.Model):
 
 class Jobfair_Info(models.Model):
 	id = models.AutoField(primary_key=True)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid = models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	signname = models.CharField(u'攤位招牌名稱',max_length=30)
 	contact = models.CharField(u'聯絡人',max_length=30)
 	contact_mobile = models.CharField(u'聯絡人手機',max_length=16)
@@ -191,7 +191,7 @@ class Sponsor_Items(models.Model):
 
 class Sponsorship(models.Model):
 	id = models.AutoField(primary_key=True)
-	cid = models.ForeignKey('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	item = models.ForeignKey('Sponsor_Items',to_field='name',on_delete=models.CASCADE)
 	class Meta:
 		unique_together = ("cid", "item")
