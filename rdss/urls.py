@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^seminar/select_ctrl$',views.SeminarSelectControl,name="rdss_seminar_select_control"),
     url(r'^sponsor$',views.Sponsor,name="rdss_sponsor"),
     url(r'^jobfair/info$',views.JobfairInfo,name="rdss_jobfair_info"),
+    url(r'^jobfair/select$',views.JobfairSelectFormGen,name="rdss_jobfair_select"),
 ]

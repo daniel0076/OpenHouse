@@ -1,4 +1,95 @@
 {% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>贊助 - OpenHouse</title>
+<script src={% static "js/rdss/sponsor.js" %}></script>
+{% endblock %}
 
 {% block 'content' %}
+
+	{% if msg.display %}
+	<div class="ui compact green message">
+		{{msg.content}}
+	</div>
+	{% endif %}
+<form class="ui form" method="POST" action="{% url 'rdss_sponsor' %}">
+	<!--專刊贊助品群客製區--!>
+	<table class="ui celled table">
+			<tbody>
+				<tr>
+					<!--專刊欄--!>
+					<td><strong>贊助品</strong></td>
+					<td colspan=5>活動專刊</td>
+					<td rowspan={{monograph_items.count|add:2}} style="width:25%">
+						<img class="ui small image" src="{{monograph_main.pic.url}}">
+					</td>
+				</tr>
+				<tr>
+					<td><strong>說明</strong></td>
+					<td colspan=5>{{monograph_main.description}}</td>
+				</tr>
+				<!--專刊相關內容(封面、封底等)--!>
+				{% for i in monograph_items %}
+				<tr>
+				<td><strong>{{i.name}}</strong></td>
+					<td>
+						<div class="ui checkbox">
+							{% if i in my_sponsor_items %}
+								<input name="{{i.name}}" type="checkbox" value="1" checked="checked" >
+							{% else %}
+								<input name="{{i.name}}" type="checkbox" value="1" >
+							{%endif%}
+							<label>贊助</label>
+						</div>
+					</td>
+					<td><strong>金額</strong></td>
+					<td>{{i.price}}</td>
+					<td><strong>數量限制</strong></td>
+					<td>{{i.limit}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+	</table>
+<!--其它單項贊助品--!>
+	{% for i in other_items %}
+	<table class="ui celled table">
+			<tbody>
+				<tr>
+					<td><strong>贊助品</strong></td>
+					<td colspan=5>{{i.name}}</td>
+					<td rowspan="3" style="width:25%">
+						<img class="ui small image" src="{{i.pic.url}}">
+					</td>
+				</tr>
+				<tr>
+					<td><strong>說明</strong></td>
+					<td colspan=5>
+						<p>{{i.description}}</p>
+						<p>規格：{{i.spec}}</p>
+						<p>備註：{{i.ps}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>{{i.name}}</strong></td>
+					<td>
+						<div class="ui checkbox">
+						{% if i in my_sponsor_items %}
+							<input name="{{i.name}}" type="checkbox" value="1" checked="checked" >
+						{% else %}
+							<input name="{{i.name}}" type="checkbox" value="1" >
+						{%endif%}
+							<label>贊助</label>
+						</div> </td>
+					<td><strong>金額</strong></td>
+					<td>{{i.price}}</td>
+					<td><strong>數量限制</strong></td>
+					<td>{{i.limit}}</td>
+				</tr>
+			</tbody>
+	</table>
+	{% endfor %}
+	{% csrf_token %}
+	<button class="ui blue button" type="submit">送出</button>
+</form>
 {% endblock %}

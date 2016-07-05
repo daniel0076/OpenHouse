@@ -55,7 +55,7 @@ class Signup(models.Model):
 	id = models.AutoField(primary_key=True)
 	cid = models.CharField(u'公司統一編號',unique=True,max_length=8,null=False)
 	seminar = models.CharField(u'說明會場次',max_length=6,choices=SEMINAR_CHOICES,default='',blank=True)
-	job_fair = models.IntegerField(u'徵才展示會攤位數量',default=0)
+	jobfair = models.IntegerField(u'徵才展示會攤位數量',default=0)
 	career_tutor = models.BooleanField(u'企業職場導師')
 	visit = models.BooleanField(u'企業參訪')
 	lecture = models.BooleanField(u'就業力講座')
@@ -192,5 +192,8 @@ class Sponsorship(models.Model):
 	id = models.AutoField(primary_key=True)
 	cid = models.ForeignKey('Signup',to_field='cid',on_delete=models.CASCADE)
 	item = models.ForeignKey('Sponsor_Items',to_field='name',on_delete=models.CASCADE)
+	class Meta:
+		unique_together = ("cid", "item")
+
 
 

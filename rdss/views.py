@@ -142,7 +142,6 @@ def SeminarSelectFormGen(request):
 	for week in range(0, int(table_days/7)):
 		dates_in_week.append( [(table_start_date + datetime.timedelta(days=day+week*7))\
 				for day in range(0,5)])
-	form = rdss.forms.SeminarInfoCreationForm
 	return render(request,'seminar_select.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -203,5 +202,62 @@ def SeminarSelectControl(request):
 	raise Http404("What are u looking for?")
 
 @login_required(login_url='/company/login/')
+def JobfairSelectFormGen(request):
+	#semanti ui control
+	sidebar_ui = {'jobfair_select':"active"}
+
+	mycid = request.user.cid
+	# check the company have signup rdss
+	try:
+		my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+		# check the company have signup seminar
+		if my_signup.jobfair== 0:
+			error_msg="貴公司已報名本次研替活動，但並末填寫就博會攤位。"
+			return render(request,'error.html',locals())
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+
+	#check the company have been assigned a slot select order and time
+	try:
+		my_select_time = rdss.models.Jobfair_Order.objects.get(cid=my_signup)
+	except Exception as e:
+		error_msg="選位時間及順序尚未排定，請靜候選位通知"
+		return render(request,'error.html',locals())
+
+	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
+	seminar_session = my_signup.get_seminar_display()
+
+
+	return render(request,'jobfair_select',locals())
+
+def Add_SponsorShip(sponsor_items,post_data,sponsor):
+	#clear sponsor ships objects
+	old_sponsorships = rdss.models.Sponsorship.objects.filter(cid=sponsor)
+	for i in old_sponsorships:
+		i.delete()
+	for item in sponsor_items:
+		if item.name in post_data and\
+			rdss.models.Sponsorship.objects.filter(item=item).count() < item.limit:
+				rdss.models.Sponsorship.objects.create(cid=sponsor,item=item)
+
+
+@login_required(login_url='/company/login/')
 def Sponsor(request):
+	#semantic ui
+	sidebar_ui = {'sponsor':"active"}
+	# get form post
+	sponsor = rdss.models.Signup.objects.get(cid=request.user.cid)
+	if request.POST:
+		sponsor_items = rdss.models.Sponsor_Items.objects.all()
+		Add_SponsorShip(sponsor_items,request.POST,sponsor)
+		msg = {"display":True,"content":"儲存成功!"}
+
+
+	#活動專刊的部份是變動不大，且版面特殊，採客製寫法
+	monograph_main = rdss.models.Sponsor_Items.objects.filter(name="活動專刊").first()
+	monograph_items = rdss.models.Sponsor_Items.objects.filter(name__contains="活動專刊(" )
+	other_items = rdss.models.Sponsor_Items.objects.all().exclude(name__contains="活動專刊")
+	sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
+	my_sponsor_items = [s.item for s in sponsorship ]
 	return render(request,'sponsor.html',locals())
