@@ -2,13 +2,13 @@
 {% load staticfiles %}
 
 {% block 'content' %}
-	<table class="ui celled table">
+	<table class="ui celled stackable table">
 		<tr>
 			{% for slot in slots %}
 			<td>
 				<div class="ui radio checkbox ">
-					<input type="radio">
 					<label>{{slot.serial_no}}</label>
+					<input type="radio">
 				</div>
 			</td>
 			{% endfor %}

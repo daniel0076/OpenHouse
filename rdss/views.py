@@ -150,76 +150,79 @@ def SeminarSelectControl(request):
 	if request.method =="POST":
 		post_data=json.loads(request.body.decode())
 		action = post_data.get("action")
+	else:
+		raise Http404("What are u looking for?")
 
-		#action query
-		if action == "query":
-			slots = rdss.models.Seminar_Slot.objects.all()
-			return_data={}
-			for s in slots:
-				#night1_20160707
-				index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
-				return_data[index] = {}
+	#action query
+	if action == "query":
+		slots = rdss.models.Seminar_Slot.objects.all()
+		return_data={}
+		for s in slots:
+			#night1_20160707
+			index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
+			return_data[index] = {}
 
-				return_data[index]["cid"] = "None" if not s.cid else\
-				company.models.Company.objects.filter(cid=s.cid).first().shortname
+			return_data[index]["cid"] = "None" if not s.cid else\
+			company.models.Company.objects.filter(cid=s.cid).first().shortname
 
-				seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
-				#session wrong (signup noon but choose night)
-				#and noon is not full yet
-				if (seminar_session not in s.session) and\
-					rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
-					return_data[index]['valid'] = False
-				else:
-					return_data[index]['valid'] = True
-			my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
-			if my_slot:
-				return_data['my_slot'] = True
+			seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
+			#session wrong (signup noon but choose night)
+			#and noon is not full yet
+			if (seminar_session not in s.session) and\
+				rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
+				return_data[index]['valid'] = False
 			else:
-				return_data['my_slot'] = False
+				return_data[index]['valid'] = True
+		my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+		if my_slot:
+			return_data['my_slot'] = True
+		else:
+			return_data['my_slot'] = False
 
-			return JsonResponse({"success":True,"data":return_data})
+		return JsonResponse({"success":True,"data":return_data})
 
-		#action select
-		elif action == "select":
-			slot = post_data.get("slot");
-			slot_session , slot_date_str = slot.split('_')
-			slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
-			#TODO fix try except coding style
-			#TODO fix foreignkey lookup
-			try:
-				slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
-				my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+	#action select
+	#TODO slot varible ambiguous
+	elif action == "select":
+		slot = post_data.get("slot");
+		slot_session , slot_date_str = slot.split('_')
+		slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
+		#TODO fix try except coding style
+		#TODO fix foreignkey lookup
+		try:
+			slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
+			my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
 
-				if slot and my_signup:
+			if slot and my_signup:
 
-					#不在公司時段，且該時段未滿
-					if my_signup.seminar not in slot.session and\
-					rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
-						return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
+				#不在公司時段，且該時段未滿
+				if my_signup.seminar not in slot.session and\
+				rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
+					return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
 
-					slot.cid = my_signup
-					slot.save()
-					return JsonResponse({"success":True})
-				else:
-					return JsonResponse({"success":False})
-
-			except:
-				ret['success'] = False
-				ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
-				return JsonResponse(ret)
-		# end of action select
-		elif action == "cancel":
-
-			my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
-			if my_slot:
-				my_slot.cid = None
-				my_slot.save()
+				slot.cid = my_signup
+				slot.save()
 				return JsonResponse({"success":True})
 			else:
 				return JsonResponse({"success":False})
 
+		except:
+			ret['success'] = False
+			ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
+			return JsonResponse(ret)
+	# end of action select
+	elif action == "cancel":
+
+		my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+		if my_slot:
+			my_slot.cid = None
+			my_slot.save()
+			return JsonResponse({"success":True})
 		else:
-			pass
+			return JsonResponse({"success":False})
+
+	else:
+		pass
 	raise Http404("What are u looking for?")
 
 @login_required(login_url='/company/login/')
@@ -238,7 +241,6 @@ def JobfairSelectFormGen(request):
 	except Exception as e:
 		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
 		return render(request,'error.html',locals())
-
 	#check the company have been assigned a slot select order and time
 	try:
 		my_select_time = rdss.models.Jobfair_Order.objects.get(cid=my_signup)
@@ -251,6 +253,30 @@ def JobfairSelectFormGen(request):
 
 
 	return render(request,'jobfair_select.html',locals())
+
+@login_required(login_url='/company/login/')
+def JobfairSelectControl(request):
+	if request.method =="POST":
+		post_data=json.loads(request.body.decode())
+		action = post_data.get("action")
+	else:
+		raise Http404("What are u looking for?")
+
+	if action == "query":
+		slots = rdss.models.Jobfair_Slot.objects.all()
+	elif action == "select":
+		pass
+	elif action == "cancel":
+		my_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid).first()
+		if my_slot:
+			my_slot.cid = None
+			my_slot.save()
+			return JsonResponse({"success":True})
+		else:
+			return JsonResponse({"success":False})
+	else:
+		#TODO error handling
+		pass
 
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
 	#clear sponsor ships objects
