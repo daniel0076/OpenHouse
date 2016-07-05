@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.utils import timezone
 import rdss.forms
 import company.models
 import rdss.models
@@ -64,6 +65,13 @@ def SignupRdss(request):
 	#semanti ui control
 	sidebar_ui = {'signup':"active"}
 	configs=rdss.models.RdssConfigs.objects.all()[0]
+	# use timezone now to get current time with GMT+8
+	if timezone.now() > configs.signup_end or timezone.now() < configs.signup_start:
+		error_msg="現在並非報名時間。報名期間為 {} 至 {}".format(
+				timezone.localtime(configs.signup_start).strftime("%Y/%m/%d %H:%M:%S"),
+				timezone.localtime(configs.signup_end).strftime("%Y/%m/%d %H:%M:%S"))
+		return render(request,'error.html',locals())
+
 	edit_instance_list = rdss.models.Signup.objects.filter(cid=request.user.cid)
 	if request.POST:
 		# copy the data from post
