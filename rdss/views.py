@@ -58,7 +58,7 @@ def ControlPanel(request):
 		step_ui[0] = "completed"
 		step_ui[1] = "active"
 
-	return render(request,'rdss.html',locals())
+	return render(request,'status.html',locals())
 
 @login_required(login_url='/company/login/')
 def SignupRdss(request):
