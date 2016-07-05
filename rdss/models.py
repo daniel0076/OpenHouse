@@ -1,4 +1,5 @@
 from django.db import models
+import company.models
 CATEGORYS = (
 		(u'半導體', u'半導體'),
 		(u'消費電子', u'消費電子'),
@@ -136,7 +137,7 @@ class Jobfair_Slot(models.Model):
 	id = models.AutoField(primary_key=True)
 	serial_no = models.CharField(u'攤位編號',max_length=10)
 	category = models.CharField(u'類別',max_length=37,choices=CATEGORYS)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE,blank=True,null=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -144,7 +145,7 @@ class Jobfair_Slot(models.Model):
 		verbose_name = u"就博會攤位"
 		verbose_name_plural =u"就博會攤位"
 	def __str__(self):
-		return self.cid
+		return self.serial_no
 
 class Jobfair_Order(models.Model):
 	id = models.AutoField(primary_key=True)

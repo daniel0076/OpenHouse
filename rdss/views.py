@@ -140,6 +140,7 @@ def SeminarSelectFormGen(request):
 	table_days = seminar_days + (seminar_days % 7) + 7
 	dates_in_week = list()
 	for week in range(0, int(table_days/7)):
+		# separate into 5 in each list (there are 5 days in a week)
 		dates_in_week.append( [(table_start_date + datetime.timedelta(days=day+week*7))\
 				for day in range(0,5)])
 	return render(request,'seminar_select.html',locals())
@@ -225,11 +226,11 @@ def JobfairSelectFormGen(request):
 		error_msg="選位時間及順序尚未排定，請靜候選位通知"
 		return render(request,'error.html',locals())
 
-	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
-	seminar_session = my_signup.get_seminar_display()
+	jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first().time
+	slots = rdss.models.Jobfair_Slot.objects.all()
 
 
-	return render(request,'jobfair_select',locals())
+	return render(request,'jobfair_select.html',locals())
 
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
 	#clear sponsor ships objects
