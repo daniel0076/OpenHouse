@@ -118,5 +118,6 @@
 		{% endfor %}
 	</table>
 	<div class="ui teal button" ng-click="ctrl.submit()">送出選位</div>
+	<div class="ui red button" ng-if="ctrl.slot.my_slot" ng-click="ctrl.cancel()">Cancel</div>
 </div>
 {% endblock %}

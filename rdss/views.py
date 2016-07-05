@@ -164,11 +164,18 @@ def SeminarSelectControl(request):
 				company.models.Company.objects.filter(cid=s.cid).first().shortname
 
 				seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
+				#session wrong (signup noon but choose night)
+				#and noon is not full yet
 				if (seminar_session not in s.session) and\
 					rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
 					return_data[index]['valid'] = False
 				else:
 					return_data[index]['valid'] = True
+			my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+			if my_slot:
+				return_data['my_slot'] = True
+			else:
+				return_data['my_slot'] = False
 
 			return JsonResponse({"success":True,"data":return_data})
 
@@ -177,6 +184,8 @@ def SeminarSelectControl(request):
 			slot = post_data.get("slot");
 			slot_session , slot_date_str = slot.split('_')
 			slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
+			#TODO fix try except coding style
+			#TODO fix foreignkey lookup
 			try:
 				slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
 				my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
@@ -198,6 +207,17 @@ def SeminarSelectControl(request):
 				ret['success'] = False
 				ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
 				return JsonResponse(ret)
+		# end of action select
+		elif action == "cancel":
+
+			my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+			if my_slot:
+				my_slot.cid = None
+				my_slot.save()
+				return JsonResponse({"success":True})
+			else:
+				return JsonResponse({"success":False})
+
 		else:
 			pass
 	raise Http404("What are u looking for?")
