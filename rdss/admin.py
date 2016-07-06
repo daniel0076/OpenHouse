@@ -1,20 +1,32 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 from rdss import models
 import company.models
 
+@admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):
 	list_display = ('date', 'session', 'company_name')
 	def company_name(self,obj):
 		com = company.models.Company.objects.filter(cid=obj.cid).first()
 		return None if com == None else com.shortname
 
+@admin.register(models.Sponsor_Items)
 class Sponsor_ItemsAdmin(admin.ModelAdmin):
 	list_display = ('name', 'description', 'price','limit','current_amount')
 	def current_amount(self,obj):
 		return models.Sponsorship.objects.filter(item=obj).count()
 	current_amount.short_description = '目前贊助數'
 
+@admin.register(models.Signup)
 class SignupAdmin(admin.ModelAdmin):
+	list_display = ('cid','company_name','seminar','jobfair','career_tutor','visit','lecture','payment')
+	def company_name(self,obj):
+		com = company.models.Company.objects.filter(cid=obj.cid).first()
+		return com.shortname
+
+
+@admin.register(models.SignupCompany)
+class SignupCompanyAdmin(admin.ModelAdmin):
 	list_display = ('cid','company_name','category','hr_name','hr_phone','hr_mobile','hr_email')
 
 	def company_name(self,obj):
@@ -47,6 +59,7 @@ class SignupAdmin(admin.ModelAdmin):
 	hr_mobile.short_description = '人資手機'
 	hr_email.short_description = '人資Email'
 
+@admin.register(models.Seminar_Order)
 class Seminar_OrderAdmin(admin.ModelAdmin):
 	list_display = ("cid","company_name","time","updated")
 
@@ -55,6 +68,7 @@ class Seminar_OrderAdmin(admin.ModelAdmin):
 		return com.shortname
 	company_name.short_description = '公司簡稱'
 
+@admin.register(models.Jobfair_Order)
 class Jobfair_OrderAdmin(admin.ModelAdmin):
 	list_display = ("cid","company_name","time","updated")
 
@@ -64,13 +78,7 @@ class Jobfair_OrderAdmin(admin.ModelAdmin):
 	company_name.short_description = '公司簡稱'
 
 # Register your models here.
-admin.site.register(models.Signup,SignupAdmin)
 admin.site.register(models.RdssConfigs)
-
 admin.site.register(models.Seminar_Info)
-admin.site.register(models.Seminar_Slot,Seminar_SlotAdmin)
-admin.site.register(models.Seminar_Order,Seminar_OrderAdmin)
-admin.site.register(models.Jobfair_Order,Jobfair_OrderAdmin)
 admin.site.register(models.Jobfair_Slot)
 admin.site.register(models.Jobfair_Info)
-admin.site.register(models.Sponsor_Items,Sponsor_ItemsAdmin)

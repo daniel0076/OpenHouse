@@ -73,6 +73,9 @@ class Signup(models.Model):
 	def __str__(self):
 		return self.cid
 
+class SignupCompany(Signup):
+	class Meta:
+		proxy = True
 
 class Seminar_Slot(models.Model):
 	# (value in db,display name)

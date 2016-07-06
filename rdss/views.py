@@ -316,3 +316,8 @@ def Sponsor(request):
 	sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
 	my_sponsor_items = [s.item for s in sponsorship ]
 	return render(request,'sponsor.html',locals())
+
+@login_required(login_url='/company/login/')
+def SponsorshipAdmin(request):
+	return render(request,'sponsor.html',locals())
+
