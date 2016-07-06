@@ -41,8 +41,8 @@ class RdssConfigs(models.Model):
 	class Meta:
 		managed = True
 
-		verbose_name = u"研替活動設定"
-		verbose_name_plural =u"研替活動設定"
+		verbose_name = u"1. 研替活動設定"
+		verbose_name_plural =u"1. 研替活動設定"
 
 
 
@@ -67,17 +67,18 @@ class Signup(models.Model):
 
 	class Meta:
 		managed = True
-		verbose_name = u"活動報名情況"
-		verbose_name_plural =u"活動報名情況"
+		verbose_name = u"3. 活動報名情況"
+		verbose_name_plural =u"3. 活動報名情況"
 	def __str__(self):
 		return self.cid
 
-# Proxy model for AdminSite item
+# Proxy model for AdminSite company list item
 class SignupCompany(Signup):
 	class Meta:
 		proxy = True
-		verbose_name = u"廠商列表"
-		verbose_name_plural =u"廠商列表"
+		verbose_name = u"2. 廠商列表"
+		verbose_name_plural =u"2. 廠商列表"
+
 
 class Seminar_Slot(models.Model):
 	# (value in db,display name)
@@ -191,8 +192,8 @@ class Sponsor_Items(models.Model):
 	pic =models.ImageField(u"贊助品預覽圖",upload_to = 'sponsor_items',null=True,help_text='''提供過去做的贊助品圖片，做為參考''')
 	class Meta:
 		managed = True
-		verbose_name = u"贊助品"
-		verbose_name_plural =u"贊助品"
+		verbose_name = u"4. 贊助品"
+		verbose_name_plural =u"4. 贊助品"
 
 class Sponsorship(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -201,5 +202,37 @@ class Sponsorship(models.Model):
 	class Meta:
 		unique_together = ("cid", "item")
 
+#TODO names
+class CompanyVisit(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
+	time = models.DateTimeField(u'')
+	limit = models.IntegerField(u'限制')
 
+	class Meta:
+		managed = True
+		verbose_name = u""
+		verbose_name_plural =u""
 
+#TODO names
+class Lectures(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
+	time = models.DateTimeField(u'')
+	limit = models.IntegerField(u'限制')
+
+	class Meta:
+		managed = True
+		verbose_name = u""
+		verbose_name_plural =u""
+
+class CareerTutor(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
+	time = models.DateTimeField(u'')
+	limit = models.IntegerField(u'限制')
+
+	class Meta:
+		managed = True
+		verbose_name = u""
+		verbose_name_plural =u""

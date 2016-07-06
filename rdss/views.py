@@ -341,3 +341,9 @@ def Sponsor(request):
 def SponsorshipAdmin(request):
 	return render(request,'sponsor.html',locals())
 
+def SeminarPublic(request):
+	return render(request,'seminar_public.html',locals())
+
+def SeminarPublic(request):
+	return render(request,'jobfair_public.html',locals())
+

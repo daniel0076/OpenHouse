@@ -1,7 +1,11 @@
 from django.contrib import admin
-from django.contrib.admin import AdminSite
 from rdss import models
 import company.models
+
+admin.AdminSite.site_header="OpenHouse Manage"
+admin.AdminSite.site_title="OpenHouse"
+admin.AdminSite.index_template="admin/index2.html"
+
 
 @admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):
@@ -76,6 +80,7 @@ class Jobfair_OrderAdmin(admin.ModelAdmin):
 		com = company.models.Company.objects.filter(cid=obj.cid).first()
 		return com.shortname
 	company_name.short_description = '公司簡稱'
+
 
 # Register your models here.
 admin.site.register(models.RdssConfigs)
