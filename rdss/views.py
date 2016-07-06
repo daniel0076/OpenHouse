@@ -47,6 +47,15 @@ def ControlPanel(request):
 	if jobfair_slot:
 		slot_info['jobfair_slot'] = jobfair_slot
 
+	fee = 0
+	if signup_data.seminar == "noon":
+		fee += configs.session_1_fee
+	elif signup_data.seminar == "night":
+		fee += configs.session_2_fee
+
+	fee += signup_data.jobfair*configs.jobfair_booth_fee
+
+
 	# control semantic ui class
 	step_ui = ["","",""] # for step ui in template
 	nav_rdss="active"
@@ -135,6 +144,11 @@ def SeminarSelectFormGen(request):
 	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 	seminar_session = my_signup.get_seminar_display()
 
+	if timezone.now() < seminar_select_time:
+		can_select = False
+		pass
+	#TODO: not your time now
+
 
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	seminar_start_date = configs.seminar_start_date
@@ -192,6 +206,11 @@ def SeminarSelectControl(request):
 	#action select
 	#TODO slot varible ambiguous
 	elif action == "select":
+		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
+		if timezone.now() <my_select_time:
+			#TODO not your time
+			pass
+
 		slot = post_data.get("slot");
 		slot_session , slot_date_str = slot.split('_')
 		slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
@@ -265,6 +284,7 @@ def JobfairSelectFormGen(request):
 @login_required(login_url='/company/login/')
 def JobfairSelectControl(request):
 	if request.method =="POST":
+		mycid = request.cid
 		post_data=json.loads(request.body.decode())
 		action = post_data.get("action")
 	else:

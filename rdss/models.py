@@ -67,15 +67,17 @@ class Signup(models.Model):
 
 	class Meta:
 		managed = True
-
-		verbose_name = u"研替廠商列表"
-		verbose_name_plural =u"研替廠商列表"
+		verbose_name = u"活動報名情況"
+		verbose_name_plural =u"活動報名情況"
 	def __str__(self):
 		return self.cid
 
+# Proxy model for AdminSite item
 class SignupCompany(Signup):
 	class Meta:
 		proxy = True
+		verbose_name = u"廠商列表"
+		verbose_name_plural =u"廠商列表"
 
 class Seminar_Slot(models.Model):
 	# (value in db,display name)
