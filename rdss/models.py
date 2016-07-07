@@ -201,6 +201,8 @@ class Sponsorship(models.Model):
 	item = models.ForeignKey('Sponsor_Items',to_field='name',on_delete=models.CASCADE)
 	class Meta:
 		unique_together = ("cid", "item")
+		verbose_name = u"5. 贊助情況"
+		verbose_name_plural =u"5. 贊助情況"
 
 #TODO names
 class CompanyVisit(models.Model):

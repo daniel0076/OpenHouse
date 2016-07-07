@@ -338,8 +338,22 @@ def Sponsor(request):
 	return render(request,'sponsor.html',locals())
 
 @login_required(login_url='/company/login/')
-def SponsorshipAdmin(request):
-	return render(request,'sponsor.html',locals())
+def SponsorAdmin(request):
+	site_header="OpenHouse 管理後台"
+	site_title="OpenHouse"
+	sponsor_items = rdss.models.Sponsor_Items.objects.all()
+	companies = rdss.models.Signup.objects.all()
+	sponsorships_list = list()
+	for c in companies:
+		shortname = company.models.Company.objects.filter(cid=c.cid).first().shortname
+		sponsorships = rdss.models.Sponsorship.objects.filter(cid=c)
+		counts = [rdss.models.Sponsorship.objects.filter(cid = c,item=item).count() for item in sponsor_items]
+		amount = 0
+		for s in sponsorships:
+			amount += s.item.price
+		sponsorships_list.append({"cid":c.cid,"counts":counts,"amount":amount,"shortname":shortname})
+
+	return render(request,'sponsor_admin.html',locals())
 
 def SeminarPublic(request):
 	return render(request,'seminar_public.html',locals())

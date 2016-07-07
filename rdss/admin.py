@@ -1,8 +1,9 @@
 from django.contrib import admin
 from rdss import models
 import company.models
+from django.conf.urls import url,include
 
-admin.AdminSite.site_header="OpenHouse Manage"
+admin.AdminSite.site_header="OpenHouse 管理後台"
 admin.AdminSite.site_title="OpenHouse"
 admin.AdminSite.index_template="admin/index2.html"
 
@@ -84,6 +85,7 @@ class Jobfair_OrderAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(models.RdssConfigs)
+admin.site.register(models.Sponsorship)
 admin.site.register(models.Seminar_Info)
 admin.site.register(models.Jobfair_Slot)
 admin.site.register(models.Jobfair_Info)
