@@ -1,0 +1,10 @@
+{% extends 'company_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+{{company_form.media}}
+{% endblock %}
+
+{% block 'content' %}
+{{form.as_p}}
+{% endblock %}
