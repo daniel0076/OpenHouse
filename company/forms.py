@@ -39,7 +39,7 @@ class CompanyCreationForm(forms.ModelForm):
 					self.error_messages['password_mismatch'],
 					code='password_mismatch'
 					)
-			return password2
+		return password2
 
 	def save(self,commit=True):
 		user = super(CompanyCreationForm, self).save(commit=False)

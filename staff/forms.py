@@ -5,7 +5,6 @@ from django.utils import timezone
 class StaffCreationForm(forms.ModelForm):
 	error_messages={
 			'password_mismatch': ('兩次輸入的密碼不一樣'),
-			'cid_error': ('統一編號必需都是數字'),
 			}
 	#customed fields
 	password1 = forms.CharField(label=(u'密碼'), widget=forms.PasswordInput)
@@ -34,4 +33,13 @@ class StaffCreationForm(forms.ModelForm):
 					self.error_messages['password_mismatch'],
 					code='password_mismatch'
 					)
-			return password2
+		return password2
+
+	def save(self,commit=True):
+		user = super(StaffCreationForm, self).save(commit=False)
+		user.last_login=timezone.now()
+		user.set_password(self.cleaned_data['password2'])
+		user.is_active = False
+		if commit:
+			user.save()
+		return user

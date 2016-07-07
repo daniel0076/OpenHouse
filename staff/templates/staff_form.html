@@ -2,9 +2,12 @@
 {% load staticfiles %}
 
 {% block 'custom_head' %}
-{{company_form.media}}
 {% endblock %}
 
 {% block 'content' %}
-{{form.as_p}}
+<form class="ui form" method="POST" action="{% url 'staff_create' %}">
+	{{form.as_p}}
+	{% csrf_token %}
+	<button class="ui teal button" type="submit">Submit</button>
+</form>
 {% endblock %}
