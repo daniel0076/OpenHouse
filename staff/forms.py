@@ -14,10 +14,17 @@ class StaffCreationForm(forms.ModelForm):
 
 	required_css_class = 'required'
 
+	def __init__(self, *args, **kwargs):
+		super(StaffCreationForm, self).__init__(*args, **kwargs)
+		self.fields['username'].label="Username/StudentID"
+
 	class Meta:
 		model=staff.models.Staff
 		fields='__all__'
-		exclude=['id','password','last_login','is_active']
+		exclude=['id','password','last_login','is_active','groups','is_superuser','user_permissions','is_staff','date_joined']
+		help_texts = {
+				'username': ('Please use your student id'),
+				}
 
 	def clean_password2(self):
 		password1=self.cleaned_data.get('password1')
