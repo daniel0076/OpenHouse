@@ -82,9 +82,15 @@ class Jobfair_OrderAdmin(admin.ModelAdmin):
 		return com.shortname
 	company_name.short_description = '公司簡稱'
 
+@admin.register(models.RdssConfigs)
+class RdssConfigsAdmin(admin.ModelAdmin):
+	list_display = ("configs",)
+
+	def configs(self,obj):
+		return "活動設定"
+
 
 # Register your models here.
-admin.site.register(models.RdssConfigs)
 admin.site.register(models.Sponsorship)
 admin.site.register(models.Seminar_Info)
 admin.site.register(models.Jobfair_Slot)

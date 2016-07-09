@@ -2,13 +2,13 @@
 {% load staticfiles %}
 
 {% block 'custom_head' %}
-{{company_form.media}}
+{{form.media}}
 {% endblock %}
 
 {% block 'content' %}
 <form method="post" enctype="multipart/form-data" class="ui form">
 	{% csrf_token %}
-	<div class="ui three column grid">
+	<div class="ui three column grid" style="width:90%;margin:auto">
 		<div class="row">
 			<div class="column">
 				<div class="ui card">
@@ -19,73 +19,73 @@
 						<a class="header">{{company_info.shortname}} - 目前Logo</a>
 					</div>
 					<div class="extra content">
-						{{company_form.logo}}
+						{{form.logo}}
 					</div>
 				</div>
 				<button class="ui teal button" type="submit">{{submit_btn_name}}</button>
 			</div>
 			<div class="column">
 				<div class="required field">
-					<label>{{company_form.name.label_tag}}</label>
-					{{company_form.name}}
+					<label>{{form.name.label_tag}}</label>
+					{{form.name}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.shortname.label_tag}}</label>
-					{{company_form.shortname}}
+					<label>{{form.shortname.label_tag}}</label>
+					{{form.shortname}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.category.label_tag}}</label>
-					{{company_form.category}}
+					<label>{{form.category.label_tag}}</label>
+					{{form.category}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.phone.label_tag}}</label>
-					{{company_form.phone}}
+					<label>{{form.phone.label_tag}}</label>
+					{{form.phone}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.postal_code.label_tag}}</label>
-					{{company_form.postal_code}}
+					<label>{{form.postal_code.label_tag}}</label>
+					{{form.postal_code}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.address.label_tag}}</label>
-					{{company_form.address}}
+					<label>{{form.address.label_tag}}</label>
+					{{form.address}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.website.label_tag}}</label>
-					{{company_form.website}}
+					<label>{{form.website.label_tag}}</label>
+					{{form.website}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.hr_name.label_tag}}</label>
-					{{company_form.hr_name}}
+					<label>{{form.hr_name.label_tag}}</label>
+					{{form.hr_name}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.hr_phone.label_tag}}</label>
-					{{company_form.hr_phone}}
+					<label>{{form.hr_phone.label_tag}}</label>
+					{{form.hr_phone}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.hr_mobile.label_tag}}</label>
-					{{company_form.hr_mobile}}
+					<label>{{form.hr_mobile.label_tag}}</label>
+					{{form.hr_mobile}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.hr_fax.label_tag}}</label>
-					{{company_form.hr_fax}}
+					<label>{{form.hr_fax.label_tag}}</label>
+					{{form.hr_fax}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.hr_email.label_tag}}</label>
-					{{company_form.hr_email}}
+					<label>{{form.hr_email.label_tag}}</label>
+					{{form.hr_email}}
 				</div>
 			</div>
 			<div class="column">
 				<div class="required field">
-					<label>{{company_form.brief.label_tag}}</label>
-					{{company_form.brief}}
+					<label>{{form.brief.label_tag}}</label>
+					{{form.brief}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.introduction.label_tag}}</label>
-					{{company_form.introduction}}
+					<label>{{form.introduction.label_tag}}</label>
+					{{form.introduction}}
 				</div>
 				<div class="required field">
-					<label>{{company_form.abroad.label_tag}}</label>
-					{{company_form.abroad}}
+					<label>{{form.abroad.label_tag}}</label>
+					{{form.abroad}}
 				</div>
 			</div>
 		</div>
