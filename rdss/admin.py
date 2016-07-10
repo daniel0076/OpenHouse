@@ -40,9 +40,16 @@ class SignupAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(models.SignupCompany)
-class SignupCompanyAdmin(admin.ModelAdmin):
+@admin.register(models.Company)
+class CompanyAdmin(admin.ModelAdmin):
 	list_display = ('cid','company_name','category','hr_name','hr_phone','hr_mobile','hr_email')
+
+	def get_urls(self):
+		urls = super(CompanyAdmin, self).get_urls()
+		my_urls = [
+				url(r'^export/$', rdss.export.Export_Company),
+				]
+		return my_urls + urls
 
 	def company_name(self,obj):
 		com = company.models.Company.objects.filter(cid=obj.cid).first()
@@ -67,6 +74,7 @@ class SignupCompanyAdmin(admin.ModelAdmin):
 	def hr_email(self,obj):
 		com = company.models.Company.objects.filter(cid=obj.cid).first()
 		return com.hr_email
+
 	company_name.short_description = '公司簡稱'
 	category.short_description = '類型'
 	hr_name.short_description = '人資姓名'

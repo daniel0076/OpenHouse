@@ -73,7 +73,7 @@ class Signup(models.Model):
 		return self.cid
 
 # Proxy model for AdminSite company list item
-class SignupCompany(Signup):
+class Company(Signup):
 	class Meta:
 		proxy = True
 		verbose_name = u"2. 參加廠商"
