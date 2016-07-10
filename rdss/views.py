@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.http import  HttpResponseRedirect, JsonResponse,Http404
+from django.http import  HttpResponseRedirect, JsonResponse,Http404,HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
@@ -8,7 +8,7 @@ from django.utils import timezone
 import rdss.forms
 import company.models
 import rdss.models
-import datetime,json
+import datetime,json,csv
 
 # Create your views here.
 sidebar_ui = dict()
@@ -360,4 +360,6 @@ def SeminarPublic(request):
 
 def SeminarPublic(request):
 	return render(request,'jobfair_public.html',locals())
+
+
 

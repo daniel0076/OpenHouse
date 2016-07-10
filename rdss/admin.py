@@ -2,6 +2,7 @@ from django.contrib import admin
 from rdss import models
 import company.models
 from django.conf.urls import url,include
+import rdss.export
 
 admin.AdminSite.site_header="OpenHouse 管理後台"
 admin.AdminSite.site_title="OpenHouse"
@@ -28,6 +29,15 @@ class SignupAdmin(admin.ModelAdmin):
 	def company_name(self,obj):
 		com = company.models.Company.objects.filter(cid=obj.cid).first()
 		return com.shortname
+
+	#define export URLs eg:...admin/rdss/signup/export
+	def get_urls(self):
+		urls = super(SignupAdmin, self).get_urls()
+		my_urls = [
+				url(r'^export/$', rdss.export.Export_Signup),
+				]
+		return my_urls + urls
+
 
 
 @admin.register(models.SignupCompany)
