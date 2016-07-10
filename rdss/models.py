@@ -76,8 +76,8 @@ class Signup(models.Model):
 class SignupCompany(Signup):
 	class Meta:
 		proxy = True
-		verbose_name = u"2. 廠商列表"
-		verbose_name_plural =u"2. 廠商列表"
+		verbose_name = u"2. 參加廠商"
+		verbose_name_plural =u"2. 參加廠商"
 
 
 class Seminar_Slot(models.Model):
