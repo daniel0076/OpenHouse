@@ -17,6 +17,7 @@ def CompanyInfo(request):
 
 
 def CompanyCreation(request):
+	submit_btn_name = "創建帳號"
 	if request.POST:
 		form = CompanyCreationForm(request.POST,request.FILES)
 		if form.is_valid():
@@ -26,9 +27,9 @@ def CompanyCreation(request):
 		else:
 			print(form.errors)
 			#messages.error(request, ("The user could not be created due to errors.") )
-			return render(request,'company/form.html',{'form':form})
+			return render(request,'company_regform.html',locals())
 	form = CompanyCreationForm();
-	return render(request,'form.html',{'form':form})
+	return render(request,'company_regform.html',locals())
 
 def CompanyEdit(request):
 	submit_btn_name = "確認修改"
@@ -36,18 +37,18 @@ def CompanyEdit(request):
 		user=request.user
 	else: user=None
 	if request.POST:
-		company_form = CompanyEditForm(request.POST,request.FILES,instance=user)
-		if company_form.is_valid():
-			user = company_form.save()
+		form = CompanyEditForm(request.POST,request.FILES,instance=user)
+		if form.is_valid():
+			user = form.save()
 	#        messages.success(request, _("User '{0}' created.").format(user))
 			return redirect('/company/')
 		else:
-			print(company_form.errors)
+			print(form.errors)
 			#messages.error(request, ("The user could not be created due to errors.") )
-			return render(request,'form.html',locals())
-	company_form = CompanyEditForm(instance=user);
+			return render(request,'company_regform.html',locals())
+	form = CompanyEditForm(instance=user);
 	company_info = company_model.Company.objects.get(cid=request.user.cid)
-	return render(request,'form.html',locals())
+	return render(request,'company_regform.html',locals())
 
 def CompanyLogin(request):
 

@@ -12,7 +12,7 @@
 	<div class="ui message">
 		<div class="ui bulleted list">
 			<div class="item">
-				於貴公司選位開始的10分鐘內，可自由選取、退出與更換場次，超過10分鐘後，僅能選取場次，不能再進行更換。
+				於貴公司選位開始
 			</div>
 			<div class="item">若中午或晚上場次已滿，系統將開放另一時段的場次給貴公司選擇。</div>
 			<div class="item">
@@ -118,5 +118,6 @@
 		{% endfor %}
 	</table>
 	<div class="ui teal button" ng-click="ctrl.submit()">送出選位</div>
+	<div class="ui red button" ng-if="ctrl.slot.my_slot" ng-click="ctrl.cancel()">Cancel</div>
 </div>
 {% endblock %}

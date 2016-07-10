@@ -1,13 +1,14 @@
 from django.shortcuts import render,redirect
-from django.http import  HttpResponseRedirect, JsonResponse,Http404
+from django.http import  HttpResponseRedirect, JsonResponse,Http404,HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.utils import timezone
 import rdss.forms
 import company.models
 import rdss.models
-import datetime,json
+import datetime,json,csv
 
 # Create your views here.
 sidebar_ui = dict()
@@ -46,6 +47,15 @@ def ControlPanel(request):
 	if jobfair_slot:
 		slot_info['jobfair_slot'] = jobfair_slot
 
+	fee = 0
+	if signup_data.seminar == "noon":
+		fee += configs.session_1_fee
+	elif signup_data.seminar == "night":
+		fee += configs.session_2_fee
+
+	fee += signup_data.jobfair*configs.jobfair_booth_fee
+
+
 	# control semantic ui class
 	step_ui = ["","",""] # for step ui in template
 	nav_rdss="active"
@@ -57,13 +67,20 @@ def ControlPanel(request):
 		step_ui[0] = "completed"
 		step_ui[1] = "active"
 
-	return render(request,'rdss.html',locals())
+	return render(request,'status.html',locals())
 
 @login_required(login_url='/company/login/')
 def SignupRdss(request):
 	#semanti ui control
 	sidebar_ui = {'signup':"active"}
 	configs=rdss.models.RdssConfigs.objects.all()[0]
+	# use timezone now to get current time with GMT+8
+	if timezone.now() > configs.signup_end or timezone.now() < configs.signup_start:
+		error_msg="現在並非報名時間。報名期間為 {} 至 {}".format(
+				timezone.localtime(configs.signup_start).strftime("%Y/%m/%d %H:%M:%S"),
+				timezone.localtime(configs.signup_end).strftime("%Y/%m/%d %H:%M:%S"))
+		return render(request,'error.html',locals())
+
 	edit_instance_list = rdss.models.Signup.objects.filter(cid=request.user.cid)
 	if request.POST:
 		# copy the data from post
@@ -127,6 +144,11 @@ def SeminarSelectFormGen(request):
 	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 	seminar_session = my_signup.get_seminar_display()
 
+	if timezone.now() < seminar_select_time:
+		can_select = False
+		pass
+	#TODO: not your time now
+
 
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	seminar_start_date = configs.seminar_start_date
@@ -140,9 +162,9 @@ def SeminarSelectFormGen(request):
 	table_days = seminar_days + (seminar_days % 7) + 7
 	dates_in_week = list()
 	for week in range(0, int(table_days/7)):
+		# separate into 5 in each list (there are 5 days in a week)
 		dates_in_week.append( [(table_start_date + datetime.timedelta(days=day+week*7))\
 				for day in range(0,5)])
-	form = rdss.forms.SeminarInfoCreationForm
 	return render(request,'seminar_select.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -150,58 +172,194 @@ def SeminarSelectControl(request):
 	if request.method =="POST":
 		post_data=json.loads(request.body.decode())
 		action = post_data.get("action")
+	else:
+		raise Http404("What are u looking for?")
 
-		#action query
-		if action == "query":
-			slots = rdss.models.Seminar_Slot.objects.all()
-			return_data={}
-			for s in slots:
-				#night1_20160707
-				index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
-				return_data[index] = {}
+	#action query
+	if action == "query":
+		slots = rdss.models.Seminar_Slot.objects.all()
+		return_data={}
+		for s in slots:
+			#night1_20160707
+			index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
+			return_data[index] = {}
 
-				return_data[index]["cid"] = "None" if not s.cid else\
-				company.models.Company.objects.filter(cid=s.cid).first().shortname
+			return_data[index]["cid"] = "None" if not s.cid else\
+			company.models.Company.objects.filter(cid=s.cid).first().shortname
 
-				seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
-				if (seminar_session not in s.session) and\
-					rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
-					return_data[index]['valid'] = False
-				else:
-					return_data[index]['valid'] = True
-
-			return JsonResponse({"success":True,"data":return_data})
-
-		#action select
-		elif action == "select":
-			slot = post_data.get("slot");
-			slot_session , slot_date_str = slot.split('_')
-			slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
-			try:
-				slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
-				my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
-
-				if slot and my_signup:
-
-					#不在公司時段，且該時段未滿
-					if my_signup.seminar not in slot.session and\
-					rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
-						return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
-
-					slot.cid = my_signup
-					slot.save()
-					return JsonResponse({"success":True})
-				else:
-					return JsonResponse({"success":False})
-
-			except:
-				ret['success'] = False
-				ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
-				return JsonResponse(ret)
+			seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
+			#session wrong (signup noon but choose night)
+			#and noon is not full yet
+			if (seminar_session not in s.session) and\
+				rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
+				return_data[index]['valid'] = False
+			else:
+				return_data[index]['valid'] = True
+		my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+		if my_slot:
+			return_data['my_slot'] = True
 		else:
+			return_data['my_slot'] = False
+
+		return JsonResponse({"success":True,"data":return_data})
+
+	#action select
+	#TODO slot varible ambiguous
+	elif action == "select":
+		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
+		if timezone.now() <my_select_time:
+			#TODO not your time
 			pass
+
+		slot = post_data.get("slot");
+		slot_session , slot_date_str = slot.split('_')
+		slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
+		#TODO fix try except coding style
+		#TODO fix foreignkey lookup
+		try:
+			slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
+			my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+
+			if slot and my_signup:
+
+				#不在公司時段，且該時段未滿
+				if my_signup.seminar not in slot.session and\
+				rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
+					return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
+
+				slot.cid = my_signup
+				slot.save()
+				return JsonResponse({"success":True})
+			else:
+				return JsonResponse({"success":False})
+
+		except:
+			ret['success'] = False
+			ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
+			return JsonResponse(ret)
+	# end of action select
+	elif action == "cancel":
+
+		my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+		if my_slot:
+			my_slot.cid = None
+			my_slot.save()
+			return JsonResponse({"success":True})
+		else:
+			return JsonResponse({"success":False})
+
+	else:
+		pass
 	raise Http404("What are u looking for?")
 
 @login_required(login_url='/company/login/')
+def JobfairSelectFormGen(request):
+	#semanti ui control
+	sidebar_ui = {'jobfair_select':"active"}
+
+	mycid = request.user.cid
+	# check the company have signup rdss
+	try:
+		my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+		# check the company have signup seminar
+		if my_signup.jobfair== 0:
+			error_msg="貴公司已報名本次研替活動，但並末填寫就博會攤位。"
+			return render(request,'error.html',locals())
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+	#check the company have been assigned a slot select order and time
+	try:
+		my_select_time = rdss.models.Jobfair_Order.objects.get(cid=my_signup)
+	except Exception as e:
+		error_msg="選位時間及順序尚未排定，請靜候選位通知"
+		return render(request,'error.html',locals())
+
+	jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first().time
+	slots = rdss.models.Jobfair_Slot.objects.all()
+
+
+	return render(request,'jobfair_select.html',locals())
+
+@login_required(login_url='/company/login/')
+def JobfairSelectControl(request):
+	if request.method =="POST":
+		mycid = request.cid
+		post_data=json.loads(request.body.decode())
+		action = post_data.get("action")
+	else:
+		raise Http404("What are u looking for?")
+
+	if action == "query":
+		slots = rdss.models.Jobfair_Slot.objects.all()
+	elif action == "select":
+		pass
+	elif action == "cancel":
+		my_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid).first()
+		if my_slot:
+			my_slot.cid = None
+			my_slot.save()
+			return JsonResponse({"success":True})
+		else:
+			return JsonResponse({"success":False})
+	else:
+		#TODO error handling
+		pass
+
+def Add_SponsorShip(sponsor_items,post_data,sponsor):
+	#clear sponsor ships objects
+	old_sponsorships = rdss.models.Sponsorship.objects.filter(cid=sponsor)
+	for i in old_sponsorships:
+		i.delete()
+	for item in sponsor_items:
+		if item.name in post_data and\
+			rdss.models.Sponsorship.objects.filter(item=item).count() < item.limit:
+				rdss.models.Sponsorship.objects.create(cid=sponsor,item=item)
+
+
+@login_required(login_url='/company/login/')
 def Sponsor(request):
+	#semantic ui
+	sidebar_ui = {'sponsor':"active"}
+	# get form post
+	sponsor = rdss.models.Signup.objects.get(cid=request.user.cid)
+	if request.POST:
+		sponsor_items = rdss.models.Sponsor_Items.objects.all()
+		Add_SponsorShip(sponsor_items,request.POST,sponsor)
+		msg = {"display":True,"content":"儲存成功!"}
+
+
+	#活動專刊的部份是變動不大，且版面特殊，採客製寫法
+	monograph_main = rdss.models.Sponsor_Items.objects.filter(name="活動專刊").first()
+	monograph_items = rdss.models.Sponsor_Items.objects.filter(name__contains="活動專刊(" )
+	other_items = rdss.models.Sponsor_Items.objects.all().exclude(name__contains="活動專刊")
+	sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
+	my_sponsor_items = [s.item for s in sponsorship ]
 	return render(request,'sponsor.html',locals())
+
+@login_required(login_url='/company/login/')
+def SponsorAdmin(request):
+	site_header="OpenHouse 管理後台"
+	site_title="OpenHouse"
+	sponsor_items = rdss.models.Sponsor_Items.objects.all()
+	companies = rdss.models.Signup.objects.all()
+	sponsorships_list = list()
+	for c in companies:
+		shortname = company.models.Company.objects.filter(cid=c.cid).first().shortname
+		sponsorships = rdss.models.Sponsorship.objects.filter(cid=c)
+		counts = [rdss.models.Sponsorship.objects.filter(cid = c,item=item).count() for item in sponsor_items]
+		amount = 0
+		for s in sponsorships:
+			amount += s.item.price
+		sponsorships_list.append({"cid":c.cid,"counts":counts,"amount":amount,"shortname":shortname})
+
+	return render(request,'sponsor_admin.html',locals())
+
+def SeminarPublic(request):
+	return render(request,'seminar_public.html',locals())
+
+def SeminarPublic(request):
+	return render(request,'jobfair_public.html',locals())
+
+
+

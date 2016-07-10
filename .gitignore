@@ -3,5 +3,7 @@
 OpenHouse/
 __pycache__/
 migrations/
-static/
 tools/
+static/
+!static/css/
+!static/js/

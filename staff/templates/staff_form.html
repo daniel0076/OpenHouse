@@ -1,0 +1,13 @@
+{% extends 'company_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+{% endblock %}
+
+{% block 'content' %}
+<form class="ui form" method="POST" action="{% url 'staff_create' %}">
+	{{form.as_p}}
+	{% csrf_token %}
+	<button class="ui teal button" type="submit">Submit</button>
+</form>
+{% endblock %}

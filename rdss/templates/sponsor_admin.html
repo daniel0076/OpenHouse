@@ -1,0 +1,29 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<div id="content-main">
+	<table class="ui celled table">
+		<thead>
+			<th> CID </th>
+			<th> Company Name </th>
+			{% for item in sponsor_items %}
+			<th> {{ item.name }} </th>
+			{% endfor %}
+			<th>Amount </th>
+		</thead>
+		<tbody>
+			{% for company in sponsorships_list %}
+			<tr>
+				<td>{{company.cid}}</td>
+				<td>{{company.shortname}}</td>
+				{% for item_num in company.counts%}
+					<td>{{item_num}}</td>
+				{% endfor %}
+				<td>{{company.amount}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}
+

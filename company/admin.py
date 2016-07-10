@@ -40,9 +40,7 @@ class UserChangeForm(forms.ModelForm):
 	password hash display field.
 	"""
 	password = ReadOnlyPasswordHashField(label= ("Password"),
-			help_text= ("Raw passwords are not stored, so there is no way to see "
-			"this user's password, but you can change the password "
-			"using <a href=\"../password/\">this form</a>."))
+			help_text= ( "<h3><a href=\"../password/\">變更廠商密碼</a></h3>"))
 
 	class Meta:
 		model = Company

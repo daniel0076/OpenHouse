@@ -1,4 +1,5 @@
 from django.db import models
+import company.models
 CATEGORYS = (
 		(u'半導體', u'半導體'),
 		(u'消費電子', u'消費電子'),
@@ -40,8 +41,8 @@ class RdssConfigs(models.Model):
 	class Meta:
 		managed = True
 
-		verbose_name = u"研替活動設定"
-		verbose_name_plural =u"研替活動設定"
+		verbose_name = u"1. 研替活動設定"
+		verbose_name_plural =u"1. 研替活動設定"
 
 
 
@@ -55,7 +56,7 @@ class Signup(models.Model):
 	id = models.AutoField(primary_key=True)
 	cid = models.CharField(u'公司統一編號',unique=True,max_length=8,null=False)
 	seminar = models.CharField(u'說明會場次',max_length=6,choices=SEMINAR_CHOICES,default='',blank=True)
-	job_fair = models.IntegerField(u'徵才展示會攤位數量',default=0)
+	jobfair = models.IntegerField(u'徵才展示會攤位數量',default=0)
 	career_tutor = models.BooleanField(u'企業職場導師')
 	visit = models.BooleanField(u'企業參訪')
 	lecture = models.BooleanField(u'就業力講座')
@@ -66,11 +67,17 @@ class Signup(models.Model):
 
 	class Meta:
 		managed = True
-
-		verbose_name = u"研替廠商列表"
-		verbose_name_plural =u"研替廠商列表"
+		verbose_name = u"3. 活動報名情況"
+		verbose_name_plural =u"3. 活動報名情況"
 	def __str__(self):
 		return self.cid
+
+# Proxy model for AdminSite company list item
+class Company(Signup):
+	class Meta:
+		proxy = True
+		verbose_name = u"2. 參加廠商"
+		verbose_name_plural =u"2. 參加廠商"
 
 
 class Seminar_Slot(models.Model):
@@ -83,7 +90,7 @@ class Seminar_Slot(models.Model):
 	id = models.AutoField(primary_key=True)
 	date = models.DateField(u'日期')
 	session = models.CharField(u'時段',max_length=6,choices=SESSIONS)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE,null=True,blank=True)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE,null=True,blank=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -95,7 +102,7 @@ class Seminar_Slot(models.Model):
 class Seminar_Order(models.Model):
 	id = models.AutoField(primary_key=True)
 	time = models.DateTimeField(u'選位開始時間')
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -105,7 +112,7 @@ class Seminar_Order(models.Model):
 
 class Seminar_Info(models.Model):
 	id = models.AutoField(primary_key=True)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	topic = models.CharField(u'說明會主題',max_length=30)
 	speaker = models.CharField(u'主講人',max_length=30)
 	speaker_title = models.CharField(u'主講人稱謂',max_length=30)
@@ -136,7 +143,7 @@ class Jobfair_Slot(models.Model):
 	id = models.AutoField(primary_key=True)
 	serial_no = models.CharField(u'攤位編號',max_length=10)
 	category = models.CharField(u'類別',max_length=37,choices=CATEGORYS)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE,blank=True,null=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -144,12 +151,12 @@ class Jobfair_Slot(models.Model):
 		verbose_name = u"就博會攤位"
 		verbose_name_plural =u"就博會攤位"
 	def __str__(self):
-		return self.cid
+		return self.serial_no
 
 class Jobfair_Order(models.Model):
 	id = models.AutoField(primary_key=True)
 	time = models.DateTimeField(u'選位開始時間')
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -159,7 +166,7 @@ class Jobfair_Order(models.Model):
 
 class Jobfair_Info(models.Model):
 	id = models.AutoField(primary_key=True)
-	cid=models.OneToOneField('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid = models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	signname = models.CharField(u'攤位招牌名稱',max_length=30)
 	contact = models.CharField(u'聯絡人',max_length=30)
 	contact_mobile = models.CharField(u'聯絡人手機',max_length=16)
@@ -185,12 +192,49 @@ class Sponsor_Items(models.Model):
 	pic =models.ImageField(u"贊助品預覽圖",upload_to = 'sponsor_items',null=True,help_text='''提供過去做的贊助品圖片，做為參考''')
 	class Meta:
 		managed = True
-		verbose_name = u"贊助品"
-		verbose_name_plural =u"贊助品"
+		verbose_name = u"4. 贊助品"
+		verbose_name_plural =u"4. 贊助品"
 
 class Sponsorship(models.Model):
 	id = models.AutoField(primary_key=True)
-	cid = models.ForeignKey('Signup',to_field='cid',on_delete=models.CASCADE)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	item = models.ForeignKey('Sponsor_Items',to_field='name',on_delete=models.CASCADE)
+	class Meta:
+		unique_together = ("cid", "item")
+		verbose_name = u"5. 贊助情況"
+		verbose_name_plural =u"5. 贊助情況"
 
+#TODO names
+class CompanyVisit(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
+	time = models.DateTimeField(u'')
+	limit = models.IntegerField(u'限制')
 
+	class Meta:
+		managed = True
+		verbose_name = u""
+		verbose_name_plural =u""
+
+#TODO names
+class Lectures(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
+	time = models.DateTimeField(u'')
+	limit = models.IntegerField(u'限制')
+
+	class Meta:
+		managed = True
+		verbose_name = u""
+		verbose_name_plural =u""
+
+class CareerTutor(models.Model):
+	id = models.AutoField(primary_key=True)
+	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
+	time = models.DateTimeField(u'')
+	limit = models.IntegerField(u'限制')
+
+	class Meta:
+		managed = True
+		verbose_name = u""
+		verbose_name_plural =u""
