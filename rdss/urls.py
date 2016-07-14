@@ -17,6 +17,7 @@ urlpatterns = [
     #url(r'^jobfair/$',views.JobfairPublic,name="rdss_jobfair_public"),
     url(r'^jobfair/info$',views.JobfairInfo,name="rdss_jobfair_info"),
     url(r'^jobfair/select$',views.JobfairSelectFormGen,name="rdss_jobfair_select"),
+    url(r'^jobfair/select_ctrl$',views.JobfairSelectControl,name="rdss_jobfair_select_control"),
 
 	#export urls are defined in admin.py
 ]

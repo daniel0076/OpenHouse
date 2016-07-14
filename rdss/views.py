@@ -284,14 +284,20 @@ def JobfairSelectFormGen(request):
 @login_required(login_url='/company/login/')
 def JobfairSelectControl(request):
 	if request.method =="POST":
-		mycid = request.cid
+		mycid = request.user.cid
 		post_data=json.loads(request.body.decode())
 		action = post_data.get("action")
 	else:
 		raise Http404("What are u looking for?")
 
 	if action == "query":
-		slots = rdss.models.Jobfair_Slot.objects.all()
+		slot_list = rdss.models.Jobfair_Slot.objects.all()
+		slot_list_return = list()
+		for slot in slot_list:
+			slot_list_return.append({"no":slot.serial_no,"company":slot.cid})
+
+		return JsonResponse({"success":True,"data":slot_list_return})
+
 	elif action == "select":
 		pass
 	elif action == "cancel":

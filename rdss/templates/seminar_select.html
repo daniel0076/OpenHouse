@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block 'content' %}
-<div ng-app="oh" ng-controller="rdss_select as ctrl">
+<div ng-app="oh" ng-controller="seminar_select as ctrl">
 	<h2 class="ui header">選位注意事項</h2>
 	<div class="ui message">
 		<div class="ui bulleted list">
@@ -45,7 +45,7 @@
 		</div>
 	</div>
 	<h2 class="ui header">說明會時間表</h2>
-	<table class="ui celled table" style="text-align:center">
+	<table class="ui celled striped table" style="text-align:center">
 		{% for week in dates_in_week %}
 		<thead>
 			<tr>

@@ -1,5 +1,14 @@
 {% extends 'rdss_base.html' %}
 
 {% block 'content' %}
-{{form.as_p}}
+<form class="ui form" method="POST" action="{% url 'rdss_seminar_info' %}" >
+	<h4 class="ui dividing header">說明會主題資訊</h4>
+	<div class="field">
+		<label>{{form.topic.label}}</label>
+			<div class="field">
+				{{form.topic}}
+			</div>
+	</div>
+	{{form.as_p}}
+</form>
 {% endblock %}

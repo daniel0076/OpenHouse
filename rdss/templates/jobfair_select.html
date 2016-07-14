@@ -1,17 +1,27 @@
 {% extends 'rdss_base.html' %}
 {% load staticfiles %}
 
+{% block 'custom_head' %}
+<title>就博會選位-OpenHouse</title>
+<script src={% static "js/rdss/Controller.js" %}></script>
+{% endblock %}
+
 {% block 'content' %}
-	<table class="ui celled stackable table">
-		<tr>
-			{% for slot in slots %}
-			<td>
-				<div class="ui radio checkbox ">
-					<label>{{slot.serial_no}}</label>
-					<input type="radio">
-				</div>
-			</td>
-			{% endfor %}
-		</tr>
-	</table>
+<div ng-app="oh" ng-controller="jobfair_select as ctrl">
+<h4 class="ui dividing header">就博會攤位</h4>
+<div class="ui eight column padded grid">
+		{% for slot in slots %}
+		<div class="column">
+			<div class="ui blue segment">
+			<div class="ui radio checkbox">
+				<input name="radio" type="radio">
+				<label>編號 {{slot.serial_no}}</label>
+			</div>
+		</div>
+		</div>
+		{% endfor %}
+  </div>
+	<div class="ui blue button">送出選位</div>
+</div>
+
 {% endblock %}

@@ -18,7 +18,7 @@ ctrl.directive('onFinishRender', function ($timeout) {
 	}
 });
 
-ctrl.controller('rdss_select',function($scope, $window,$http,$timeout,$interval,$log) {
+ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interval,$log) {
 	//$scope.load=true;
 	//$scope.$on('ngRepeatFinished', function(){
 	//	$('.ui.checkbox').checkbox() ;
@@ -49,6 +49,43 @@ ctrl.controller('rdss_select',function($scope, $window,$http,$timeout,$interval,
 		data.action = "select";
 		data.slot = ctrl.selected;
 		$http.post('/rdss/seminar/select_ctrl',data).success(function(response) {
+			refresh();
+		});
+	};
+
+	ctrl.cancel=function(){
+		var data={};
+		data.action = "cancel";
+		$http.post('/rdss/seminar/select_ctrl',data).success(function(response){
+			refresh();
+		});
+	};
+
+});
+
+ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interval,$log) {
+	var ctrl=this;
+	ctrl.selected=null;
+
+	function refresh(){
+		$http.post('/rdss/jobfair/select_ctrl',{"action":"query"}).success(function(response) {
+			$log.log(response.data);
+		});
+	};
+	refresh();
+	/*
+	$interval(function () {
+		refresh();
+	}, 10000);
+	*/
+
+	ctrl.submit=function(){
+		$log.log(ctrl.selected);
+
+		var data={};
+		data.action = "select";
+		data.slot = ctrl.selected;
+		$http.post('/rdss/jobfair/select_ctrl',data).success(function(response) {
 			refresh();
 		});
 	};
