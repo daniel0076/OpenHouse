@@ -51,7 +51,7 @@ class SeminarInfoCreationForm(forms.ModelForm):
 	class Meta:
 		model=rdss.models.Seminar_Info
 		fields='__all__'
-		exclude=[]
+		exclude=['cid']
 
 	#def clean_cid(self):
 	#		raise forms.ValidationError(

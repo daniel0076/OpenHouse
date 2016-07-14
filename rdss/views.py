@@ -109,6 +109,9 @@ def SignupRdss(request):
 
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
+	if request.POST:
+		post_data = request.POST.copy()
+		print(post_data)
 	form = rdss.forms.SeminarInfoCreationForm
 	return render(request,'seminar_info_form.html',locals())
 
