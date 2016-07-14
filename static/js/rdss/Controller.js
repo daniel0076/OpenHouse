@@ -43,8 +43,6 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 	*/
 
 	ctrl.submit=function(){
-		$log.log(ctrl.selected);
-
 		var data={};
 		data.action = "select";
 		data.slot = ctrl.selected;

@@ -206,6 +206,7 @@ def SeminarSelectControl(request):
 	#action select
 	#TODO slot varible ambiguous
 	elif action == "select":
+		mycid = request.user.cid
 		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 		if timezone.now() <my_select_time:
 			#TODO not your time
