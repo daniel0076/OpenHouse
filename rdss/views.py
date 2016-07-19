@@ -298,12 +298,33 @@ def JobfairSelectControl(request):
 		slot_list = rdss.models.Jobfair_Slot.objects.all()
 		slot_list_return = list()
 		for slot in slot_list:
-			slot_list_return.append({"no":slot.serial_no,"company":slot.cid})
+			return_data = dict()
+			return_data["serial_no"] = slot.serial_no
+			return_data["company"] = None if not slot.cid else\
+			company.models.Company.objects.filter(cid=slot.cid).first().shortname
+			slot_list_return.append(return_data)
 
-		return JsonResponse({"success":True,"data":slot_list_return})
+		my_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid).first()
+		owns_slot = True if my_slot else False
+
+		return JsonResponse({"success":True,"data":slot_list_return,"owns_slot":owns_slot})
 
 	elif action == "select":
-		pass
+		try:
+			slot = rdss.models.Jobfair_Slot.objects.get(serial_no = post_data.get('slot'))
+			my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
+		except:
+			ret = dict()
+			ret['success'] = False
+			ret['msg'] = "選位失敗，攤位錯誤或貴公司未勾選參加就博會"
+			return JsonResponse(ret)
+
+		slot.cid = my_signup
+		print(slot)
+		slot.save()
+		return JsonResponse({"success":True})
+
+		return JsonResponse({"success":True})
 	elif action == "cancel":
 		my_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid).first()
 		if my_slot:
@@ -311,7 +332,7 @@ def JobfairSelectControl(request):
 			my_slot.save()
 			return JsonResponse({"success":True})
 		else:
-			return JsonResponse({"success":False})
+			return JsonResponse({"success":False,"msg":"刪除就博會攤位失敗"})
 	else:
 		#TODO error handling
 		pass

@@ -8,20 +8,26 @@
 
 {% block 'content' %}
 <div ng-app="oh" ng-controller="jobfair_select as ctrl">
-<h4 class="ui dividing header">就博會攤位</h4>
-<div class="ui eight column padded grid">
-		{% for slot in slots %}
-		<div class="column">
-			<div class="ui blue segment">
-			<div class="ui radio checkbox">
-				<input name="radio" type="radio">
-				<label>編號 {{slot.serial_no}}</label>
-			</div>
-		</div>
-		</div>
-		{% endfor %}
-  </div>
-	<div class="ui blue button">送出選位</div>
-</div>
+	<h4 class="ui dividing header">就博會攤位</h4>
 
+	<div class="ui six column padded grid">
+		<div ng-repeat="slot in ctrl.slot" class="column" style="padding:0.5rem" >
+
+			<div ng-class="{'ui red segment': slot.company, 'ui blue segment':!slot.company}">
+				<!-- if slot is not available --!>
+				<p ng-if="slot.company">攤位{$ slot.serial_no $}：{$ slot.company $}</p>
+				<!-- if slot is available --!>
+				<div ng-if="!slot.company" class="ui radio checkbox" >
+					<input ng-if="!ctrl.owns_slot" type="radio" ng-model="ctrl.selected" value="{$ slot.serial_no $}">
+					<input ng-if="ctrl.owns_slot" type="radio" ng-model="ctrl.selected" value="{$ slot.serial_no $}" disabled="">
+					<label >攤位{$ slot.serial_no $}：空</label>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	 <!--buttons --!>
+	 <div ng-if="!ctrl.owns_slot" ng-click="ctrl.submit()" class="ui blue button">送出選位</div>
+	 <div ng-if="ctrl.owns_slot" ng-click="ctrl.cancel()" class="ui red button">刪除選位</div>
+</div>
 {% endblock %}

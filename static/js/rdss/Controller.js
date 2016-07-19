@@ -32,7 +32,7 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 
 	function refresh(){
 		$http.post('/rdss/seminar/select_ctrl',{"action":"query"}).success(function(response) {
-			ctrl.slot=response.data
+			ctrl.slot=response.data;
 		});
 	};
 	refresh();
@@ -67,7 +67,9 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 
 	function refresh(){
 		$http.post('/rdss/jobfair/select_ctrl',{"action":"query"}).success(function(response) {
-			$log.log(response.data);
+			$log.log(response);
+			ctrl.slot = response.data;
+			ctrl.owns_slot = response.owns_slot;
 		});
 	};
 	refresh();
@@ -78,7 +80,6 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 	*/
 
 	ctrl.submit=function(){
-		$log.log(ctrl.selected);
 
 		var data={};
 		data.action = "select";
@@ -91,7 +92,7 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 	ctrl.cancel=function(){
 		var data={};
 		data.action = "cancel";
-		$http.post('/rdss/seminar/select_ctrl',data).success(function(response){
+		$http.post('/rdss/jobfair/select_ctrl',data).success(function(response){
 			refresh();
 		});
 	};
