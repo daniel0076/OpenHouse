@@ -29,7 +29,7 @@ class CompanyCreationForm(forms.ModelForm):
 					self.error_messages['cid_error'],
 					code='cid_error'
 					)
-			return cid
+		return cid
 
 	def clean_password2(self):
 		password1=self.cleaned_data.get('password1')
