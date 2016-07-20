@@ -1,5 +1,13 @@
 {% extends 'rdss_base.html' %}
 
 {% block 'content' %}
-{{form.as_p}}
+<form class="ui form" method="POST" action="{% url 'rdss_seminar_info' %}" >
+	<div class="field">
+		<label>{{form.contact.label}}</label>
+			<div class="field">
+				{{form.contact}}
+			</div>
+	</div>
+</form>
+
 {% endblock %}

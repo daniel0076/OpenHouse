@@ -1,5 +1,5 @@
 'use strict';
-var ctrl = angular.module('oh', []).config(function($interpolateProvider,$httpProvider){
+var ctrl = angular.module('oh', ['angular.filter']).config(function($interpolateProvider,$httpProvider){
 	$interpolateProvider.startSymbol('{$').endSymbol('$}');
 	$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -32,7 +32,8 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 
 	function refresh(){
 		$http.post('/rdss/seminar/select_ctrl',{"action":"query"}).success(function(response) {
-			ctrl.slot=response.data;
+			ctrl.slot = response.data;
+			ctrl.select_ctrl = response.select_ctrl;
 		});
 	};
 	refresh();
@@ -48,6 +49,12 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 		data.slot = ctrl.selected;
 		$http.post('/rdss/seminar/select_ctrl',data).success(function(response) {
 			refresh();
+			if(response.success){
+				$window.alert("選位成功");
+			}
+			else if(!response.success){
+				$window.alert(response.msg);
+			}
 		});
 	};
 
@@ -67,9 +74,9 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 
 	function refresh(){
 		$http.post('/rdss/jobfair/select_ctrl',{"action":"query"}).success(function(response) {
-			$log.log(response);
 			ctrl.slot = response.data;
-			ctrl.owns_slot = response.owns_slot;
+			ctrl.my_slot_list = response.my_slot_list;
+			ctrl.select_ctrl= response.select_ctrl;
 		});
 	};
 	refresh();
@@ -79,19 +86,25 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 	}, 10000);
 	*/
 
-	ctrl.submit=function(){
-
+	ctrl.select=function(slot_id){
 		var data={};
 		data.action = "select";
-		data.slot = ctrl.selected;
+		data.slot = slot_id;
 		$http.post('/rdss/jobfair/select_ctrl',data).success(function(response) {
 			refresh();
+			if(response.success){
+				$window.alert("選位成功");
+			}
+			else if(!response.success){
+				$window.alert(response.msg);
+			}
 		});
 	};
 
-	ctrl.cancel=function(){
+	ctrl.cancel=function(slot_id){
 		var data={};
 		data.action = "cancel";
+		data.slot = slot_id;
 		$http.post('/rdss/jobfair/select_ctrl',data).success(function(response){
 			refresh();
 		});

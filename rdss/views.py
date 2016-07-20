@@ -48,13 +48,14 @@ def ControlPanel(request):
 		slot_info['jobfair_slot'] = jobfair_slot
 
 	fee = 0
-	if signup_data.seminar == "noon":
-		fee += configs.session_1_fee
-	elif signup_data.seminar == "night":
-		fee += configs.session_2_fee
-
-	fee += signup_data.jobfair*configs.jobfair_booth_fee
-
+	try:
+		if signup_data.seminar == "noon":
+			fee += configs.session_1_fee
+		elif signup_data.seminar == "night":
+			fee += configs.session_2_fee
+		fee += signup_data.jobfair*configs.jobfair_booth_fee
+	except AttributeError:
+		pass
 
 	# control semantic ui class
 	step_ui = ["","",""] # for step ui in template
@@ -111,7 +112,6 @@ def SignupRdss(request):
 def SeminarInfo(request):
 	if request.POST:
 		post_data = request.POST.copy()
-		print(post_data)
 	form = rdss.forms.SeminarInfoCreationForm
 	return render(request,'seminar_info_form.html',locals())
 
@@ -204,7 +204,18 @@ def SeminarSelectControl(request):
 		else:
 			return_data['my_slot'] = False
 
-		return JsonResponse({"success":True,"data":return_data})
+		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=request.user.cid).first().time
+		if timezone.now() < my_select_time:
+			select_ctrl = dict()
+			select_ctrl['display'] = True
+			select_ctrl['msg'] = '目前非貴公司選位時間，可先參考說明會時間表，並待選位時間內選位'
+			select_ctrl['select_btn'] = False
+		else:
+			select_ctrl = dict()
+			select_ctrl['display'] = False
+			select_ctrl['select_btn'] = True
+
+		return JsonResponse({"success":True,"data":return_data,"select_ctrl":select_ctrl})
 
 	#action select
 	#TODO slot varible ambiguous
@@ -212,8 +223,7 @@ def SeminarSelectControl(request):
 		mycid = request.user.cid
 		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 		if timezone.now() <my_select_time:
-			#TODO not your time
-			pass
+			return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 
 		slot = post_data.get("slot");
 		slot_session , slot_date_str = slot.split('_')
@@ -282,7 +292,6 @@ def JobfairSelectFormGen(request):
 	jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first().time
 	slots = rdss.models.Jobfair_Slot.objects.all()
 
-
 	return render(request,'jobfair_select.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -303,11 +312,20 @@ def JobfairSelectControl(request):
 			return_data["company"] = None if not slot.cid else\
 			company.models.Company.objects.filter(cid=slot.cid).first().shortname
 			slot_list_return.append(return_data)
+		my_slot_list = [slot.serial_no for slot in rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid)]
 
-		my_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid).first()
-		owns_slot = True if my_slot else False
+		my_select_time = rdss.models.Jobfair_Order.objects.filter(cid=request.user.cid).first().time
+		if timezone.now() < my_select_time:
+			select_ctrl = dict()
+			select_ctrl['display'] = True
+			select_ctrl['msg'] = '目前非貴公司選位時間，可先參考攤位圖，並待選位時間內選位'
+			select_ctrl['select_btn'] = False
+		else:
+			select_ctrl = dict()
+			select_ctrl['display'] = False
+			select_ctrl['select_btn'] = True
 
-		return JsonResponse({"success":True,"data":slot_list_return,"owns_slot":owns_slot})
+		return JsonResponse({"success":True,"data":slot_list_return,"my_slot_list":my_slot_list,"select_ctrl":select_ctrl})
 
 	elif action == "select":
 		try:
@@ -319,17 +337,24 @@ def JobfairSelectControl(request):
 			ret['msg'] = "選位失敗，攤位錯誤或貴公司未勾選參加就博會"
 			return JsonResponse(ret)
 
+		my_select_time = rdss.models.Jobfair_Order.objects.filter(cid=request.user.cid).first().time
+		if timezone.now() < my_select_time:
+			return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
+
+		my_slot_list = rdss.models.Jobfair_Slot.objects.filter(cid__cid = request.user.cid)
+		if my_slot_list.count() >= my_signup.jobfair:
+			return JsonResponse({"success":False,'msg':'選位失敗，貴公司攤位數已達上限'})
+
 		slot.cid = my_signup
-		print(slot)
 		slot.save()
 		return JsonResponse({"success":True})
 
-		return JsonResponse({"success":True})
 	elif action == "cancel":
-		my_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid).first()
-		if my_slot:
-			my_slot.cid = None
-			my_slot.save()
+		cancel_slot_no = post_data.get('slot')
+		cancel_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid, serial_no = cancel_slot_no).first()
+		if cancel_slot:
+			cancel_slot.cid = None
+			cancel_slot.save()
 			return JsonResponse({"success":True})
 		else:
 			return JsonResponse({"success":False,"msg":"刪除就博會攤位失敗"})
