@@ -56,8 +56,10 @@
 			<div ng-class="{'ui red center aligned segment': slot.company, 'ui blue center aligned segment':!slot.company}">
 				<p>攤位{$ slot.serial_no $} {$ slot.company $}</p>
 				<div ng-if="ctrl.select_ctrl.select_btn">
-					<div ng-if="!(ctrl.my_slot_list|contains:slot.serial_no)" class="ui blue button" ng-click="ctrl.select(slot.serial_no)">選位</div>
+					<div ng-if="!(ctrl.my_slot_list|contains:slot.serial_no) && !slot.company"
+						class="ui blue button" ng-click="ctrl.select(slot.serial_no)">選位</div>
 					<div ng-if="ctrl.my_slot_list|contains:slot.serial_no" class="ui red button" ng-click="ctrl.cancel(slot.serial_no)">放棄位置</div>
+					<div ng-if="!(ctrl.my_slot_list|contains:slot.serial_no) && slot.company" class="ui disabled button">選定</div>
 				</div>
 			</div>
 

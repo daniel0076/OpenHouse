@@ -97,14 +97,13 @@ def SignupRdss(request):
 		else:
 			# for debug usage
 			print(form.errors.items())
+		return redirect(SignupRdss)
 	# edit
 	if edit_instance_list:
 		form = rdss.forms.SignupCreationForm(instance=edit_instance_list[0])
 		signup_edit_ui = True # for semantic ui control
 	else:
 		form = rdss.forms.SignupCreationForm
-
-
 
 	return render(request,'signup_form.html',locals())
 
@@ -227,6 +226,9 @@ def SeminarSelectControl(request):
 		except:
 			return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
 
+		if slot.cid != None:
+			return JsonResponse({"success":False,'msg':'選位失敗，該時段已被選定'})
+
 		if slot and my_signup:
 
 			#不在公司時段，且該時段未滿
@@ -325,6 +327,8 @@ def JobfairSelectControl(request):
 			ret['success'] = False
 			ret['msg'] = "選位失敗，攤位錯誤或貴公司未勾選參加就博會"
 			return JsonResponse(ret)
+		if slot.cid != None:
+			return JsonResponse({"success":False,'msg':'選位失敗，該攤位已被選定'})
 
 		my_select_time = rdss.models.Jobfair_Order.objects.filter(cid=request.user.cid).first().time
 		if timezone.now() < my_select_time:

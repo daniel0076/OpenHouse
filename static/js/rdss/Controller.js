@@ -37,11 +37,9 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 		});
 	};
 	refresh();
-	/*
 	$interval(function () {
 		refresh();
 	}, 10000);
-	*/
 
 	ctrl.submit=function(){
 		var data={};
@@ -80,11 +78,9 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 		});
 	};
 	refresh();
-	/*
 	$interval(function () {
 		refresh();
 	}, 10000);
-	*/
 
 	ctrl.select=function(slot_id){
 		var data={};
