@@ -147,12 +147,6 @@ def SeminarSelectFormGen(request):
 	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 	seminar_session = my_signup.get_seminar_display()
 
-	if timezone.now() < seminar_select_time:
-		can_select = False
-		pass
-	#TODO: not your time now
-
-
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	seminar_start_date = configs.seminar_start_date
 	seminar_end_date = configs.seminar_end_date
@@ -218,39 +212,34 @@ def SeminarSelectControl(request):
 		return JsonResponse({"success":True,"data":return_data,"select_ctrl":select_ctrl})
 
 	#action select
-	#TODO slot varible ambiguous
 	elif action == "select":
 		mycid = request.user.cid
 		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 		if timezone.now() <my_select_time:
 			return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 
-		slot = post_data.get("slot");
-		slot_session , slot_date_str = slot.split('_')
+		slot_session , slot_date_str = post_data.get("slot").split('_')
 		slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
-		#TODO fix try except coding style
-		#TODO fix foreignkey lookup
 		try:
 			slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
 			my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
 
-			if slot and my_signup:
-
-				#不在公司時段，且該時段未滿
-				if my_signup.seminar not in slot.session and\
-				rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
-					return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
-
-				slot.cid = my_signup
-				slot.save()
-				return JsonResponse({"success":True})
-			else:
-				return JsonResponse({"success":False})
-
 		except:
-			ret['success'] = False
-			ret['msg'] = "選位失敗，時段錯誤或貴公司未勾選參加說明會"
-			return JsonResponse(ret)
+			return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
+
+		if slot and my_signup:
+
+			#不在公司時段，且該時段未滿
+			if my_signup.seminar not in slot.session and\
+			rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar):
+				return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
+
+			slot.cid = my_signup
+			slot.save()
+			return JsonResponse({"success":True})
+		else:
+			return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
+
 	# end of action select
 	elif action == "cancel":
 
@@ -260,7 +249,7 @@ def SeminarSelectControl(request):
 			my_slot.save()
 			return JsonResponse({"success":True})
 		else:
-			return JsonResponse({"success":False})
+			return JsonResponse({"success":False,"msg":"刪除說明會選位失敗"})
 
 	else:
 		pass
@@ -359,8 +348,7 @@ def JobfairSelectControl(request):
 		else:
 			return JsonResponse({"success":False,"msg":"刪除就博會攤位失敗"})
 	else:
-		#TODO error handling
-		pass
+		raise Http404("Invalid")
 
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
 	#clear sponsor ships objects
@@ -416,6 +404,3 @@ def SeminarPublic(request):
 
 def SeminarPublic(request):
 	return render(request,'jobfair_public.html',locals())
-
-
-
