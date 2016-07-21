@@ -1,3 +1,13 @@
+{% load staticfiles %}
+<style>
+a{
+	font-size:12pt;
+}
+.ui.segment{
+	margin-top:0;
+}
+</style>
+<script src={% static "js/navtop.js" %}></script>
 <div class="ui inverted teal segment">
 	<div class="ui inverted teal stackable secondary menu" id="navtop">
 {% if user.is_authenticated %}
@@ -19,9 +29,15 @@
 	<a class="item" href="/">
 		首頁
 	</a>
-	<a class="item" href="/rdss">
-			研發替代役徵才
-	</a>
+	<div class="ui dropdown item" id="rdss_navtop_dropdown">
+		研發替代役徵才
+		<i class="dropdown inverted icon"></i>
+		<div class="menu">
+			<a class="item" href="/rdss">活動資訊</a>
+			<a class="item">說明會</a>
+			<a class="item">就博會</a>
+		</div>
+	</div>
 	<a class="item" href="#">
 		企業校園徵才
 	</a>
@@ -31,7 +47,7 @@
 	<a class="right item" href="{% url 'login' %}">
 		廠商登入
 	</a>
-{% endif%}
+{% endif %}
 	</div>
 </div>
 

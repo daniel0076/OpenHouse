@@ -5,6 +5,7 @@
 <div class="ui grid">
 	<div class="three wide column" style="margin-left:1em">
 		<div class="ui vertical menu" style="width:85%">
+			{% if request.user.is_authenticated %}
 			<a class="item" href="{%url 'rdss_company_index' %}">
 				活動首頁
 			</a>
@@ -29,6 +30,18 @@
 			<a class="item" href="{%url 'rdss_jobfair_info' %}">
 					就博會資訊填寫
 			</a>
+			{% else %}
+			<!-- public view --!>
+			<a class="item" href="#">
+				活動資訊
+			</a>
+			<a class="item" href="#">
+				說明會
+			</a>
+			<a class="item" href="#">
+				就博會
+			</a>
+			{% endif %}
 		</div>
 	</div>
 	<div class="twelve wide column">
