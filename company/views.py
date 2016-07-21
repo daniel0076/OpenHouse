@@ -59,10 +59,13 @@ def CompanyLogin(request):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
+			if user.is_staff:
+				return redirect('/admin/')
+			else:
 				return redirect('/company/')
 
 	return render(request,'login.html',locals())
 
 def CompanyLogout(request):
 	logout(request)
-	return redirect('/company/login/')
+	return redirect('/')

@@ -13,8 +13,11 @@ import datetime,json,csv
 # Create your views here.
 sidebar_ui = dict()
 
+
 @login_required(login_url='/company/login/')
 def ControlPanel(request):
+	if request.user.is_staff:
+		return redirect("/admin")
 	mycid = request.user.cid
 	# get the dates from the configs
 	configs=rdss.models.RdssConfigs.objects.all()[0]
@@ -72,6 +75,8 @@ def ControlPanel(request):
 
 @login_required(login_url='/company/login/')
 def SignupRdss(request):
+	if request.user.is_staff:
+		return redirect("/admin")
 	#semanti ui control
 	sidebar_ui = {'signup':"active"}
 	configs=rdss.models.RdssConfigs.objects.all()[0]
