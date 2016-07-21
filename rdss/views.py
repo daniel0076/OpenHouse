@@ -408,6 +408,9 @@ def SponsorAdmin(request):
 
 	return render(request,'sponsor_admin.html',locals())
 
+def RDSSIndex(request):
+	return render(request,'rdss_index.html',locals())
+
 def SeminarPublic(request):
 	return render(request,'seminar_public.html',locals())
 

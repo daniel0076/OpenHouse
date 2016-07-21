@@ -16,8 +16,13 @@ body
 }
 
 #navtop{
-	margin-left:3em;
-	margin-right:3em;
+	margin:auto;
+	width:90%;
+}
+
+#footer{
+	margin:auto;
+	width:90%;
 }
 
 #news{

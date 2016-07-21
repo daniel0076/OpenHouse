@@ -6,15 +6,9 @@ from company.forms import CompanyCreationForm,CompanyEditForm
 from company import models as company_model
 # Create your views here.
 
-def ControlPanel(request):
-	nav_index="active"
-	return render(request,'index.html',locals())
-
 def CompanyInfo(request):
 	company_info = company_model.Company.objects.get(cid=request.user.cid)
 	return render(request,'company_info.html',locals())
-
-
 
 def CompanyCreation(request):
 	submit_btn_name = "創建帳號"
