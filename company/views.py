@@ -6,6 +6,9 @@ from company.forms import CompanyCreationForm,CompanyEditForm
 from company import models as company_model
 # Create your views here.
 
+def CompanyIndex(request):
+	return render(request,'company_index.html',locals())
+
 def CompanyInfo(request):
 	company_info = company_model.Company.objects.get(cid=request.user.cid)
 	return render(request,'company_info.html',locals())
