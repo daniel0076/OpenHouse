@@ -34,8 +34,9 @@ class RdssConfigs(models.Model):
 	session_3_fee = models.IntegerField(u'說明會場次3_費用')
 
 	#就博會相關
-	jobfair_start = models.DateTimeField(u'就博會開始時間')
-	jobfair_end = models.DateTimeField(u'就博會結束時間')
+	jobfair_date = models.DateField(u'就博會日期')
+	jobfair_start = models.TimeField(u'就博會開始時間')
+	jobfair_end = models.TimeField(u'就博會結束時間')
 	jobfair_booth_fee = models.IntegerField(u'就博會攤位費用(每攤)')
 
 	class Meta:

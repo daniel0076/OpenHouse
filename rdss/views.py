@@ -13,6 +13,10 @@ import datetime,json,csv
 # Create your views here.
 sidebar_ui = dict()
 
+@login_required(login_url='/company/login/')
+def RDSSCompanyIndex(request):
+	configs=rdss.models.RdssConfigs.objects.all()[0]
+	return render(request,'rdss_company_index.html',locals())
 
 @login_required(login_url='/company/login/')
 def ControlPanel(request):
@@ -409,11 +413,11 @@ def SponsorAdmin(request):
 	return render(request,'sponsor_admin.html',locals())
 
 #========================RDSS public view=================
-def RDSSIndex(request):
+def RDSSPublicIndex(request):
 	return render(request,'rdss_index.html',locals())
 
 def SeminarPublic(request):
 	return render(request,'seminar_public.html',locals())
 
-def SeminarPublic(request):
+def JobfairPublic(request):
 	return render(request,'jobfair_public.html',locals())

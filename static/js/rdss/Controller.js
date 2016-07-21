@@ -31,7 +31,7 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 	ctrl.selected=null;
 
 	function refresh(){
-		$http.post('/rdss/seminar/select_ctrl',{"action":"query"}).success(function(response) {
+		$http.post('/company/rdss/seminar/select_ctrl',{"action":"query"}).success(function(response) {
 			ctrl.slot = response.data;
 			ctrl.select_ctrl = response.select_ctrl;
 		});
@@ -45,7 +45,7 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 		var data={};
 		data.action = "select";
 		data.slot = ctrl.selected;
-		$http.post('/rdss/seminar/select_ctrl',data).success(function(response) {
+		$http.post('/company/rdss/seminar/select_ctrl',data).success(function(response) {
 			refresh();
 			if(response.success){
 				$window.alert("選位成功");
@@ -59,7 +59,7 @@ ctrl.controller('seminar_select',function($scope, $window,$http,$timeout,$interv
 	ctrl.cancel=function(){
 		var data={};
 		data.action = "cancel";
-		$http.post('/rdss/seminar/select_ctrl',data).success(function(response){
+		$http.post('/company/rdss/seminar/select_ctrl',data).success(function(response){
 			refresh();
 		});
 	};
@@ -71,7 +71,7 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 	ctrl.selected=null;
 
 	function refresh(){
-		$http.post('/rdss/jobfair/select_ctrl',{"action":"query"}).success(function(response) {
+		$http.post('/company/rdss/jobfair/select_ctrl',{"action":"query"}).success(function(response) {
 			ctrl.slot = response.data;
 			ctrl.my_slot_list = response.my_slot_list;
 			ctrl.select_ctrl= response.select_ctrl;
@@ -86,7 +86,7 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 		var data={};
 		data.action = "select";
 		data.slot = slot_id;
-		$http.post('/rdss/jobfair/select_ctrl',data).success(function(response) {
+		$http.post('/company/rdss/jobfair/select_ctrl',data).success(function(response) {
 			refresh();
 			if(response.success){
 				$window.alert("選位成功");
@@ -101,7 +101,7 @@ ctrl.controller('jobfair_select',function($scope, $window,$http,$timeout,$interv
 		var data={};
 		data.action = "cancel";
 		data.slot = slot_id;
-		$http.post('/rdss/jobfair/select_ctrl',data).success(function(response){
+		$http.post('/company/rdss/jobfair/select_ctrl',data).success(function(response){
 			refresh();
 		});
 	};
