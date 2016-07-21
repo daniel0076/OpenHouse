@@ -2,9 +2,6 @@
 	<div class="ui inverted teal stackable secondary menu" id="navtop">
 {% if user.is_authenticated %}
 		<div class="header item">OpenHouse 廠商介面</div>
-		<a class="{{nav_index}} item" href="/rdss">
-			活動通知
-		</a>
 		<a class="{{nav_rdss}} item" href="{% url 'rdss_status' %}">
 			研發替代役
 		</a>

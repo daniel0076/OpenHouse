@@ -408,6 +408,7 @@ def SponsorAdmin(request):
 
 	return render(request,'sponsor_admin.html',locals())
 
+#========================RDSS public view=================
 def RDSSIndex(request):
 	return render(request,'rdss_index.html',locals())
 
