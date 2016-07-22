@@ -7,6 +7,9 @@ from company import models as company_model
 # Create your views here.
 
 def CompanyIndex(request):
+
+	#semantic ui control
+	nav_company_index = "active"
 	return render(request,'company_index.html',locals())
 
 def CompanyInfo(request):
