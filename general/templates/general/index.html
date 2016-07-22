@@ -45,11 +45,11 @@
 			</div>
 		</div>
 		<div class="column">
-			<div class="ui header">廠商專區</div>
+			<div class="ui header">徵才專區</div>
 			<div class="ui segment">
 				<table class="ui very basic table">
 					<tbody>
-						{% for news in company_news_list %}
+						{% for news in recruit_news_list %}
 						<tr>
 						<td><a href="/news/{{news.id}}/"> {{news.title}} </a></td>
 							<td class="right aligned collapsed">{{news.updated_time|date:"Y-m-d"}}</td>
