@@ -11,37 +11,6 @@
 	<h1 class="ui dividing center aligned header">
 		OpenHouse 企業校園徵才 廠商入口
 	</h1>
-	<h3 class="ui center aligned header">
-		公告
-	</h3>
-	<table class="ui very basic table" id="news_table">
-		<tbody>
-			<tr>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-			<tr>
-				<td>Cell</td>
-				<td>Cell</td>
-			</tr>
-		</tbody>
-		<tfoot>
-			<tr><th colspan="3">
-					<div class="ui right floated pagination menu">
-						<a class="icon item">
-							<i class="left chevron icon"></i>
-						</a>
-						<a class="item">1</a>
-						<a class="item">2</a>
-						<a class="item">3</a>
-						<a class="item">4</a>
-						<a class="icon item">
-							<i class="right chevron icon"></i>
-						</a>
-					</div>
-				</th>
-			</tr></tfoot>
-	</table>
 	<div class="ui equal width centered grid" id="file_area">
 		<div class="column">
 			<a href="http://www.nca.gov.tw/" target="_blank">
@@ -49,13 +18,23 @@
 			<h2 style="text-align: center;">研發替代役</h2>
 			<p>透過一系列的研發替代役座談會，讓徵才廠商對同學進行公司簡介；同學亦可以在座談會中詢問公司相關問題。並舉辦集體面談會，讓同學與公司能直接在校內進行面試。</p>
 			<div class="ui segment">
+				<table class="ui very basic table" id="news_table">
+					<tbody>
+						{% for file in rdss_file_list %}
+						<tr>
+							<td><a href={{file.upload_file.url}} target="_blank">{{file.title}}</a></td>
+							<td class="right aligned collapsed">{{file.updated_time|date:"Y-m-d"}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
 		</div>
 		<div class="column">
-		<img id="logo_img" src={% static 'images/oh_logo.jpg' %} alt="校園徵才" >
-		<h2 style="text-align: center;">企業校園徵才</h2>
-		<p>2017交大Open House企業校園徵才系列活動正在籌備中，敬請期待</p>
-</div>
+			<img id="logo_img" src={% static 'images/oh_logo.jpg' %} alt="校園徵才" >
+			<h2 style="text-align: center;">企業校園徵才</h2>
+			<p>2017交大Open House企業校園徵才系列活動正在籌備中，敬請期待</p>
+		</div>
 
-</div>
-{% endblock %}
+	</div>
+	{% endblock %}

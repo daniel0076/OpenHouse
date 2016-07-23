@@ -4,12 +4,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from company.forms import CompanyCreationForm,CompanyEditForm
 from company import models as company_model
+import rdss.models
 # Create your views here.
 
 def CompanyIndex(request):
 
 	#semantic ui control
 	nav_company_index = "active"
+
+	# rdss files
+	rdss_file_list = rdss.models.Files.objects.all()
 	return render(request,'company_index.html',locals())
 
 def CompanyInfo(request):

@@ -12,7 +12,7 @@ class News(models.Model):
 	PERM = (
 			(u'index_only', u'只顯示於首頁'),
 			(u'company_only', u'只顯示於廠商'),
-			(u'both', u'顯示於首頁及皮廠商'),
+			(u'both', u'顯示於首頁及廠商'),
 			)
 	id = models.AutoField(primary_key=True)
 	title = models.CharField(u'標題',max_length=100)

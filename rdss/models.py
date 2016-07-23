@@ -205,6 +205,22 @@ class Sponsorship(models.Model):
 		verbose_name = u"5. 贊助情況"
 		verbose_name_plural =u"5. 贊助情況"
 
+class Files(models.Model):
+	FILE_CAT = (
+			('企畫書','企畫書'),
+			('報名說明書','報名說明書'),
+			('選位相關','選位相關'),
+			('其它','其它'),
+			)
+	id = models.AutoField(primary_key=True)
+	title = models.CharField(u'標題',max_length=30)
+	category = models.CharField(u'類型',max_length=6,choices=FILE_CAT)
+	upload_file = models.FileField(u'上傳檔案',upload_to = 'rdss_files',null=False)
+	updated_time = models.DateTimeField(u'更新時間',auto_now=True)
+	class Meta:
+		verbose_name = u"活動檔案"
+		verbose_name_plural =u"活動檔案"
+
 #TODO names
 class CompanyVisit(models.Model):
 	id = models.AutoField(primary_key=True)
