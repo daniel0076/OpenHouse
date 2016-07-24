@@ -15,8 +15,12 @@
 		<label>密碼</label>
 		<input name="password" type="password">
 	</div>
+	{% if error_display %}
+	<div class='ui red message'>{{error_msg}}</div>
+	{% endif %}
 	<button class="ui teal button" type="submit">登入</button>
-	<div class="ui blue button">廠商註冊</div>
+	<a class="ui blue button" href="{% url 'company_create' %}">廠商註冊</a>
 	<a>忘記密碼</a>
 </form>
+
 {% endblock %}

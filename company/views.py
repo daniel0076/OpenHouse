@@ -31,9 +31,9 @@ def CompanyCreation(request):
 		else:
 			print(form.errors)
 			#messages.error(request, ("The user could not be created due to errors.") )
-			return render(request,'company_regform.html',locals())
+			return render(request,'company_create_form.html',locals())
 	form = CompanyCreationForm();
-	return render(request,'company_regform.html',locals())
+	return render(request,'company_create_form.html',locals())
 
 def CompanyEdit(request):
 	submit_btn_name = "確認修改"
@@ -59,6 +59,13 @@ def CompanyLogin(request):
 	if request.POST:
 		username=request.POST.get('username')
 		password=request.POST.get('password')
+		try:
+			company = company.models.Company.objects.get(cid=username)
+		except:
+			error_display = True
+			error_msg = "系統查無貴公司統編，請重新註冊"
+			return render(request,'login.html',locals())
+
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
@@ -67,6 +74,9 @@ def CompanyLogin(request):
 				return redirect('/admin/')
 			else:
 				return redirect('/company/')
+		else:
+			error_display = True
+			error_msg = "帳號或密碼錯誤"
 
 	return render(request,'login.html',locals())
 
