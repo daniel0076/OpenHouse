@@ -6,7 +6,6 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
 class UserCreationForm(forms.ModelForm):
 	"""A form for creating new users. Includes all the required
 	fields, plus a repeated password."""

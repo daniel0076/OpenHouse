@@ -85,3 +85,7 @@ class JobfairInfoCreationForm(forms.ModelForm):
 		if commit:
 			record.save()
 		return record
+
+class EmailPostForm(forms.Form):
+    email = forms.EmailField()
+

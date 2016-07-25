@@ -9,7 +9,8 @@ import rdss.forms
 import company.models
 import rdss.models
 import datetime,json,csv
-
+from .forms import EmailPostForm
+from django.core.mail import send_mail
 # Create your views here.
 sidebar_ui = dict()
 
@@ -109,11 +110,17 @@ def SignupRdss(request):
 
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
-	if request.POST:
-		post_data = request.POST.copy()
-		print(post_data)
-	form = rdss.forms.SeminarInfoCreationForm
-	return render(request,'seminar_info_form.html',locals())
+    if request.POST:
+        print(request.POST)
+        form = rdss.forms.SeminarInfoCreationForm(data=request.POST)
+        if form.is_valid():
+            info = form.save(commit=False)
+            print(request.user)
+            info.cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+            info.save()
+    else:
+        form = rdss.forms.SeminarInfoCreationForm()
+    return render(request,'seminar_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def JobfairInfo(request):
@@ -370,6 +377,4 @@ def SeminarPublic(request):
 
 def SeminarPublic(request):
 	return render(request,'jobfair_public.html',locals())
-
-
 

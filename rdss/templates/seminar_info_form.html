@@ -3,53 +3,6 @@
 {% block 'content' %}
 <form class="ui form" method="POST" action="{% url 'rdss_seminar_info' %}" >
 	{% csrf_token %}
-	<h4 class="ui dividing header">說明會主題資訊</h4>
-	<div class="field">
-		<label>{{form.topic.label}}</label>
-			<div class="field">
-				{{form.topic}}
-			</div>
-	</div>
-	<div class="fields">
-		<div class="four wide field">
-			<label>{{form.speaker.label}}</label>
-				<div class="field">
-					{{form.speaker}}
-				</div>
-		</div>
-		<div class="four wide field">
-			<label>{{form.speaker_title.label}}</label>
-				<div class="field">
-					{{form.speaker_title}}
-				</div>
-		</div>
-		<div class="eight wide field">
-			<label>{{form.speaker_email.label}}</label>
-				<div class="field">
-					{{form.speaker_email}}
-				</div>
-		</div>
-	</div>
-	<div class="fields">
-		<div class="four wide field">
-			<label>{{form.contact.label}}</label>
-				<div class="field">
-					{{form.contact}}
-				</div>
-		</div>
-		<div class="four wide field">
-			<label>{{form.contact_mobile.label}}</label>
-				<div class="field">
-					{{form.contact_mobile}}
-				</div>
-		</div>
-		<div class="eight wide field">
-			<label>{{form.contact_email.label}}</label>
-				<div class="field">
-					{{form.contact_email}}
-				</div>
-		</div>
-	</div>
 	{{form.as_p}}
 	<button class="ui blue button" type="submit">送出</button>
 </form>

@@ -2,8 +2,13 @@ from django.shortcuts import render,redirect
 from django.http import  HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
-from company.forms import CompanyCreationForm,CompanyEditForm
+from company.forms import CompanyCreationForm,CompanyEditForm,CompanyPasswordResetForm
 from company import models as company_model
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+from .models import Company
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.forms import SetPasswordForm
 # Create your views here.
 
 def ControlPanel(request):
@@ -66,3 +71,34 @@ def CompanyLogin(request):
 def CompanyLogout(request):
 	logout(request)
 	return redirect('/company/login/')
+
+
+def forget_password(request):
+    send = None
+    if request.method == 'POST':
+        form = CompanyPasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(request=request)
+    else:
+        form = CompanyPasswordResetForm()
+    return render(request,'forget_password.html',{'form':form,'send':send})
+
+def password_reset_confirm(request,uidb64,token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = Company.objects.get(pk=uid)
+    except(TypeError):
+        user = None
+    if user is not None and default_token_generator.check_token(user,token):
+        validlink = True
+        if request.method == 'POST':
+            form = SetPasswordForm(user,request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/company/login/')
+        else:
+            form = SetPasswordForm(user)
+            return render(request,'password_reset_confirm.html',{'form': form})
+    else:
+        validlink = False
+        # TODO

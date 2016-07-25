@@ -1,8 +1,11 @@
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm,PasswordResetForm
 from django import forms
 from company.models import Company
 from django.utils import timezone
-
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 class CompanyCreationForm(forms.ModelForm):
 
 	error_messages={
@@ -80,3 +83,24 @@ class CompanyEditForm(forms.ModelForm):
 		if commit:
 			user.save()
 		return user
+class CompanyPasswordResetForm(PasswordResetForm):
+
+    user = forms.CharField(max_length=8)
+    def save(self,request=None):
+        current_site = get_current_site(request)
+        print(current_site.name)
+        email = self.cleaned_data["email"]
+        user = Company.objects.get(cid=self.cleaned_data['user'])
+        print(type(user))
+        context = {
+            'email': email,
+            'domain': current_site.domain,
+            'site_name': current_site.name,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'user':user,
+            'token': default_token_generator.make_token(user),
+            'protocol': 'http'
+        }
+        self.send_mail('password_reset_subject.txt','password_reset_email.html',context,'skye53653@gmail.com',email)
+
+
