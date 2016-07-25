@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block 'body' %}
+
+<div class="ui segment" style="margin:auto;width:60%;">
+	<div style="text-align:center">
+		<h2 class="ui header">{{news.title}}</h2>
+		<p style="text-align:right">修改時間：{{news.created_time}} </p>
+	</div>
+
+		<div class="ui divider"></div>
+		{{news.content|safe}}
+</div>
+<div style="margin:auto;width:60%; margin-top:2rem">
+	<a class="ui blue button" href="/">回首頁</a>
+</div>
+{% endblock %}

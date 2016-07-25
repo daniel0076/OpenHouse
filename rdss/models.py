@@ -34,8 +34,9 @@ class RdssConfigs(models.Model):
 	session_3_fee = models.IntegerField(u'說明會場次3_費用')
 
 	#就博會相關
-	jobfair_start = models.DateTimeField(u'就博會開始時間')
-	jobfair_end = models.DateTimeField(u'就博會結束時間')
+	jobfair_date = models.DateField(u'就博會日期')
+	jobfair_start = models.TimeField(u'就博會開始時間')
+	jobfair_end = models.TimeField(u'就博會結束時間')
 	jobfair_booth_fee = models.IntegerField(u'就博會攤位費用(每攤)')
 
 	class Meta:
@@ -118,11 +119,11 @@ class Seminar_Info(models.Model):
 	speaker_title = models.CharField(u'主講人稱謂',max_length=30)
 	speaker_email = models.EmailField(u'主講人Email',max_length=254)
 	attendees = models.SmallIntegerField(u'廠商到場人數')
-	raffle_prize = models.TextField(u'抽獎獎品')
+	raffle_prize = models.CharField(u'抽獎獎品',max_length=254)
 	raffle_prize_amount = models.SmallIntegerField(u'抽獎獎品數量')
-	qa_prize = models.TextField(u'QA獎獎品')
+	qa_prize = models.CharField(u'QA獎獎品',max_length=254)
 	qa_prize_amount = models.SmallIntegerField(u'QA獎獎品數量')
-	attend_prize = models.TextField(u'參加獎獎品')
+	attend_prize = models.CharField(u'參加獎獎品',max_length=254)
 	attend_prize_amount = models.SmallIntegerField(u'參加獎獎品數量')
 	snack_box = models.SmallIntegerField(u'加碼餐盒數量')
 	contact = models.CharField(u'聯絡人',max_length=30)
@@ -143,7 +144,7 @@ class Jobfair_Slot(models.Model):
 	id = models.AutoField(primary_key=True)
 	serial_no = models.CharField(u'攤位編號',max_length=10)
 	category = models.CharField(u'類別',max_length=37,choices=CATEGORYS)
-	cid=models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE,blank=True,null=True)
+	cid=models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE,blank=True,null=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -203,6 +204,22 @@ class Sponsorship(models.Model):
 		unique_together = ("cid", "item")
 		verbose_name = u"5. 贊助情況"
 		verbose_name_plural =u"5. 贊助情況"
+
+class Files(models.Model):
+	FILE_CAT = (
+			('企畫書','企畫書'),
+			('報名說明書','報名說明書'),
+			('選位相關','選位相關'),
+			('其它','其它'),
+			)
+	id = models.AutoField(primary_key=True)
+	title = models.CharField(u'標題',max_length=30)
+	category = models.CharField(u'類型',max_length=6,choices=FILE_CAT)
+	upload_file = models.FileField(u'上傳檔案',upload_to = 'rdss_files',null=False)
+	updated_time = models.DateTimeField(u'更新時間',auto_now=True)
+	class Meta:
+		verbose_name = u"活動檔案"
+		verbose_name_plural =u"活動檔案"
 
 #TODO names
 class CompanyVisit(models.Model):

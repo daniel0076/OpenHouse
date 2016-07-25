@@ -1,0 +1,28 @@
+html,body
+{
+	height:100%;
+	width:100%;
+}
+body
+{
+	display:table;
+}
+#full
+{
+	width: 100%;
+	height:100%;
+	display:table-row;
+
+}
+
+
+#footer{
+	margin:auto;
+	width:90%;
+}
+
+#news{
+width:80%;
+margin:auto;
+margin-top:4em
+}

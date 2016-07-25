@@ -7,21 +7,63 @@
 {% endblock %}
 
 {% block 'content' %}
-<div ng-app="oh" ng-controller="jobfair_select as ctrl">
-<h4 class="ui dividing header">就博會攤位</h4>
-<div class="ui eight column padded grid">
-		{% for slot in slots %}
-		<div class="column">
-			<div class="ui blue segment">
-			<div class="ui radio checkbox">
-				<input name="radio" type="radio">
-				<label>編號 {{slot.serial_no}}</label>
-			</div>
+<h2 class="ui dividing header">選位注意事項</h2>
+<div class="ui message">
+	<div class="ui bulleted list">
+		<div class="item">
+			請參考攤位圖，對應攤位編號選位。
 		</div>
+		<div class="item">
+			於貴公司選位時間開始後，至所有廠商選位截止前，皆可自由更動位置。唯改變位置前，<strong>需先放棄已選的位置，才能重新選擇</strong>
 		</div>
-		{% endfor %}
-  </div>
-	<div class="ui blue button">送出選位</div>
+		<div class="item">
+			由於部分時段有多廠商同時選位之情況，若出現多廠商選取同場次的情況，該時段將分發給最早送出之廠商
+		</div>
+		<div class="item" style="color:red">
+			在選位時間內，直接按「選位」按鈕選位。並看到該場次變為紅色且顯示貴公司名稱才算選位成功
+		</div>
+		<div class="item">
+			如有任何問題，請立刻撥打活動專線：(03)5131365 或 (03)5712121分機31365、50653
+		</div>
+		<div class="item">
+			緊急聯絡手機：0912-005250(就輔組吳文鈴)、0916-842822(廠聯組長鄭禕寧)
+		</div>
+	</div>
 </div>
 
+<h2 class="ui dividing header">就博會攤位圖</h2>
+
+<div ng-app="oh" ng-controller="jobfair_select as ctrl">
+<h2 class="ui dividing header">就博會選位</h2>
+<div ng-if="ctrl.select_ctrl.display" class="ui compact warning message">{$ ctrl.select_ctrl.msg$}</div>
+<div class="ui list">
+	<div class="item">
+		<i class="users icon"></i>
+		<div class="content">
+			貴公司選位開始時間為：{{jobfair_select_time}}
+		</div>
+	</div>
+	<div class="item">
+		<i class="marker icon"></i>
+		<div class="content">
+			貴公司攤位數量為：{{my_signup.jobfair}}
+		</div>
+	</div>
+</div>
+	<div class="ui six column padded grid">
+		<div ng-repeat="slot in ctrl.slot" class="column" style="padding:0.5rem" >
+
+			<div ng-class="{'ui red center aligned segment': slot.company, 'ui blue center aligned segment':!slot.company}">
+				<p>攤位{$ slot.serial_no $} {$ slot.company $}</p>
+				<div ng-if="ctrl.select_ctrl.select_btn">
+					<div ng-if="!(ctrl.my_slot_list|contains:slot.serial_no) && !slot.company"
+						class="ui blue button" ng-click="ctrl.select(slot.serial_no)">選位</div>
+					<div ng-if="ctrl.my_slot_list|contains:slot.serial_no" class="ui red button" ng-click="ctrl.cancel(slot.serial_no)">放棄位置</div>
+					<div ng-if="!(ctrl.my_slot_list|contains:slot.serial_no) && slot.company" class="ui disabled button">選定</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
 {% endblock %}

@@ -7,29 +7,31 @@
 {% endblock %}
 
 {% block 'content' %}
-<div ng-app="oh" ng-controller="seminar_select as ctrl">
-	<h2 class="ui header">選位注意事項</h2>
-	<div class="ui message">
-		<div class="ui bulleted list">
-			<div class="item">
-				於貴公司選位開始
-			</div>
-			<div class="item">若中午或晚上場次已滿，系統將開放另一時段的場次給貴公司選擇。</div>
-			<div class="item">
-				由於部分時段有多廠商同時選位之情況，若出現多廠商選取同場次的情況，該時段將分發給最早送出之廠商。
-			</div>
-			<div class="item" style="color:red">
-				從表格選擇場次後，請務必按下最下方「送出」按鈕，並於送出後看到該場次顯示貴公司名稱才算選位成功。
-			</div>
-			<div class="item">
-				如有任何問題，請立刻撥打活動專線：(03)5131365 或 (03)5712121分機31365、50653
-			</div>
-			<div class="item">
-				緊急聯絡手機：0912-005250(就輔組吳文鈴)、0916-842822(廠聯組長鄭禕寧)
-			</div>
+<h2 class="ui dividing header">選位注意事項</h2>
+<div class="ui message">
+	<div class="ui bulleted list">
+		<div class="item">
+			於貴公司選位時間開始後，至所有廠商選位截止前，皆可自由更動位置。唯改變位置前，<strong>需先放棄已選的位置，才能重新選擇。</strong>
 		</div>
-
+		<div class="item">若中午或晚上場次已滿，系統將開放另一時段的場次給貴公司選擇。</div>
+		<div class="item">
+			由於部分時段有多廠商同時選位之情況，若出現多廠商選取同場次的情況，該時段將分發給最早送出之廠商。
+		</div>
+		<div class="item" style="color:red">
+			從表格選擇場次後，請務必按下最下方「送出」按鈕，並於送出後看到該場次顯示貴公司名稱才算選位成功。
+		</div>
+		<div class="item">
+			如有任何問題，請立刻撥打活動專線：(03)5131365 或 (03)5712121分機31365、50653
+		</div>
+		<div class="item">
+			緊急聯絡手機：0912-005250(就輔組吳文鈴)、0916-842822(廠聯組長鄭禕寧)
+		</div>
 	</div>
+</div>
+
+<div ng-app="oh" ng-controller="seminar_select as ctrl">
+
+	<div ng-if="ctrl.select_ctrl.display" class="ui compact warning message">{$ ctrl.select_ctrl.msg$}</div>
 	<div class="ui list">
 		<div class="item">
 			<i class="users icon"></i>
@@ -44,7 +46,8 @@
 			</div>
 		</div>
 	</div>
-	<h2 class="ui header">說明會時間表</h2>
+
+<h2 class="ui dividing header">說明會時間表</h2>
 	<table class="ui celled striped table" style="text-align:center">
 		{% for week in dates_in_week %}
 		<thead>
@@ -117,7 +120,10 @@
 		</tbody>
 		{% endfor %}
 	</table>
-	<div class="ui teal button" ng-click="ctrl.submit()">送出選位</div>
-	<div class="ui red button" ng-if="ctrl.slot.my_slot" ng-click="ctrl.cancel()">Cancel</div>
+	<div ng-if="ctrl.select_ctrl.select_btn">
+		<div class="ui teal button" ng-if="!ctrl.slot.my_slot" ng-click="ctrl.submit()">送出選位</div>
+		<div class="ui red button" ng-if="ctrl.slot.my_slot" ng-click="ctrl.cancel()">刪除已選位置</div>
+	</div>
+	<p ng-if="!ctrl.select_ctrl.select_btn" style="color:red">目前並非貴公司時段，「選位」按鍵將在貴公司時段內出現</p>
 </div>
 {% endblock %}

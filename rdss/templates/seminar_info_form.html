@@ -3,7 +3,116 @@
 {% block 'content' %}
 <form class="ui form" method="POST" action="{% url 'rdss_seminar_info' %}" >
 	{% csrf_token %}
-	{{form.as_p}}
+	<h4 class="ui dividing header">說明會主題資訊</h4>
+	<div class="field">
+		<label>{{form.topic.label}}</label>
+			<div class="field">
+				{{form.topic}}
+			</div>
+	</div>
+	<div class="fields">
+		<div class="four wide field">
+			<label>{{form.speaker.label}}</label>
+				<div class="field">
+					{{form.speaker}}
+				</div>
+		</div>
+		<div class="four wide field">
+			<label>{{form.speaker_title.label}}</label>
+				<div class="field">
+					{{form.speaker_title}}
+				</div>
+		</div>
+		<div class="eight wide field">
+			<label>{{form.speaker_email.label}}</label>
+				<div class="field">
+					{{form.speaker_email}}
+				</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="four wide field">
+			<label>{{form.contact.label}}</label>
+				<div class="field">
+					{{form.contact}}
+				</div>
+		</div>
+		<div class="four wide field">
+			<label>{{form.contact_mobile.label}}</label>
+				<div class="field">
+					{{form.contact_mobile}}
+				</div>
+		</div>
+		<div class="eight wide field">
+			<label>{{form.contact_email.label}}</label>
+				<div class="field">
+					{{form.contact_email}}
+				</div>
+		</div>
+	</div>
+	<div class="two fields">
+		<div class="field">
+			<label>{{form.attendees.label}}</label>
+				<div class="field">
+					{{form.attendees}}
+				</div>
+		</div>
+		<div class="field">
+			<label>{{form.snack_box.label}}</label>
+				<div class="field">
+					{{form.snack_box}}
+				</div>
+		</div>
+	</div>
+	<div class="field">
+		<label>{{form.ps.label}}</label>
+			<div class="field">
+				{{form.ps}}
+			</div>
+	</div>
+	<h4 class="ui dividing header">抽獎獎品</h4>
+	<div class="fields">
+		<div class="ten wide field">
+			<label>{{form.qa_prize.label}}</label>
+				<div class="field">
+					{{form.qa_prize}}
+				</div>
+		</div>
+		<div class="six wide field">
+			<label>{{form.qa_prize_amount.label}}</label>
+				<div class="field">
+					{{form.qa_prize_amount}}
+				</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="ten wide field">
+			<label>{{form.raffle_prize.label}}</label>
+				<div class="field">
+					{{form.raffle_prize}}
+				</div>
+		</div>
+		<div class="six wide field">
+			<label>{{form.raffle_prize_amount.label}}</label>
+				<div class="field">
+					{{form.raffle_prize_amount}}
+				</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="ten wide field">
+			<label>{{form.attend_prize.label}}</label>
+				<div class="field">
+					{{form.attend_prize}}
+				</div>
+		</div>
+		<div class="six wide field">
+			<label>{{form.attend_prize_amount.label}}</label>
+				<div class="field">
+					{{form.attend_prize_amount}}
+				</div>
+		</div>
+	</div>
 	<button class="ui blue button" type="submit">送出</button>
 </form>
 {% endblock %}

@@ -1,6 +1,11 @@
 
 ## Running on your host
 
+### Dependency
+
++ CKEditor
++ django-ckeditor
+
 ### Settings.py
 
 Make sure your database username and password settings are correct
