@@ -20,10 +20,26 @@ class CompanyCreationForm(forms.ModelForm):
 
 	required_css_class = 'required'
 
+	def __init__(self, *args, **kwargs):
+		super(CompanyCreationForm, self).__init__(*args, **kwargs)
+		self.fields['category'].widget.attrs.update({
+				'class': 'ui dropdown',
+				})
+
 	class Meta:
 		model=Company
 		fields='__all__'
 		exclude=['id','password','last_login','is_active']
+		widgets = {
+				'brief': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
+				'introduction': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
+				}
+
+	class Media:
+		js = ('js/company/company_create_form.js',)
+		css = {
+				'all':('css/company/company_create_form.css',),
+				}
 
 	def clean_cid(self):
 		cid=self.cleaned_data.get('cid')
@@ -72,9 +88,9 @@ class CompanyEditForm(forms.ModelForm):
 
 	#css/js for the form, need to put {{form.media}} in template
 	class Media:
-		js = ('js/company/reg_edit_form.js',)
+		js = ('js/company/company_create_form.js',)
 		css = {
-				'all':('css/company/reg_edit_form.css',),
+				'all':('css/company/company_create_form.css',),
 				}
 
 #ref here https://docs.djangoproject.com/en/1.8/ref/forms/validation/  search clean_
