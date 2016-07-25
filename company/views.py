@@ -59,12 +59,6 @@ def CompanyLogin(request):
 	if request.POST:
 		username=request.POST.get('username')
 		password=request.POST.get('password')
-		try:
-			company_obj = company.models.Company.objects.get(cid=username)
-		except:
-			error_display = True
-			error_msg = "系統查無貴公司統編，請重新註冊"
-			return render(request,'login.html',locals())
 
 		user = authenticate(username=username, password=password)
 		if user is not None:
