@@ -1,5 +1,4 @@
 from django.db import models
-from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
