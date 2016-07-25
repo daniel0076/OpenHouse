@@ -9,7 +9,9 @@ from django.utils.http import urlsafe_base64_decode
 from .models import Company
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.forms import SetPasswordForm
+from company.forms import CompanyCreationForm,CompanyEditForm
 import rdss.models
+import company.models
 # Create your views here.
 
 def CompanyIndex(request):
@@ -22,7 +24,7 @@ def CompanyIndex(request):
 	return render(request,'company_index.html',locals())
 
 def CompanyInfo(request):
-	company_info = company_model.Company.objects.get(cid=request.user.cid)
+	company_info = company.model.Company.objects.get(cid=request.user.cid)
 	return render(request,'company_info.html',locals())
 
 def CompanyCreation(request):
@@ -56,7 +58,7 @@ def CompanyEdit(request):
 			#messages.error(request, ("The user could not be created due to errors.") )
 			return render(request,'company_regform.html',locals())
 	form = CompanyEditForm(instance=user);
-	company_info = company_model.Company.objects.get(cid=request.user.cid)
+	company_info = company.model.Company.objects.get(cid=request.user.cid)
 	return render(request,'company_regform.html',locals())
 
 def CompanyLogin(request):
@@ -65,7 +67,7 @@ def CompanyLogin(request):
 		username=request.POST.get('username')
 		password=request.POST.get('password')
 		try:
-			company = company.models.Company.objects.get(cid=username)
+			company_obj = company.models.Company.objects.get(cid=username)
 		except:
 			error_display = True
 			error_msg = "系統查無貴公司統編，請重新註冊"
