@@ -1,0 +1,118 @@
+{% extends 'company_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+{{form.media}}
+{% endblock %}
+
+{% block 'content' %}
+<form method="post" enctype="multipart/form-data" class="ui form">
+	<h1 class="ui center aligned dividing header">註冊 OpenHouse 交大企業校園徵才 </h1>
+	{% csrf_token %}
+	<h4 class="ui dividing header">企業資料</h4>
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.cid.label_tag}}</label>
+			{{form.cid}}
+		</div>
+		<div class="required field">
+			<label>{{form.logo.label_tag}}</label>
+			{{form.logo}}
+		</div>
+	</div>
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.name.label_tag}}</label>
+			{{form.name}}
+		</div>
+		<div class="required field">
+			<label>{{form.shortname.label_tag}}</label>
+			{{form.shortname}}
+		</div>
+	</div>
+
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.password1.label_tag}}</label>
+			{{form.password1}}
+		</div>
+		<div class="required field">
+			<label>{{form.password2.label_tag}}</label>
+			{{form.password2}}
+		</div>
+	</div>
+
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.phone.label_tag}}</label>
+			{{form.phone.help_text}}
+			{{form.phone}}
+		</div>
+		<div class="required field">
+			<label>{{form.category.label_tag}}</label>
+			{{form.category.help_text}}
+			{{form.category}}
+		</div>
+	</div>
+
+	<div class="fields">
+		<div class="required four wide field">
+			<label>{{form.postal_code.label_tag}}</label>
+			{{form.postal_code}}
+		</div>
+		<div class="required twelve wide field">
+			<label>{{form.address.label_tag}}</label>
+			{{form.address}}
+		</div>
+	</div>
+	<div class="required field">
+		<label>{{form.website.label_tag}}</label>
+		{{form.website}}
+	</div>
+
+	<h4 class="ui dividing header">人事資料</h4>
+
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.hr_name.label_tag}}</label>
+			{{form.hr_name}}
+		</div>
+		<div class="required field">
+			<label>{{form.hr_fax.label_tag}}</label>
+			{{form.hr_fax}}
+		</div>
+
+	</div>
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.hr_mobile.label_tag}}</label>
+			{{form.hr_mobile.help_text}}
+			{{form.hr_mobile}}
+		</div>
+		<div class="required field">
+			<label>{{form.hr_phone.label_tag}}</label>
+			{{form.hr_phone.help_text}}
+			{{form.hr_phone}}
+		</div>
+
+	</div>
+	<div class="required field">
+		<label>{{form.hr_email.label_tag}}</label>
+		{{form.hr_email}}
+	</div>
+
+	<h4 class="ui dividing header">企業簡介</h4>
+	<div class="required field">
+		<label>{{form.brief.label_tag}}</label>
+		{{form.brief.help_text}}
+		{{form.brief}}
+	</div>
+	<div class="required field">
+		<label>{{form.introduction.label_tag}}</label>
+		{{form.introduction.help_text}}
+		{{form.introduction}}
+	</div>
+	<div class="ui error message"></div>
+	<button class="ui teal button" type="submit">{{submit_btn_name}}</button>
+</form>
+{% endblock %}
