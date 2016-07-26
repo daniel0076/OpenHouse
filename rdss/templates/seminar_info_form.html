@@ -3,7 +3,12 @@
 {% block 'content' %}
 <form class="ui form" method="POST" action="{% url 'rdss_seminar_info' %}" >
 	{% csrf_token %}
-	<h4 class="ui dividing header">說明會主題資訊</h4>
+	{% if seminar_info %}
+        <div class="ui teal message">
+            說明會資訊填寫已完成，您也可以修改資訊，再次送出。
+        </div>
+    {% endif %}
+    <h4 class="ui dividing header">說明會主題資訊</h4>
 	<div class="field">
 		<label>{{form.topic.label}}</label>
 			<div class="field">

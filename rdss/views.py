@@ -120,16 +120,19 @@ def SignupRdss(request):
 
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
+    cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+    try:
+        seminar_info = rdss.models.Seminar_Info.objects.get(cid=cid)
+    except ObjectDoesNotExist:
+        seminar_info = None
     if request.POST:
-        print(request.POST)
-        form = rdss.forms.SeminarInfoCreationForm(data=request.POST)
+        form = rdss.forms.SeminarInfoCreationForm(data=request.POST,instance=seminar_info)
         if form.is_valid():
             info = form.save(commit=False)
-            print(request.user)
-            info.cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+            info.cid = cid
             info.save()
     else:
-        form = rdss.forms.SeminarInfoCreationForm()
+        form = rdss.forms.SeminarInfoCreationForm(instance=seminar_info)
     return render(request,'seminar_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
