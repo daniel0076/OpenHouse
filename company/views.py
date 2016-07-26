@@ -102,6 +102,8 @@ def password_reset_confirm(request,uidb64,token):
         user = Company.objects.get(pk=uid)
     except(TypeError):
         user = None
+
+    # the link is valid
     if user is not None and default_token_generator.check_token(user,token):
         validlink = True
         if request.method == 'POST':
@@ -112,6 +114,8 @@ def password_reset_confirm(request,uidb64,token):
         else:
             form = SetPasswordForm(user)
             return render(request,'password_reset_confirm.html',{'form': form})
+
+    # the link is not valid
     else:
         validlink = False
     return redirect('/')

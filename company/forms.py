@@ -6,6 +6,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.utils.translation import ugettext as _
 class CompanyCreationForm(forms.ModelForm):
 
 	error_messages={
@@ -100,7 +101,9 @@ class CompanyEditForm(forms.ModelForm):
 			user.save()
 		return user
 class CompanyPasswordResetForm(PasswordResetForm):
-
+    error_messages = {
+        'does_not_exist':_("這個帳號不存在"),
+    }
     user = forms.CharField(max_length=8)
     def save(self,request=None):
         current_site = get_current_site(request)
@@ -117,4 +120,12 @@ class CompanyPasswordResetForm(PasswordResetForm):
         }
         self.send_mail('password_reset_subject.txt','password_reset_email.html',context,'skye53653@gmail.com',email)
 
-
+    def clean_user(self):
+        user = self.cleaned_data.get('user')
+        try:
+            Company.objects.get(cid=user)
+        except:
+            raise forms.ValidationError(
+                self.error_messages['does_not_exist'],
+                code='does_not_exist')
+        return user

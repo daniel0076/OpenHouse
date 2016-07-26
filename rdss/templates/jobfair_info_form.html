@@ -2,7 +2,7 @@
 
 {% block 'content' %}
 <form class="ui form" method="POST" action="{% url 'rdss_jobfair_info' %}" >
-	{% csrf_token %}
+    {% csrf_token %}
 	{% if jobfair_info %}
         <div class="ui teal message">
             就博會資訊填寫已完成，您也可以修改資訊，再次送出。
@@ -10,43 +10,49 @@
     {% endif %}
     <div class="field">
 		<label>{{form.signname.label}}</label>
-		<div class="field">
-		    {{form.signname}}
-		</div>
+            {{form.signname}}
+		    {{form.signname.errors}}
 	</div>
     <div class="fields">
         <div class="four wide field">
             <label>{{ form.contact.label}}</label>
             <div class="field">
                 {{form.contact}}
+		        {{form.contact.errors}}
             </div>
         </div>
         <div class="four wide field">
             <label>{{ form.contact_mobile.label}}</label>
             {{form.contact_mobile}}
+            {{form.contact_mobile.errors}}
         </div>
         <div class="eight wide field">
             <label>{{ form.contact_email.label}}</label>
             {{form.contact_email}}
+            {{form.contact_email.errors}}
         </div>
     </div>
     <div class="fields">
         <div class="fourteen wide field">
             <label>{{form.power_req.label}}</label>
             {{form.power_req}}
+            {{form.power_req.errors}}
         </div>
         <div class="two wide field">
             <label>{{form.parking_tickets.label}}</label>
             <div class="field">
                 {{form.parking_tickets}}
+                {{form.parking_tickets.errors}}
             </div>
         </div>
     </div>
     <div class="field">
         <label>{{form.ps.label}}</label>
         {{form.ps}}
+        {{form.ps.errors}}
     </div>
     <button class="ui blue button" type="submit">送出</button>
 </form>
 
 {% endblock %}
+
