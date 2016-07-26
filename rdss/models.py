@@ -174,7 +174,7 @@ class Jobfair_Info(models.Model):
 	contact_email = models.EmailField(u'聯絡人Email',max_length=254)
 	parking_tickets = models.SmallIntegerField(u'停車證數量')
 	power_req = models.CharField(u'用電需求',max_length=256)
-	ps = models.CharField(u'其它需求',max_length=254)
+	ps = models.CharField(u'其它需求',max_length=254,blank=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
