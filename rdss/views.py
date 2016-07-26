@@ -133,8 +133,16 @@ def SeminarInfo(request):
 
 @login_required(login_url='/company/login/')
 def JobfairInfo(request):
-	form = rdss.forms.JobfairInfoCreationForm
-	return render(request,'jobfair_info_form.html',locals())
+    if request.POST:
+        print(request.POST)
+        form = rdss.forms.JobfairInfoCreationForm(data=request.POST)
+        if form.is_valid():
+            info = form.save(commit=False)
+            info.cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+            info.save()
+    else:
+        form = rdss.forms.JobfairInfoCreationForm()
+    return render(request,'jobfair_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def SeminarSelectFormGen(request):

@@ -71,7 +71,7 @@ class JobfairInfoCreationForm(forms.ModelForm):
 	class Meta:
 		model=rdss.models.Jobfair_Info
 		fields='__all__'
-		exclude=[]
+		exclude=['cid']
 
 	#def clean_cid(self):
 	#		raise forms.ValidationError(

@@ -3,7 +3,6 @@ from django.http import  HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from company.forms import CompanyCreationForm,CompanyEditForm,CompanyPasswordResetForm
-from company import models as company_model
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from .models import Company
@@ -120,5 +119,4 @@ def password_reset_confirm(request,uidb64,token):
             return render(request,'password_reset_confirm.html',{'form': form})
     else:
         validlink = False
-        # TODO
-	return redirect('/')
+    return redirect('/')

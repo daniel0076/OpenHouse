@@ -1,8 +1,48 @@
 {% extends 'rdss_base.html' %}
 
 {% block 'content' %}
-<form class="ui form" method="POST" action="{% url 'rdss_seminar_info' %}" >
-	{{form.as_p}}
+<form class="ui form" method="POST" action="{% url 'rdss_jobfair_info' %}" >
+	{% csrf_token %}
+    <div class="field">
+		<label>{{form.signname.label}}</label>
+		<div class="field">
+		    {{form.signname}}
+		</div>
+	</div>
+    <div class="fields">
+        <div class="four wide field">
+            <label>{{ form.contact.label}}</label>
+            <div class="field">
+                {{form.contact}}
+            </div>
+        </div>
+        <div class="four wide field">
+            <label>{{ form.contact_mobile.label}}</label>
+            {{form.contact_mobile}}
+        </div>
+        <div class="eight wide field">
+            <label>{{ form.contact_email.label}}</label>
+            {{form.contact_email}}
+        </div>
+    </div>
+    <div class="fields">
+        <div class="fourteen wide field">
+            <label>{{form.power_req.label}}</label>
+            {{form.power_req}}
+        </div>
+        <div class="two wide field">
+            <label>{{form.parking_tickets.label}}</label>
+            <div class="field">
+                {{form.parking_tickets}}
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label>{{form.ps.label}}</label>
+        {{form.ps}}
+    </div>
+
+    <button class="ui blue button" type="submit">送出</button>
 </form>
 
 {% endblock %}
