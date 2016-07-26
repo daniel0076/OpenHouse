@@ -97,6 +97,7 @@ def forget_password(request):
         form = CompanyPasswordResetForm(request.POST)
         if form.is_valid():
             form.save(request=request)
+            return redirect('/company/login/')
     else:
         form = CompanyPasswordResetForm()
     return render(request,'forget_password.html',{'form':form,'send':send})

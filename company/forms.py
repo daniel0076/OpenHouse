@@ -104,10 +104,8 @@ class CompanyPasswordResetForm(PasswordResetForm):
     user = forms.CharField(max_length=8)
     def save(self,request=None):
         current_site = get_current_site(request)
-        print(current_site.name)
         email = self.cleaned_data["email"]
         user = Company.objects.get(cid=self.cleaned_data['user'])
-        print(type(user))
         context = {
             'email': email,
             'domain': current_site.domain,
