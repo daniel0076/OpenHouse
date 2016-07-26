@@ -11,6 +11,7 @@ import rdss.models
 import datetime,json,csv
 from .forms import EmailPostForm
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 sidebar_ui = dict()
 
@@ -133,15 +134,22 @@ def SeminarInfo(request):
 
 @login_required(login_url='/company/login/')
 def JobfairInfo(request):
+    cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+    # check whether the company job fair info is in the DB
+    try:
+        jobfair_info = rdss.models.Jobfair_Info.objects.get(cid=cid)
+    except ObjectDoesNotExist:
+        jobfair_info = None
     if request.POST:
-        print(request.POST)
-        form = rdss.forms.JobfairInfoCreationForm(data=request.POST)
+        form = rdss.forms.JobfairInfoCreationForm(data=request.POST,instance=jobfair_info)
         if form.is_valid():
             info = form.save(commit=False)
-            info.cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+            info.cid = cid
             info.save()
+            return redirect('rdss_jobfair_info')
     else:
-        form = rdss.forms.JobfairInfoCreationForm()
+        form = rdss.forms.JobfairInfoCreationForm(instance=jobfair_info)
+    print(locals())
     return render(request,'jobfair_info_form.html',locals())
 
 @login_required(login_url='/company/login/')

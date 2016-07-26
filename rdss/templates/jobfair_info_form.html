@@ -3,6 +3,11 @@
 {% block 'content' %}
 <form class="ui form" method="POST" action="{% url 'rdss_jobfair_info' %}" >
 	{% csrf_token %}
+	{% if jobfair_info %}
+        <div class="ui teal message">
+            就博會資訊填寫已完成，您也可以修改資訊，再次送出。
+        </div>
+    {% endif %}
     <div class="field">
 		<label>{{form.signname.label}}</label>
 		<div class="field">
@@ -41,7 +46,6 @@
         <label>{{form.ps.label}}</label>
         {{form.ps}}
     </div>
-
     <button class="ui blue button" type="submit">送出</button>
 </form>
 
