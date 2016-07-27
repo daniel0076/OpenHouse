@@ -2,12 +2,19 @@
 {% load staticfiles %}
 
 {% block 'custom_head' %}
+<title>企業註冊 | OpenHouse 企業校園徵才</title>
 {{form.media}}
 {% endblock %}
 
 {% block 'content' %}
 <form method="post" enctype="multipart/form-data" class="ui form">
 	<h1 class="ui center aligned dividing header">註冊 OpenHouse 交大企業校園徵才 </h1>
+	{% if error_display %}
+	<div class="ui red message">
+		<h4 class="ui dividing header">註冊失敗</h4>
+		{{error_msg}}
+	</div>
+	{% endif %}
 	{% csrf_token %}
 	<h4 class="ui dividing header">企業資料</h4>
 	<div class="two fields">

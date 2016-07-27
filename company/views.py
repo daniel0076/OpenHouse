@@ -11,6 +11,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from company.forms import CompanyCreationForm,CompanyEditForm
 import rdss.models
 import company.models
+import company.views
 # Create your views here.
 
 def CompanyIndex(request):
@@ -31,11 +32,14 @@ def CompanyCreation(request):
 	if request.POST:
 		form = CompanyCreationForm(request.POST,request.FILES)
 		if form.is_valid():
-			user=form.save()
-	#        messages.success(request, _("User '{0}' created.").format(user))
-			return redirect('/')
+			form.save()
+			user = authenticate(username=form.clean_cid(), password=form.clean_password2())
+			login(request,user)
+	#       messages.success(request, _("User '{0}' created.").format(user))
+			return redirect(company.views.CompanyIndex)
 		else:
-			print(form.errors)
+			error_display = True
+			error_msg = form.errors
 			#messages.error(request, ("The user could not be created due to errors.") )
 			return render(request,'company_create_form.html',locals())
 	form = CompanyCreationForm();
