@@ -14,6 +14,7 @@ CATEGORYS = (
 		)
 
 class RdssConfigs(models.Model):
+	#TODO:fix variable ambiguous
 	signup_start = models.DateTimeField(u'廠商註冊開始時間')
 	signup_end = models.DateTimeField(u'廠商註冊結束時間')
 	rdss_signup_start = models.DateTimeField(u'研替報名開始時間')

@@ -87,10 +87,10 @@ def SignupRdss(request):
 	sidebar_ui = {'signup':"active"}
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	# use timezone now to get current time with GMT+8
-	if timezone.now() > configs.signup_end or timezone.now() < configs.signup_start:
+	if timezone.now() > configs.rdss_signup_end or timezone.now() < configs.rdss_signup_start:
 		error_msg="現在並非報名時間。報名期間為 {} 至 {}".format(
-				timezone.localtime(configs.signup_start).strftime("%Y/%m/%d %H:%M:%S"),
-				timezone.localtime(configs.signup_end).strftime("%Y/%m/%d %H:%M:%S"))
+				timezone.localtime(configs.rdss_signup_start).strftime("%Y/%m/%d %H:%M:%S"),
+				timezone.localtime(configs.rdss_signup_end).strftime("%Y/%m/%d %H:%M:%S"))
 		return render(request,'error.html',locals())
 
 	edit_instance_list = rdss.models.Signup.objects.filter(cid=request.user.cid)
@@ -120,40 +120,50 @@ def SignupRdss(request):
 
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
-    cid = rdss.models.Signup.objects.get(cid=request.user.cid)
-    try:
-        seminar_info = rdss.models.Seminar_Info.objects.get(cid=cid)
-    except ObjectDoesNotExist:
-        seminar_info = None
-    if request.POST:
-        form = rdss.forms.SeminarInfoCreationForm(data=request.POST,instance=seminar_info)
-        if form.is_valid():
-            info = form.save(commit=False)
-            info.cid = cid
-            info.save()
-    else:
-        form = rdss.forms.SeminarInfoCreationForm(instance=seminar_info)
-    return render(request,'seminar_info_form.html',locals())
+	try:
+		cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+
+	try:
+		seminar_info = rdss.models.Seminar_Info.objects.get(cid=cid)
+	except ObjectDoesNotExist:
+		seminar_info = None
+	if request.POST:
+		form = rdss.forms.SeminarInfoCreationForm(data=request.POST,instance=seminar_info)
+		if form.is_valid():
+			info = form.save(commit=False)
+			info.cid = cid
+			info.save()
+	else:
+		form = rdss.forms.SeminarInfoCreationForm(instance=seminar_info)
+	return render(request,'seminar_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def JobfairInfo(request):
-    cid = rdss.models.Signup.objects.get(cid=request.user.cid)
-    # check whether the company job fair info is in the DB
-    try:
-        jobfair_info = rdss.models.Jobfair_Info.objects.get(cid=cid)
-    except ObjectDoesNotExist:
-        jobfair_info = None
-    if request.POST:
-        form = rdss.forms.JobfairInfoCreationForm(data=request.POST,instance=jobfair_info)
-        if form.is_valid():
-            info = form.save(commit=False)
-            info.cid = cid
-            info.save()
-            return redirect('rdss_jobfair_info')
-    else:
-        form = rdss.forms.JobfairInfoCreationForm(instance=jobfair_info)
-    print(locals())
-    return render(request,'jobfair_info_form.html',locals())
+
+	try:
+		cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+	# check whether the company job fair info is in the DB
+	try:
+		jobfair_info = rdss.models.Jobfair_Info.objects.get(cid=cid)
+	except ObjectDoesNotExist:
+		jobfair_info = None
+	if request.POST:
+		form = rdss.forms.JobfairInfoCreationForm(data=request.POST,instance=jobfair_info)
+		if form.is_valid():
+			info = form.save(commit=False)
+			info.cid = cid
+			info.save()
+			return redirect('rdss_jobfair_info')
+	else:
+		form = rdss.forms.JobfairInfoCreationForm(instance=jobfair_info)
+	print(locals())
+	return render(request,'jobfair_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def SeminarSelectFormGen(request):
@@ -405,8 +415,14 @@ def Add_SponsorShip(sponsor_items,post_data,sponsor):
 def Sponsor(request):
 	#semantic ui
 	sidebar_ui = {'sponsor':"active"}
+
 	# get form post
-	sponsor = rdss.models.Signup.objects.get(cid=request.user.cid)
+	try:
+		sponsor = rdss.models.Signup.objects.get(cid=request.user.cid)
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+
 	if request.POST:
 		sponsor_items = rdss.models.Sponsor_Items.objects.all()
 		Add_SponsorShip(sponsor_items,request.POST,sponsor)
