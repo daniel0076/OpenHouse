@@ -8,24 +8,26 @@
 {% block 'content' %}
 <form method="post" enctype="multipart/form-data" class="ui form">
 	{% csrf_token %}
-					<div class="required field">
-						<label>{{form.logo.label_tag}}</label>
+	<div class="ui three column grid" style="width:90%;margin:auto">
+		<div class="row">
+			<div class="column">
+				<div class="ui card">
+					<div class="image">
+						<img src="{{company_info.logo.url}}">
+					</div>
+					<div class="content">
+						<a class="header">{{company_info.shortname}} - 目前Logo</a>
+					</div>
+					<div class="extra content">
 						{{form.logo}}
 					</div>
 				</div>
 				<button class="ui teal button" type="submit">{{submit_btn_name}}</button>
-
+			</div>
+			<div class="column">
 				<div class="required field">
 					<label>{{form.cid.label_tag}}</label>
 					{{form.cid}}
-				</div>
-				<div class="required field">
-					<label>{{form.password1.label_tag}}</label>
-					{{form.password1}}
-				</div>
-				<div class="required field">
-					<label>{{form.password2.label_tag}}</label>
-					{{form.password2}}
 				</div>
 				<div class="required field">
 					<label>{{form.name.label_tag}}</label>
@@ -56,6 +58,8 @@
 					{{form.website}}
 				</div>
 
+			</div>
+			<div class="column">
 				<div class="required field">
 					<label>{{form.hr_name.label_tag}}</label>
 					{{form.hr_name}}
@@ -84,9 +88,8 @@
 					<label>{{form.introduction.label_tag}}</label>
 					{{form.introduction}}
 				</div>
-				<div class="required field">
-					<label>{{form.abroad.label_tag}}</label>
-					{{form.abroad}}
-				</div>
+			</div>
+		</div>
+	</div>
 </form>
 {% endblock %}

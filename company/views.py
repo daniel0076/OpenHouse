@@ -11,7 +11,6 @@ from django.contrib.auth.forms import SetPasswordForm
 from company.forms import CompanyCreationForm,CompanyEditForm
 import rdss.models
 import company.models
-import company.views
 # Create your views here.
 
 def CompanyIndex(request):
@@ -24,7 +23,7 @@ def CompanyIndex(request):
 	return render(request,'company_index.html',locals())
 
 def CompanyInfo(request):
-	company_info = company.model.Company.objects.get(cid=request.user.cid)
+	company_info = company.models.Company.objects.get(cid=request.user.cid)
 	return render(request,'company_info.html',locals())
 
 def CompanyCreation(request):
@@ -36,7 +35,7 @@ def CompanyCreation(request):
 			user = authenticate(username=form.clean_cid(), password=form.clean_password2())
 			login(request,user)
 	#       messages.success(request, _("User '{0}' created.").format(user))
-			return redirect(company.views.CompanyIndex)
+			return redirect(CompanyIndex)
 		else:
 			error_display = True
 			error_msg = form.errors
@@ -55,14 +54,14 @@ def CompanyEdit(request):
 		if form.is_valid():
 			user = form.save()
 	#        messages.success(request, _("User '{0}' created.").format(user))
-			return redirect('/company/')
+			return redirect(CompanyInfo)
 		else:
 			print(form.errors)
 			#messages.error(request, ("The user could not be created due to errors.") )
-			return render(request,'company_regform.html',locals())
+			return render(request,'company_edit_form.html',locals())
 	form = CompanyEditForm(instance=user);
-	company_info = company.model.Company.objects.get(cid=request.user.cid)
-	return render(request,'company_regform.html',locals())
+	company_info = company.models.Company.objects.get(cid=request.user.cid)
+	return render(request,'company_edit_form.html',locals())
 
 def CompanyLogin(request):
 

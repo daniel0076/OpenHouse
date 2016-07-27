@@ -81,7 +81,7 @@ class CompanyEditForm(forms.ModelForm):
 	class Meta:
 		model=Company
 		fields='__all__'
-		exclude=['cid','password','last_login','date_join','is_active']
+		exclude=['password','last_login','date_join','is_active']
 		widgets = {
 				'brief': forms.Textarea(),
 				'introduction': forms.Textarea(),
@@ -89,9 +89,9 @@ class CompanyEditForm(forms.ModelForm):
 
 	#css/js for the form, need to put {{form.media}} in template
 	class Media:
-		js = ('js/company/company_create_form.js',)
+		js = ('js/company/company_edit_form.js',)
 		css = {
-				'all':('css/company/company_create_form.css',),
+				'all':('css/company/company_edit_form.css',),
 				}
 
 #ref here https://docs.djangoproject.com/en/1.8/ref/forms/validation/  search clean_
