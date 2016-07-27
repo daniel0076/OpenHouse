@@ -3,8 +3,16 @@
 
 ### Dependency
 
-+ CKEditor
+#### pip
+
++ Django >= 1.9
 + django-ckeditor
++ Pillow
++ mysqlclient
++ Xlsxwriter
+
+#### other
++ CKEditor
 
 ### Settings.py
 
