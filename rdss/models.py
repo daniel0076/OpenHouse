@@ -222,30 +222,6 @@ class Files(models.Model):
 		verbose_name = u"活動檔案"
 		verbose_name_plural =u"活動檔案"
 
-#TODO names
-class CompanyVisit(models.Model):
-	id = models.AutoField(primary_key=True)
-	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
-	time = models.DateTimeField(u'')
-	limit = models.IntegerField(u'限制')
-
-	class Meta:
-		managed = True
-		verbose_name = u""
-		verbose_name_plural =u""
-
-#TODO names
-class Lectures(models.Model):
-	id = models.AutoField(primary_key=True)
-	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
-	time = models.DateTimeField(u'')
-	limit = models.IntegerField(u'限制')
-
-	class Meta:
-		managed = True
-		verbose_name = u""
-		verbose_name_plural =u""
-
 class CareerTutor(models.Model):
 	id = models.AutoField(primary_key=True)
 	cid = models.ForeignKey('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
@@ -254,5 +230,5 @@ class CareerTutor(models.Model):
 
 	class Meta:
 		managed = True
-		verbose_name = u""
-		verbose_name_plural =u""
+		verbose_name = u"企業職場導師"
+		verbose_name_plural =u"企業職場導師"
