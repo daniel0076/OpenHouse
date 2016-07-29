@@ -18,6 +18,7 @@ sidebar_ui = dict()
 @login_required(login_url='/company/login/')
 def RDSSCompanyIndex(request):
 	configs=rdss.models.RdssConfigs.objects.all()[0]
+	plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
 	return render(request,'rdss_company_index.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -116,6 +117,7 @@ def SignupRdss(request):
 	else:
 		form = rdss.forms.SignupCreationForm
 
+	plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
 	return render(request,'signup_form.html',locals())
 
 @login_required(login_url='/company/login/')

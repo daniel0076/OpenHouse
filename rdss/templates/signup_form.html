@@ -10,133 +10,219 @@
 <form class="ui form" method="POST" action="{% url 'rdss_signup' %}" >
 	{% csrf_token %}
 	{% if signup_edit_ui %}
-	<div class="ui teal message">
+	<div class="ui compact teal message">
 		報名已完成，您也可以修改報名資料，再次送出。
 	</div>
 	{% endif %}
-	<h1 class="ui header">
-		<i class="info blue circle icon"></i>
-		<div class="content">
-			研替-廠商說明會
-		</div>
-	</h1>
-	<p>透過說明會提供完善的場地與設備，徵才企業可以近距離傳達公司訊息，解說公司內部企業文化、經營理念、薪資福利制度、徵才職缺以及需求等，也提供學生進一步認識企業的橋樑。</p>
 
-	<h3 class="ui header">活動日期、時程</h3>
-
-	<div class="ui bulleted list">
-		<div class="item">{{configs.seminar_start_date}} ~ {{configs.seminar_end_date}}（每週一至週五的中午及晚上）</div>
-		<div class="item">
-			每日場次(午間及晚間)：{{configs.session_1_start}}~{{configs.session_1_end}}、
-			{{configs.session_2_start}}~{{configs.session_2_end}}、
-			{{configs.session_3_start}}~{{configs.session_3_end}}
-		</div>
-		<div class="item">週一至週四舉辦公司說明會,每日舉辦 3 場</div>
-		<div class="item">週五開放專屬企業日(企業可進行公司和職缺介紹說明,另外搭配現場面試活動),當日舉辦一場</div>
+	<div class="ui message">
+		<h1 id="intro" class="ui header">活動企畫書</h1>
+		<p style="color:red">活動詳細內容及規範皆載於企畫書，請務必詳細閱讀</p>
+		<a class="ui teal button" href={{plan_file.upload_file.url}} target="_blank">{{plan_file.title}}</a>
 	</div>
 
-	<h3 class="ui header">活動地點</h3>
-	<p>本校國際會議廳</p>
+	<div class="ui blue inverted segment">
+		<h1 class="ui inverted header">
+			<i class="info circle icon" style="color:white"></i>
+			<div class="content" style="color:white">
+				企業說明會
+			</div>
+		</h1>
+		<p>週一至週四舉辦公司說明會，每日舉辦3場；週五開放專屬企業日(企業可進行公司和職缺介紹，另搭配現場面試活動)，當日舉辦一場。</br>
+		交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取，意者請與本校就業輔導組聯繫。</p>
 
-	<h3 class="ui header">提供設備、服務</h3>
-	<div class="ui bulleted list">
-		<div class="item">可容納200人之國際會議廳</div>
-		<div class="item">單槍投影機、投影幕、麥克風、筆記型電腦、簡報滑鼠等 </div>
-		<div class="item">每場說明會由工作人員協助會場地佈置、資料發放、會場內拍照、QA上傳等相關事宜,並協助場內活動進行及突發狀況處理</div>
-		<div class="item">每場說明會提供2張免費校內停車證</div>
-	</div>
+		<table class="ui celled table">
+			<tr>
+				<td style="width:8em">活動日期</td>
+				<td>{{configs.seminar_start_date}} ~ {{configs.seminar_end_date}}</td>
+			</tr>
+			<tr>
+				<td>活動地點</td>
+				<td>本校國際會議廳 (浩然圖書館、交映樓、工程四館合勤講堂、資訊館)</td>
+			</tr>
+			<tr>
+				<td>活動內容</td>
+				<td>透過說明會提供完善的場地與設備，徵才企業可以近距離傳達公司訊息，解說公司內部企業文化、經營理念、薪資福利制度、徵才職缺以及需求等，為學生進一步認識企業之橋樑。</td>
+			</tr>
+			<tr>
+				<td>提供設備</td>
+				<td>
+					<ol>
+						<li>可容納100至200人之國際會議廳</li>
+						<li>單槍投影機、投影布幕、麥克風、筆記型電腦、簡報滑鼠等。※如有特殊需求請務必事先告知。</li>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>提供服務</td>
+				<td>
+					<ol>
+						<li>每場說明會由工作人員協助會場地布置、資料發放、會場拍照等事宜，並協助場內活動進行及突發狀況處理。
+						</li>
+						<li>提供企業人資至多2份餐點與飲水、2張免費校內停車證。</li>
+						<li>提供40份餐點給參與同學(費用已含在報名活動費中，企業可加碼付費提供餐點數量)。</li>
 
-	<h3 class="ui header">注意事項</h3>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>注意事項</td>
+				<td>
+					<h6 class="ui header">場次選位方式：</h6>
+					<ol>
+						<li>公司說明會選位順序將由評選積分決定，詳細內容請參照參加方式第六點(Page 10)之說明。</li>
+						<li>若遇評選積分相同之情形，說明會場次選位將同時開放給積分相同之廠商，採取先搶先贏制。</li>
+						<li style="color:red">選位時間：8月25日(四)10:00至16:00。</li>
+					</ol>
+					<h6 class="ui header">舉辦與報到方式：</h6>
+					<ol>
+						<li>廠商以播放影片、書面介紹或其他方式做公司簡介，針對所需專業人才，提供必要之說明，並傳達企業專業理念與形象。</li>
+						<li>廠商可提供自行設計活動內容並提供紀念文宣品以吸引參加人潮，例如填寫履歷抽獎、參加獎、QA獎等；抽獎券由企業自行設計與製作。</li>
+						<li>請於活動前20分鐘到場，可提供資料給報到桌進行發放、亦可於現場擺設旗幟與易拉展架(如需旗桿、旗座、海報架請事先告知)，會議廳內牆壁桌椅不可使用膠帶、圖釘等固定展示物品。</li>
+						<li>晚上各場次換場時間為10分鐘，請廠商把握時間，勿耽誤及佔用其他廠商時間，並請結束後盡量避免當場面談與個別QA，以免造成場面混亂。</li>
+						<li>對於說明會之內容、設備等，若有其他特殊需求或問題請與我們聯絡。</li>
+					</ol>
+				</td>
+			</tr>
+		</table>
 
-	<div class="ui bulleted list">
-		<div class="item">說明會選位順序將由評選積分決定，詳細內容請參照企劃書內參加方式第六點之說明</div>
-		<div class="item">TODO</div>
-	</div>
-
-	<div class="ui segment">
-		<h3 class="ui header">選取欲報名說明會時間</h3>
+		<div class="ui segment">
+			<h3 class="ui header">選取欲報名說明會時間</h3>
+			<p>活動費用：中午場： {{configs.session_1_fee}} 元，晚上場 {{configs.session_2_fee}} 元</p>
 			{{ form.seminar}}
 			<div class="ui red button seminar_clear">清除</div>
-		<div class="ui yellow message">
-			交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
-		</div>
-	</div>
-	<div class="ui divider"></div>
-
-	<h1 class="ui header">
-		<i class="green student icon"></i>
-		<div class="content">
-			研替-就業博覽會
-		</div>
-	</h1>
-
-	<p>研發替代役以博覽會的方式呈現,邀請多家企業廠商 到學校設點,展示公司的產品或職務內容,提供研替同學未來就業的參 考依據。徵才企業廠商亦可進行一對一面試方式,詢問學生興趣經歷等 相關問題,藉此篩選出能符合公司文化及經營理念的替代役人選。</p>
-	<h3 class="ui header">活動日期、時程</h3>
-
-	<div class="ui bulleted list">
-		<div class="item">{{configs.jobfair_date}} {{configs.jobfair_start}} ~ {{configs.jobfair_end}}</div>
-		<div class="item">8:30~9:30 廠商報到與廠商會場佈置</div>
-		<div class="item">10:00~16:30 就博會暨面談會</div>
-	</div>
-
-	<h3 class="ui header">就博會攤位說明</h3>
-	<div class="ui bulleted list">
-		<div class="item">設攤地點：本校浩然圖書館B1國際會議廳</div>
-		<div class="item">攤位配備：提供公司名稱看板 1 組、接待桌 1 張、椅子 6 張、攤位投射燈 3 盞、桌巾 1 條、晤談桌 1 桌 3 椅、3 孔 110V 電 源插座 2 個(請自備延長線、3 轉 2 孔轉接頭)、無線網路等。 (攤位設備與 3 月校徵就業博覽會相同)</div>
-		<div class="item">攤位大小：展示空間為 3m*3m</div>
-	</div>
-
-	<h3 class="ui header">提供服務</h3>
-	<div class="ui bulleted list">
-		<div class="item">本校工作人員協助場地佈置、報到協助等,服務台之工作人員處理隨機與突發狀況</div>
-		<div class="item">提供每家企業免費校內停車證,中午提供各廠商便當</div>
-	</div>
-
-	<h3 class="ui header">注意事項</h3>
-
-	<div class="ui bulleted list">
-		<div class="item">TODO</div>
-	</div>
-
-	<div class="ui segment">
-		<h3 class="ui header">報名就博會</h3>
-		<div class="ui labeled input">
-			<div class="ui label">
-				就博會攤位數量
+			<div class="ui yellow message">
+				交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
 			</div>
-			{{form.jobfair}}
-		</div>
-		<div class="ui yellow message">
-			若報名廠商未達 15 家,則以協助借用場地進行面試為宜
 		</div>
 	</div>
 
 	<div class="ui divider"></div>
-	<h1 class="ui header">
-		<i class="users icon"></i>
-		<div class="content">
-			研替-其它
-		</div>
-	</h1>
-	<h3 class="ui header">企業職場導師</h3>
-	<p>本活動內容擬邀請企業人資和各領域資深主管蒞校擔任企業職場老師，以講座呈現或一對一近距離指導方式，為本校同學進行履歷寫作、面試技巧、個人生涯發展規劃及職涯諮詢指導，讓交大同學在起跑點上更具備潛在優勢。</p>
-	<h3 class="ui header">企業參訪</h3>
-	<p>廠商提供企業參訪的機會給交大應屆畢業的同學，藉由參訪可題生交大同學對企業的實際瞭解，對同學籌畫未來就業的藍圖有所助益。</p>
 
-	<div class="ui segment">
-		<h3 class="ui header">願意提供</h3>
-		<p> <div class="ui checkbox">
-			{{form.career_tutor}}
-			<label>{{form.career_tutor.label}}</label>
-		</div></p>
-		<p><div class="ui checkbox">
-			{{form.visit}}
-			<label>{{form.visit.label}}</label>
-		</div></p>
-		<p><div class="ui checkbox">
-			{{form.lecture}}
-			<label>{{form.lecture.label}}</label>
-		</div></p>
+	<div class="ui green inverted segment">
+		<h1 class="ui header">
+			<i class="student icon"></i>
+			<div class="content">
+				就業博覽會
+			</div>
+		</h1>
+
+		<table class="ui celled table">
+			<tr>
+				<td style="width:8em">活動日期</td>
+				<td>{{configs.jobfair_date}}</td>
+			</tr>
+			<tr>
+				<td style="width:8em">活動時間</td>
+				<td>{{configs.jobfair_start}} ~ {{configs.jobfair_end}}</td>
+			</tr>
+			<tr>
+				<td>活動地點</td>
+				<td>本校光復校區浩然圖書館國際會議廳與前廳</td>
+			</tr>
+			<tr>
+				<td>活動內容</td>
+				<td>
+					研發替代役以展示會方式呈現，邀請多家企業廠商到學校設點，展示公司的產品或職務內容，提供研替同學未來就業的參考依據。徵才企業廠商亦可進行一對一面試方式，詢問學生興趣經歷等相關問題，藉此篩選出符合公司文化及經營理念的替代役人選。
+					<p style="color:blue">※若報名廠商未達15家，則以協助借用場地進行面試為宜。</p>
+			</tr>
+			<tr>
+				<td>提供設備</td>
+				<td>
+					<ol class="ui list">
+						<li>攤位配備：提供公司名稱看板1片、投射燈3盞、接待長桌1桌2椅(含桌巾1條)、晤談圓桌1桌3椅、3孔110V電源插座2個(請自備延長線)、無線網路等。。</li>
+						<li>攤位大小：展示空間為2.5m(寬)*2.5m(深)或3m(寬)*3m(深)。</li>
+						<p style="color:blue">※實際大小與配備仍視場地將略有調整。</p>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>提供服務</td>
+				<td>
+					<ol>
+						<li>本校工作人員協助報到及處理隨機突發狀況。</li>
+						<li>提供企業免費校內停車證，中午提供各廠商便當與飲水，每攤位至多提供5份；素食餐點請事先告知。</li>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>注意事項</td>
+				<td>
+					<ol>
+						<li>場地布置時間：活動當日8:30後開放企業到場布置，貴重器材與物品請企業自行保管，本校不負保管之責。</li>
+						<li>當天請於8:30~10:00期間向服務台辦理報到</li>
+					</ol>
+				</td>
+			</tr>
+		</table>
+
+		<div class="ui segment">
+			<h3 class="ui header">報名就博會</h3>
+				<p>活動費用：攤位每單位 {{configs.jobfair_booth_fee}} 元，額滿為止。</p>
+			<div class="ui labeled input">
+				<div class="ui label">
+					就博會攤位數量
+				</div>
+				{{form.jobfair}}
+			</div>
+			<div class="ui yellow message">
+				若報名廠商未達 15 家,則以協助借用場地進行面試為宜
+			</div>
+		</div>
+	</div>
+
+	<div class="ui divider"></div>
+
+	<div class="ui inverted segment">
+		<h1 class="ui header">
+			<i class="users icon"style="color:white"></i>
+			<div class="content" style="color:white">
+				企業職場導師
+			</div>
+		</h1>
+
+		<table class="ui celled table">
+			<tr>
+				<td style="width:8em">活動日期</td>
+				<td>2016 年 9 月 ~ 12 月</td>
+			</tr>
+
+			<tr>
+				<td>活動內容</td>
+				<td>
+					本活動內容擬邀請企業人資和各領域資深主管、職涯專業諮商師蒞校擔任企業職場老師或職涯教練，以一對一近距離指導方式，為本校同學進行個人生涯發展規劃及職涯諮詢指導、履歷寫作、面試技巧，讓學生發掘自我潛能並在起跑點上更具備潛在優勢。
+			</tr>
+			<tr>
+				<td>活動說明</td>
+				<td>
+					<p>企業可於報名系統上勾選擔任「企業職場導師」意願，擔任企業導師可為企業人資(具人資相關證照與學歷佳)或是各部門技術及行政主管，希望能夠讓交大學生模擬面談真實情況並更了解企業的各機構運作；主辦單位保留最終邀請企業職涯導師名單之權利。</p>
+					<ol>
+						<li>建立業師資料庫：由就輔組與Open House小組邀請業界各領域主管參與，彙整專長及可提供諮詢之項目建立資料庫。</li>
+						<li>一對一職涯諮詢服務：同學可透過活動網頁瀏覽業師所屬專業和領域來選定業師並進行預約；業師每次駐點至少3小時，諮詢同學以1人或相同領域多人進行。</li>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>活動對象</td>
+				<td>
+					交大全體學生，以具研發替代役申請資格之學生優先。
+				</td>
+			</tr>
+			<tr>
+				<td>回饋方案</td>
+				<td>
+					駐點每次3小時支付企業導師2千元。
+				</td>
+			</tr>
+		</table>
+
+		<div class="ui segment">
+			<h3 class="ui header">願意提供</h3>
+			<div class="ui checkbox">
+				{{form.career_tutor}}
+				<label style="color:black">{{form.career_tutor.label}}</label>
+			</div>
+		</div>
 	</div>
 
 	<button class="ui teal button" type="submit">送出資料</button>
