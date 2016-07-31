@@ -457,6 +457,33 @@ def SponsorAdmin(request):
 
 	return render(request,'sponsor_admin.html',locals())
 
+@login_required(login_url='/company/login/')
+def CompanySurvey(request):
+	try:
+		cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+	except Exception as e:
+		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+		return render(request,'error.html',locals())
+
+	try:
+		my_survey = rdss.models.CompanySurvey.objects.get(cid=request.user.cid)
+	except ObjectDoesNotExist:
+		my_survey = None
+	if request.POST:
+		data = request.POST.copy()
+		# decide cid in the form
+		data['cid']=request.user.cid
+		form = rdss.forms.SurveyForm(data=data)
+		if form.is_valid():
+			form.save()
+			(msg_display,msg_type,msg_content) = (True,"green","問卷填寫完成，感謝您")
+		else:
+			(msg_display,msg_type,msg_content) = (True,"error","儲存失敗，有未完成欄位")
+			print(form.errors)
+	else:
+		form = rdss.forms.SurveyForm(instance=my_survey)
+	return render(request,'survey_form.html',locals())
+
 #========================RDSS public view=================
 def RDSSPublicIndex(request):
 	return render(request,'rdss_index.html',locals())

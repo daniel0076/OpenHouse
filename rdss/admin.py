@@ -107,6 +107,10 @@ class RdssConfigsAdmin(admin.ModelAdmin):
 	def configs(self,obj):
 		return "活動設定"
 
+@admin.register(models.CompanySurvey)
+class SurveyAdmin(admin.ModelAdmin):
+	list_display = ("company",)
+
 
 # Register your models here.
 admin.site.register(models.Sponsorship)

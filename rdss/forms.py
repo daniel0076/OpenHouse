@@ -89,3 +89,19 @@ class JobfairInfoCreationForm(forms.ModelForm):
 class EmailPostForm(forms.Form):
     email = forms.EmailField()
 
+class SurveyForm(forms.ModelForm):
+	#def __init__(self, *args, **kwargs):
+	#		super(SignupCreationForm, self).__init__(*args, **kwargs)
+	#		self.fields['seminar'].widget.attrs.update({
+	#			'class': 'ui dropdown',
+	#			})
+
+	class Meta:
+		model=rdss.models.CompanySurvey
+		fields='__all__'
+
+	def save(self,commit=True):
+		survey = super(SurveyForm, self).save(commit=False)
+		if commit:
+			survey.save()
+		return survey
