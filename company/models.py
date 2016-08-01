@@ -47,13 +47,13 @@ class Company(AbstractBaseUser):
 	hr_mobile = models.CharField(u'人資手機',max_length=32,validators=[validate_mobile],help_text='格式: 0912-345678')
 	hr_email = models.CharField(u'人資Email',max_length=64,validators=[validate_email])
 	#hr spare
-	hr2_name = models.CharField(u'第二位人資姓名',max_length=32,default="")
-	hr2_phone = models.CharField(u'第二位人資電話',max_length=32,default="",validators=[validate_phone],help_text='格式: 區碼-號碼#分機')
-	hr2_fax = models.CharField(u'第二位人資傳真',max_length=32, default="",help_text='格式: 區碼-號碼#分機')
-	hr2_mobile = models.CharField(u'第二位人資手機',max_length=32,default="",
+	hr2_name = models.CharField(u'第二位人資姓名',max_length=32,default="",blank=True)
+	hr2_phone = models.CharField(u'第二位人資電話',max_length=32,default="",blank=True,validators=[validate_phone],help_text='格式: 區碼-號碼#分機')
+	hr2_fax = models.CharField(u'第二位人資傳真',max_length=32, default="",blank=True,help_text='格式: 區碼-號碼#分機')
+	hr2_mobile = models.CharField(u'第二位人資手機',max_length=32,default="",blank=True,
 			validators=[validate_mobile],help_text='格式: 0912-345678')
-	hr2_email = models.CharField(u'第二位人資Email',max_length=64,default="",validators=[validate_email])
-	hr_ps = models.TextField(u'人員相關備註',default="")
+	hr2_email = models.CharField(u'第二位人資Email',max_length=64,default="",blank=True,validators=[validate_email])
+	hr_ps = models.TextField(u'人員相關備註',default="",blank=True)
 	logo=models.ImageField(u"公司LOGO",upload_to = 'company_logos',null=True,help_text='''網站展示、筆記本內頁公司介紹使用，僅接受 jpg, png, gif 格式。建議解析度為 300 dpi以上，以達到最佳效果。''')
 	last_update= models.DateTimeField(u'更新時間',auto_now=True,null=True)
 	date_join = models.DateTimeField(u'date joined', auto_now_add=True)
