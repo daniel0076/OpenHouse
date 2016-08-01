@@ -64,6 +64,8 @@ class Signup(models.Model):
 	lecture = models.BooleanField(u'就業力講座')
 	#post_ad = models.BooleanField(u'刊登廣告')
 	payment = models.BooleanField(u'完成付款',default=False)
+	receipt_no = models.CharField(u'收據號碼',max_length=20,null=True,blank=True)
+	ps = models.TextField(u'備註',null=True,blank=True)
 	added = models.DateTimeField(u'報名時間',auto_now_add=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 

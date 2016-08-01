@@ -12,7 +12,7 @@ class SignupCreationForm(forms.ModelForm):
 	class Meta:
 		model=rdss.models.Signup
 		fields='__all__'
-		exclude=['payment']
+		exclude=['payment','receipt_no','ps']
 
 	def save(self,commit=True):
 		record = super(SignupCreationForm, self).save(commit=False)
@@ -31,7 +31,7 @@ class SignupEditForm(forms.ModelForm):
 	class Meta:
 		model=rdss.models.Signup
 		fields='__all__'
-		exclude=['payment',]
+		exclude=['payment','receipt_no','ps']
 
 	#def clean_cid(self):
 	#		raise forms.ValidationError(
