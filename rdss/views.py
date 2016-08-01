@@ -13,10 +13,10 @@ from .forms import EmailPostForm
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
-sidebar_ui = dict()
 
 @login_required(login_url='/company/login/')
 def RDSSCompanyIndex(request):
+	sidebar_ui = {'index': 'active'}
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
 	return render(request,'rdss_company_index.html',locals())
@@ -70,7 +70,7 @@ def ControlPanel(request):
 	# control semantic ui class
 	step_ui = ["","",""] # for step ui in template
 	nav_rdss="active"
-	sidebar_ui = {'index':"active"}
+	sidebar_ui = {'status':"active"}
 
 	if not signup_data:
 		step_ui[0] = "active"
@@ -140,6 +140,9 @@ def SeminarInfo(request):
 			info.save()
 	else:
 		form = rdss.forms.SeminarInfoCreationForm(instance=seminar_info)
+
+	#semantic ui
+	sidebar_ui = {'seminar_info':"active"}
 	return render(request,'seminar_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -164,7 +167,9 @@ def JobfairInfo(request):
 			return redirect('rdss_jobfair_info')
 	else:
 		form = rdss.forms.JobfairInfoCreationForm(instance=jobfair_info)
-	print(locals())
+
+	#semantic ui
+	sidebar_ui = {'jobfair_info':"active"}
 	return render(request,'jobfair_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -402,6 +407,7 @@ def JobfairSelectControl(request):
 	else:
 		raise Http404("Invalid")
 
+@login_required(login_url='/company/login/')
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
 	#clear sponsor ships objects
 	old_sponsorships = rdss.models.Sponsorship.objects.filter(cid=sponsor)
@@ -482,6 +488,8 @@ def CompanySurvey(request):
 			print(form.errors)
 	else:
 		form = rdss.forms.SurveyForm(instance=my_survey)
+	#semantic ui
+	sidebar_ui = {'survey':"active"}
 	return render(request,'survey_form.html',locals())
 
 #========================RDSS public view=================
