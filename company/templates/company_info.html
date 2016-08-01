@@ -12,7 +12,8 @@
 			</div>
 			<div class="extra content">
 				<div class="ui two buttons">
-					<a class="ui basic red button" href="{% url 'company_edit' %}">修改資料</a>
+					<a class="ui basic red button" href="{% url 'reset_password' %}">修改密碼</a>
+					<a class="ui basic blue button" href="{% url 'company_edit' %}">修改資料</a>
 				</div>
 			</div>
 		</div>
@@ -81,10 +82,6 @@
 		<div class="ui segment">
 			<div class="ui header">公司介紹</div>
 					<p>{{company_info.introduction}}</p>
-		</div>
-		<div class="ui segment">
-			<div class="ui header">海外徵才資訊</div>
-					<p>{{company_info.abroad}}</p>
 		</div>
 	</div>
 </div>

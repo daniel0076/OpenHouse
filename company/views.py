@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import  HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.decorators import login_required
 from company.forms import CompanyCreationForm,CompanyEditForm,CompanyPasswordResetForm
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
@@ -13,6 +14,7 @@ import rdss.models
 import company.models
 # Create your views here.
 
+@login_required(login_url='/company/login/')
 def CompanyIndex(request):
 
 	#semantic ui control
@@ -22,6 +24,7 @@ def CompanyIndex(request):
 	rdss_file_list = rdss.models.Files.objects.all()
 	return render(request,'company_index.html',locals())
 
+@login_required(login_url='/company/login/')
 def CompanyInfo(request):
 	company_info = company.models.Company.objects.get(cid=request.user.cid)
 	return render(request,'company_info.html',locals())
@@ -44,6 +47,7 @@ def CompanyCreation(request):
 	form = CompanyCreationForm();
 	return render(request,'company_create_form.html',locals())
 
+@login_required(login_url='/company/login/')
 def CompanyEdit(request):
 	submit_btn_name = "確認修改"
 	if request.user and request.user.is_authenticated():
@@ -122,3 +126,13 @@ def password_reset_confirm(request,uidb64,token):
     else:
         validlink = False
     return redirect('/')
+
+def ResetPassword(request):
+	user = Company.objects.get(cid=request.user.cid)
+	if request.method == 'POST':
+		form = SetPasswordForm(user,request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect(CompanyInfo)
+	form = SetPasswordForm(user)
+	return render(request,'password_reset_confirm.html',{'form': form})
