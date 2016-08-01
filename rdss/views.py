@@ -465,11 +465,6 @@ def SponsorAdmin(request):
 
 @login_required(login_url='/company/login/')
 def CompanySurvey(request):
-	try:
-		cid = rdss.models.Signup.objects.get(cid=request.user.cid)
-	except Exception as e:
-		error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
-		return render(request,'error.html',locals())
 
 	try:
 		my_survey = rdss.models.CompanySurvey.objects.get(cid=request.user.cid)
