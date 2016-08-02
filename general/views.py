@@ -10,7 +10,7 @@ import datetime,json
 from . import models
 
 def Index(request):
-	general_news_list = models.News.objects.filter(category="最新消息").exclude(perm="company_only")
+	general_news_list = models.News.objects.filter(category="最新消息").exclude(perm="company_only").order_by("-updated_time")
 	recruit_news_list = models.News.objects.filter(category="徵才專區").exclude(perm="company_only")
 	return render(request,'general/index.html',locals())
 
