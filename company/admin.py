@@ -60,7 +60,7 @@ class UserAdmin(BaseUserAdmin):
 	# The fields to be used in displaying the User model.
 	# These override the definitions on the base UserAdmin
 	# that reference specific fields on auth.User.
-	list_display = ('cid','name', 'category','hr_name','hr_phone','hr_email')
+	list_display = ('cid','name', 'category','hr_name','hr_phone','hr_email','last_update')
 	list_filter = ()
 	fieldsets = (
 			("基本資料", {
