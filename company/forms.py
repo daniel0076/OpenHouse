@@ -105,17 +105,18 @@ class CompanyPasswordResetForm(PasswordResetForm):
         'does_not_exist':_("這個帳號不存在"),
     }
     user = forms.CharField(max_length=8)
+    email = None
     def save(self,request=None):
         current_site = get_current_site(request)
-        email = self.cleaned_data["email"]
-        user = Company.objects.get(cid=self.cleaned_data['user'])
+        company = Company.objects.get(cid=self.cleaned_data['user'])
+        email = company.hr_email
         context = {
             'email': email,
             'domain': current_site.domain,
             'site_name': current_site.name,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'user':user,
-            'token': default_token_generator.make_token(user),
+            'uid': urlsafe_base64_encode(force_bytes(company.pk)),
+            'user':company,
+            'token': default_token_generator.make_token(company),
             'protocol': 'http'
         }
         self.send_mail('password_reset_subject.txt','password_reset_email.html',context,'skye53653@gmail.com',email)
