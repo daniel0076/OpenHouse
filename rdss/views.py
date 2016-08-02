@@ -191,12 +191,10 @@ def SeminarSelectFormGen(request):
 
 	#check the company have been assigned a slot select order and time
 	try:
-		my_select_time = rdss.models.Seminar_Order.objects.get(cid=my_signup)
+		seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 	except Exception as e:
-		error_msg="選位時間及順序尚未排定，請靜候選位通知"
-		return render(request,'error.html',locals())
+		seminar_select_time = "選位時間及順序尚未排定，您可以先參考下方說明會時間表"
 
-	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
 	seminar_session = my_signup.get_seminar_display()
 
 	configs=rdss.models.RdssConfigs.objects.all()[0]
@@ -250,8 +248,12 @@ def SeminarSelectControl(request):
 		else:
 			return_data['my_slot'] = False
 
-		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=request.user.cid).first().time
-		if timezone.now() < my_select_time:
+		try:
+			my_select_time = rdss.models.Seminar_Order.objects.filter(cid=request.user.cid).first().time
+		except AttributeError:
+			my_select_time = None
+
+		if not my_select_time or timezone.now() < my_select_time:
 			select_ctrl = dict()
 			select_ctrl['display'] = True
 			select_ctrl['msg'] = '目前非貴公司選位時間，可先參考說明會時間表，並待選位時間內選位'
@@ -267,7 +269,7 @@ def SeminarSelectControl(request):
 	elif action == "select":
 		mycid = request.user.cid
 		my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
-		if timezone.now() <my_select_time:
+		if not my_select_time or timezone.now() <my_select_time:
 			return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 
 		slot_session , slot_date_str = post_data.get("slot").split('_')
@@ -328,12 +330,10 @@ def JobfairSelectFormGen(request):
 		return render(request,'error.html',locals())
 	#check the company have been assigned a slot select order and time
 	try:
-		my_select_time = rdss.models.Jobfair_Order.objects.get(cid=my_signup)
+		jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first().time
 	except Exception as e:
-		error_msg="選位時間及順序尚未排定，請靜候選位通知"
-		return render(request,'error.html',locals())
+		jobfair_select_time = "選位時間及順序尚未排定，您可以先參考攤位圖"
 
-	jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first().time
 	slots = rdss.models.Jobfair_Slot.objects.all()
 
 	return render(request,'jobfair_select.html',locals())
@@ -358,8 +358,11 @@ def JobfairSelectControl(request):
 			slot_list_return.append(return_data)
 		my_slot_list = [slot.serial_no for slot in rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid)]
 
-		my_select_time = rdss.models.Jobfair_Order.objects.filter(cid=request.user.cid).first().time
-		if timezone.now() < my_select_time:
+		try:
+			my_select_time = rdss.models.Jobfair_Order.objects.filter(cid=request.user.cid).first().time
+		except AttributeError:
+			my_select_time = None
+		if not my_select_time or timezone.now() < my_select_time:
 			select_ctrl = dict()
 			select_ctrl['display'] = True
 			select_ctrl['msg'] = '目前非貴公司選位時間，可先參考攤位圖，並待選位時間內選位'
