@@ -58,8 +58,18 @@
 					{{form.website}}
 				</div>
 
+				<div class="required field">
+					<label>{{form.brief.label_tag}}</label>
+					{{form.brief}}
+				</div>
+				<div class="required field">
+					<label>{{form.introduction.label_tag}}</label>
+					{{form.introduction}}
+				</div>
+
 			</div>
 			<div class="column">
+				<div class="ui dividing header">人資資料</div>
 				<div class="required field">
 					<label>{{form.hr_name.label_tag}}</label>
 					{{form.hr_name}}
@@ -80,14 +90,32 @@
 					<label>{{form.hr_email.label_tag}}</label>
 					{{form.hr_email}}
 				</div>
-				<div class="required field">
-					<label>{{form.brief.label_tag}}</label>
-					{{form.brief}}
+				<div class="ui dividing header">第二位人資資料</div>
+				<div class="field">
+					<label>{{form.hr2_name.label_tag}}</label>
+					{{form.hr2_name}}
 				</div>
-				<div class="required field">
-					<label>{{form.introduction.label_tag}}</label>
-					{{form.introduction}}
+				<div class="field">
+					<label>{{form.hr2_phone.label_tag}}</label>
+					{{form.hr2_phone}}
 				</div>
+				<div class="field">
+					<label>{{form.hr2_mobile.label_tag}}</label>
+					{{form.hr2_mobile}}
+				</div>
+				<div class="field">
+					<label>{{form.hr2_fax.label_tag}}</label>
+					{{form.hr2_fax}}
+				</div>
+				<div class="field">
+					<label>{{form.hr2_email.label_tag}}</label>
+					{{form.hr2_email}}
+				</div>
+				<div class="field">
+					<label>{{form.hrps.label_tag}}</label>
+					{{form.hr2_email}}
+				</div>
+
 			</div>
 		</div>
 	</div>

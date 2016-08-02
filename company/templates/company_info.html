@@ -70,6 +70,32 @@
 					<td>人資Email</td>
 					<td>{{company_info.hr_email}}</i></td>
 				</tr>
+				{% if company_info.hr2_name %}
+				<tr>
+					<td>第二位人資姓名</td>
+					<td>{{company_info.hr2_name}}</i></td>
+				</tr>
+				<tr>
+					<td>第二位人資手機</td>
+					<td>{{company_info.hr2_phone}}</i></td>
+				</tr>
+				<tr>
+					<td>第二位人資電話</td>
+					<td>{{company_info.hr2_mobile}}</i></td>
+				</tr>
+				<tr>
+					<td>第二位人資傳真</td>
+					<td>{{company_info.hr2_fax}}</i></td>
+				</tr>
+				<tr>
+					<td>第二位人資Email</td>
+					<td>{{company_info.hr2_email}}</i></td>
+				</tr>
+				<tr>
+					<td>人員備註</td>
+					<td>{{company_info.hr_ps}}</i></td>
+				</tr>
+				{% endif %}
 			</tbody>
 		</table>
 	</div>
