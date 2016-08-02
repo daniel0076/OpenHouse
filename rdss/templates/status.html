@@ -53,48 +53,20 @@
 					<th>狀態</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<td>說明會選位時間</td>
-					<td>{{slot_info.seminar_select_time}}</td>
-				</tr>
-				<tr>
-					<td>就博會選位時間</td>
-					<td>{{slot_info.jobfair_select_time}}</td>
-				</tr>
-				<tr>
-					<td>說明會場次</td>
-					<td>{{slot_info.seminar_slot}}</td>
-				</tr>
-				<tr>
-					<td>就博會攤位</td>
-					<td>{{slot_info.jobfair_slot}}</td>
-				</tr>
-				<tr>
-					<td>活動贊助</td>
-					<td><i class="large red remove icon"></i></td>
-				</tr>
-				<tr>
-					<td>說明會資訊</td>
-					<td><i class="large red remove icon"></i></td>
-				</tr>
-				<tr>
-					<td>就博會資訊</td>
-					<td><i class="large red remove icon"></i></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
 
-	<div class="column">
-		<table class="ui selectable celled striped table">
-			<thead>
-				<tr>
-					<th>項目</th>
-					<th>狀態</th>
-				</tr>
-			</thead>
 			<tbody>
+				<tr>
+					<td>企業滿意度問卷</td>
+					<td>
+						{% if fill_survey %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						尚末填寫
+						{% endif %}
+					</td>
+				</tr>
 				<tr>
 					<td>說明會場次</td>
 					<td>
@@ -116,34 +88,60 @@
 					</td>
 				</tr>
 				<tr>
-					<td>提供 企業參訪</td>
+					<td>活動贊助金額</td>
 					<td>
-						{% if signup_data.visit %}
-						<i class="large green checkmark icon"></i>
-						{% else %}
-						<i class="large red remove icon"></i>
-						{% endif %}
-					</td>
-				</tr>
-				<tr>
-					<td>提供 就業力講座</td>
-					<td>
-						{% if signup_data.lecture %}
-						<i class="large green checkmark icon"></i>
-						{% else %}
-						<i class="large red remove icon"></i>
-						{% endif %}
+						{{sponsor_amount}} 元
 					</td>
 				</tr>
 				<tr>
 					<td>活動費用</td>
 					<td>
-						{{fee}}
+						{{fee}} 元
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+
+	<div class="column">
+		<table class="ui selectable celled striped table">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>狀態</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>說明會選位時間</td>
+					<td>{{slot_info.seminar_select_time}}</td>
+				</tr>
+				<tr>
+					<td>就博會選位時間</td>
+					<td>{{slot_info.jobfair_select_time}}</td>
+				</tr>
+				<tr>
+					<td>說明會場次</td>
+					<td>{{slot_info.seminar_slot}}</td>
+				</tr>
+				<tr>
+					<td>就博會攤位</td>
+					<td>編號： {{slot_info.jobfair_slot}}</td>
+				</tr>
+
+				<tr>
+					<td>說明會資訊</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+				<tr>
+					<td>就博會資訊</td>
+					<td><i class="large red remove icon"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
 
 </div>
 

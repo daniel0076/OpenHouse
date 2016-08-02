@@ -44,7 +44,7 @@ def ControlPanel(request):
 	seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first()
 	jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first()
 	seminar_slot = rdss.models.Seminar_Slot.objects.filter(cid=mycid).first()
-	jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid).first()
+	jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid)
 	if seminar_select_time:
 		slot_info['seminar_select_time'] = seminar_select_time.time
 		slot_info['seminar_slot'] = "請依時段於左方選單選位"
@@ -55,7 +55,7 @@ def ControlPanel(request):
 		slot_info['seminar_slot'] = "{} {}".format(seminar_slot.date,
 				seminar_session_display[seminar_slot.session])
 	if jobfair_slot:
-		slot_info['jobfair_slot'] = jobfair_slot
+		slot_info['jobfair_slot'] = [int(s.serial_no) for s in jobfair_slot]
 
 	fee = 0
 	try:
@@ -66,6 +66,19 @@ def ControlPanel(request):
 		fee += signup_data.jobfair*configs.jobfair_booth_fee
 	except AttributeError:
 		pass
+
+	sponsor_amount = 0
+
+	sponsorships = rdss.models.Sponsorship.objects.filter(cid__cid = request.user.cid)
+	for s in sponsorships:
+		sponsor_amount += s.item.price
+
+	try:
+		rdss.models.CompanySurvey.objects.get(cid = request.user.cid)
+		fill_survey = True
+	except:
+		fill_survey = False
+
 
 	# control semantic ui class
 	step_ui = ["","",""] # for step ui in template
