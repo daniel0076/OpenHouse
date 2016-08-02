@@ -407,7 +407,6 @@ def JobfairSelectControl(request):
 	else:
 		raise Http404("Invalid")
 
-@login_required(login_url='/company/login/')
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
 	#clear sponsor ships objects
 	old_sponsorships = rdss.models.Sponsorship.objects.filter(cid=sponsor)
