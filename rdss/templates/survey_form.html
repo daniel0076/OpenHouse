@@ -145,7 +145,11 @@ $(document).ready(function(){
 	<div class="ui segment">
 		<h3 class="ui dividing header">(3) 針對交大畢業生在職場上的表現問題，請協助評估後進行勾選</h3>
 		<div class="ui message">
-			若貴企業目前並無交大畢業生，請填寫對交大畢業生之期望
+			<p>若貴企業目前並無交通大學畢業生，請勾選下方空格，題目則留空不填</p>
+			<div class="ui checkbox">
+				{{form.no_nctu_employee}}
+				<label>{{form.no_nctu_employee.label}}
+			</div>
 		</div>
 		<table class="ui celled striped table">
 			<thead>
