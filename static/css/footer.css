@@ -10,3 +10,6 @@
 	bottom:1em;
 	margin:auto;
 }
+.tech-logo-wrapper img{
+	max-height: 25px;
+}
