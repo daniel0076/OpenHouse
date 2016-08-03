@@ -12,6 +12,8 @@
 		{{news.content|safe}}
 </div>
 <div style="margin:auto;width:60%; margin-top:2rem">
-	<a class="ui blue button" href="/">回首頁</a>
+	<a class="ui button" href="/">回首頁</a>
+	<a class="ui button" href="{% url 'general_news_list' %}">最新消息</a>
+	<a class="ui button" href="{% url 'recruit_news_list' %}">企業徵才資訊</a>
 </div>
 {% endblock %}
