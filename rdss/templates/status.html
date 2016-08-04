@@ -131,7 +131,15 @@
 
 				<tr>
 					<td>說明會資訊</td>
-					<td><i class="large red remove icon"></i></td>
+					<td>
+						{% if seminar_info %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						<a href="{% url 'rdss_seminar_info' %}">點此填寫問卷</a>
+						{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<td>就博會資訊</td>

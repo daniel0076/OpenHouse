@@ -68,10 +68,14 @@ def ControlPanel(request):
 		pass
 
 	sponsor_amount = 0
-
 	sponsorships = rdss.models.Sponsorship.objects.filter(cid__cid = request.user.cid)
 	for s in sponsorships:
 		sponsor_amount += s.item.price
+
+	try:
+		seminar_info = rdss.models.Seminar_Info.objects.get(cid = request.user.cid)
+	except ObjectDoesNotExist:
+		seminar_info = None
 
 	try:
 		rdss.models.CompanySurvey.objects.get(cid = request.user.cid)
@@ -151,6 +155,7 @@ def SeminarInfo(request):
 			info = form.save(commit=False)
 			info.cid = cid
 			info.save()
+			return redirect(SeminarInfo)
 	else:
 		form = rdss.forms.SeminarInfoCreationForm(instance=seminar_info)
 

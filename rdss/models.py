@@ -1,5 +1,9 @@
 from django.db import models
+from django.core.validators import RegexValidator,MinLengthValidator,validate_email
 import company.models
+
+def validate_mobile(string):
+	RegexValidator(regex='^\d{4}-\d{6}$',message='手機格式為：0987-654321')(string)
 CATEGORYS = (
 		(u'半導體', u'半導體'),
 		(u'消費電子', u'消費電子'),
@@ -122,17 +126,17 @@ class Seminar_Info(models.Model):
 	speaker_title = models.CharField(u'主講人稱謂',max_length=30)
 	speaker_email = models.EmailField(u'主講人Email',max_length=254)
 	attendees = models.SmallIntegerField(u'廠商到場人數')
-	raffle_prize = models.CharField(u'抽獎獎品',max_length=254)
-	raffle_prize_amount = models.SmallIntegerField(u'抽獎獎品數量')
-	qa_prize = models.CharField(u'QA獎獎品',max_length=254)
-	qa_prize_amount = models.SmallIntegerField(u'QA獎獎品數量')
-	attend_prize = models.CharField(u'參加獎獎品',max_length=254)
-	attend_prize_amount = models.SmallIntegerField(u'參加獎獎品數量')
-	snack_box = models.SmallIntegerField(u'加碼餐盒數量')
+	raffle_prize = models.CharField(u'抽獎獎品',max_length=254,null=True,blank=True)
+	raffle_prize_amount = models.SmallIntegerField(u'抽獎獎品數量',default=0)
+	qa_prize = models.CharField(u'QA獎獎品',max_length=254,null=True,blank=True)
+	qa_prize_amount = models.SmallIntegerField(u'QA獎獎品數量',default=0)
+	attend_prize = models.CharField(u'參加獎獎品',max_length=254,null=True,blank=True)
+	attend_prize_amount = models.SmallIntegerField(u'參加獎獎品數量',default=0)
+	snack_box = models.SmallIntegerField(u'加碼餐盒數量',default=0)
 	contact = models.CharField(u'聯絡人',max_length=30)
-	contact_mobile = models.CharField(u'聯絡人手機',max_length=16)
+	contact_mobile = models.CharField(u'聯絡人手機',max_length=16,validators=[validate_mobile])
 	contact_email = models.EmailField(u'聯絡人Email',max_length=254)
-	ps = models.EmailField(u'其它需求',max_length=254)
+	ps = models.TextField(u'其它需求',null=True,blank=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
@@ -173,11 +177,11 @@ class Jobfair_Info(models.Model):
 	cid = models.OneToOneField('Signup',to_field='cid',verbose_name = u'公司統編',on_delete=models.CASCADE)
 	signname = models.CharField(u'攤位招牌名稱',max_length=30)
 	contact = models.CharField(u'聯絡人',max_length=30)
-	contact_mobile = models.CharField(u'聯絡人手機',max_length=16)
+	contact_mobile = models.CharField(u'聯絡人手機',max_length=16,validators=[validate_mobile])
 	contact_email = models.EmailField(u'聯絡人Email',max_length=254)
 	parking_tickets = models.SmallIntegerField(u'停車證數量')
 	power_req = models.CharField(u'用電需求',max_length=256)
-	ps = models.CharField(u'其它需求',max_length=254,blank=True)
+	ps = models.TextField(u'其它需求',blank=True)
 	updated = models.DateTimeField(u'更新時間',auto_now=True)
 
 	class Meta:
