@@ -10,6 +10,11 @@ def validate_all_num(string):
 	if not string.isdigit():
 		raise ValidationError('必需都是數字')
 
+def validate_mobile(string):
+    RegexValidator(regex='^\d{4}-\d{6}$',message='手機格式為：0987-654321')(string)
+def validate_phone(string):
+    RegexValidator(regex='^\d+-\d+(#\d+)?$',message='電話/傳真格式為：區碼-號碼#分機')(string)
+
 
 
 class Company(AbstractBaseUser):
