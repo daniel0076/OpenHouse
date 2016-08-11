@@ -37,6 +37,8 @@
 						<div class="ui checkbox">
 							{% if i in my_sponsor_items %}
 								<input name="{{i.name}}" type="checkbox" value="1" checked="checked" >
+							{% elif i.num_sponsor >= i.limit %}
+								<input name="{{i.name}}" type="checkbox" value="1" disabled="disabled" >
 							{% else %}
 								<input name="{{i.name}}" type="checkbox" value="1" >
 							{%endif%}
@@ -46,7 +48,7 @@
 					<td><strong>金額</strong></td>
 					<td>{{i.price}}</td>
 					<td><strong>數量限制</strong></td>
-					<td>{{i.limit}}</td>
+					<td>{{i.num_sponsor}}/{{i.limit}}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -76,6 +78,8 @@
 						<div class="ui checkbox">
 						{% if i in my_sponsor_items %}
 							<input name="{{i.name}}" type="checkbox" value="1" checked="checked" >
+						{% elif i.num_sponsor >= i.limit %}
+							<input name="{{i.name}}" type="checkbox" value="1" disabled="disabled" >
 						{% else %}
 							<input name="{{i.name}}" type="checkbox" value="1" >
 						{%endif%}
@@ -84,7 +88,7 @@
 					<td><strong>金額</strong></td>
 					<td>{{i.price}}</td>
 					<td><strong>數量限制</strong></td>
-					<td>{{i.limit}}</td>
+					<td>{{i.num_sponsor}}/{{i.limit}}</td>
 				</tr>
 			</tbody>
 	</table>

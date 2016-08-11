@@ -12,6 +12,7 @@ import datetime,json,csv
 from .forms import EmailPostForm
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count
 # Create your views here.
 
 @login_required(login_url='/company/login/')
@@ -459,8 +460,10 @@ def Sponsor(request):
 
 	#活動專刊的部份是變動不大，且版面特殊，採客製寫法
 	monograph_main = rdss.models.Sponsor_Items.objects.filter(name="活動專刊").first()
-	monograph_items = rdss.models.Sponsor_Items.objects.filter(name__contains="活動專刊(" )
-	other_items = rdss.models.Sponsor_Items.objects.all().exclude(name__contains="活動專刊")
+	monograph_items = rdss.models.Sponsor_Items.objects.filter(name__contains="活動專刊(" )\
+			.annotate(num_sponsor = Count('sponsorship'))
+	other_items = rdss.models.Sponsor_Items.objects.all().exclude(name__contains="活動專刊")\
+			.annotate(num_sponsor = Count('sponsorship'))
 	sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
 	my_sponsor_items = [s.item for s in sponsorship ]
 	return render(request,'sponsor.html',locals())
