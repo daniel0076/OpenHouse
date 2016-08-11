@@ -497,7 +497,7 @@ def CompanySurvey(request):
 		data = request.POST.copy()
 		# decide cid in the form
 		data['cid']=request.user.cid
-		form = rdss.forms.SurveyForm(data=data)
+		form = rdss.forms.SurveyForm(data=data, instance = my_survey)
 		if form.is_valid():
 			form.save()
 			(msg_display,msg_type,msg_content) = (True,"green","問卷填寫完成，感謝您")
