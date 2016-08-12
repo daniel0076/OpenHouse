@@ -12,6 +12,15 @@
 			<th>Amount </th>
 		</thead>
 		<tbody>
+
+      <tr>
+			<td colspan=2> 目前贊助/贊助上限 </td>
+			{% for item in sponsor_items %}
+			<td> {{ item.num_sponsor}} / {{ item.limit}}</td>
+			{% endfor %}
+			<td></td>
+      </tr>
+
 			{% for company in sponsorships_list %}
 			<tr>
 				<td>{{company.cid}}</td>

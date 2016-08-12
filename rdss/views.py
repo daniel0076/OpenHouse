@@ -472,7 +472,8 @@ def Sponsor(request):
 def SponsorAdmin(request):
 	site_header="OpenHouse 管理後台"
 	site_title="OpenHouse"
-	sponsor_items = rdss.models.Sponsor_Items.objects.all()
+	sponsor_items = rdss.models.Sponsor_Items.objects.all()\
+                .annotate(num_sponsor = Count('sponsorship'))
 	companies = rdss.models.Signup.objects.all()
 	sponsorships_list = list()
 	for c in companies:
