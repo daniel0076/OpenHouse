@@ -42,13 +42,16 @@ class Staff(AbstractUser):
 
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(u'姓名',max_length=10)
+	g2_email = models.EmailField(u'G2信箱',max_length=10,help_text='Google Drive權限使用(無則留空)', default='')
 	gender = models.CharField(u'性別', choices=GENDER, max_length=1)
-	birthday = models.DateField(u'出生年月日', default=timezone.now)
+	birthday = models.DateField(u'出生年月日', default=timezone.now,help_text='格式: YYYY/MM/DD')
 	idno= models.CharField(u'身份證字號',max_length=10)
 	role = models.CharField(u'職位', choices=ROLE, blank=True, max_length=10)
 	mobile = models.CharField(u'手機',max_length=12,validators=[validate_mobile],help_text='格式: 0912-345678')
 	fb_url = models.URLField(u'FB個人首頁連結', default='')
-	account = models.CharField(u'郵局或玉山帳號', max_length=15,help_text='必需為自己的名字')
+	account = models.CharField(u'郵局或玉山帳號', max_length=15,help_text='帳戶必需是自己的',
+			blank=True, null=True
+			)
 
 	class Meta:
 		managed = True

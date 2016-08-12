@@ -15,14 +15,14 @@ class StaffCreationForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(StaffCreationForm, self).__init__(*args, **kwargs)
-		self.fields['username'].label="Username/StudentID"
+		self.fields['username'].label="學號(帳號)"
 
 	class Meta:
 		model=staff.models.Staff
 		fields='__all__'
-		exclude=['id','password','last_login','is_active','groups','is_superuser','user_permissions','is_staff','date_joined']
+		exclude=['id','last_name','first_name','password','last_login','is_active','groups','is_superuser','user_permissions','is_staff','date_joined']
 		help_texts = {
-				'username': ('Please use your student id'),
+				'username': ('請輸入學號'),
 				}
 
 	def clean_password2(self):
