@@ -49,7 +49,7 @@ class Staff(AbstractUser):
 	role = models.CharField(u'職位', choices=ROLE, blank=True, max_length=10)
 	mobile = models.CharField(u'手機',max_length=12,validators=[validate_mobile],help_text='格式: 0912-345678')
 	fb_url = models.CharField(u'FB個人首頁連結', default='', max_length=100)
-	account = models.CharField(u'郵局或玉山帳號', max_length=15,help_text='帳戶必需是自己的',
+	account = models.CharField(u'郵局或玉山帳號', max_length=25,help_text='帳戶必需是自己的',
 			blank=True, null=True
 			)
 
