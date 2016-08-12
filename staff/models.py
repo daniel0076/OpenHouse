@@ -48,7 +48,7 @@ class Staff(AbstractUser):
 	idno= models.CharField(u'身份證字號',max_length=10)
 	role = models.CharField(u'職位', choices=ROLE, blank=True, max_length=10)
 	mobile = models.CharField(u'手機',max_length=12,validators=[validate_mobile],help_text='格式: 0912-345678')
-	fb_url = models.URLField(u'FB個人首頁連結', default='')
+	fb_url = models.CharField(u'FB個人首頁連結', default='')
 	account = models.CharField(u'郵局或玉山帳號', max_length=15,help_text='帳戶必需是自己的',
 			blank=True, null=True
 			)
