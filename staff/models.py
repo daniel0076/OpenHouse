@@ -42,7 +42,7 @@ class Staff(AbstractUser):
 
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(u'姓名',max_length=10)
-	g2_email = models.EmailField(u'G2信箱',max_length=10,help_text='Google Drive權限使用(無則留空)', default='')
+	g2_email = models.EmailField(u'G2信箱',max_length=100,help_text='Google Drive權限使用(無則留空)', default='')
 	gender = models.CharField(u'性別', choices=GENDER, max_length=1)
 	birthday = models.DateField(u'出生年月日', default=timezone.now,help_text='格式: YYYY/MM/DD')
 	idno= models.CharField(u'身份證字號',max_length=10)
