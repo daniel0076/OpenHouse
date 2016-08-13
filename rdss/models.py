@@ -222,6 +222,7 @@ class Sponsor_Items(models.Model):
     ps = models.CharField(u'備註', max_length=100, null=True, blank=True)
     price = models.IntegerField(u'價格')
     limit = models.IntegerField(u'數量限制')
+    sponsors = models.ManyToManyField(Signup,through='Sponsorship')
     pic = models.ImageField(u"贊助品預覽圖", upload_to='sponsor_items',
                             null=True,
                             help_text='''提供過去做的贊助品圖片，做為參考''')
@@ -231,13 +232,15 @@ class Sponsor_Items(models.Model):
         verbose_name = u"4. 贊助品"
         verbose_name_plural = u"4. 贊助品"
 
+    def __str__(self):
+        return self.name
+
 
 class Sponsorship(models.Model):
-    id = models.AutoField(primary_key=True)
-    cid = models.ForeignKey('Signup', to_field='cid',
+    cid = models.ForeignKey(Signup, to_field='cid',
                             verbose_name=u'公司',
                             on_delete=models.CASCADE)
-    item = models.ForeignKey('Sponsor_Items',
+    item = models.ForeignKey(Sponsor_Items,
                              to_field='name', on_delete=models.CASCADE)
 
     class Meta:

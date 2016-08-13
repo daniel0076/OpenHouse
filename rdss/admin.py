@@ -9,20 +9,27 @@ admin.AdminSite.site_title="OpenHouse"
 admin.AdminSite.index_template="admin/admin_index.html"
 
 
+class SponsorshipInline(admin.TabularInline):
+    model = models.Sponsorship
+    extra = 1
+
 @admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):
     list_display = ('date', 'session', 'cid')
 
 @admin.register(models.Sponsor_Items)
 class Sponsor_ItemsAdmin(admin.ModelAdmin):
+    inlines = (SponsorshipInline,)
     list_display = ('name', 'description', 'price','limit','current_amount')
     def current_amount(self,obj):
         return models.Sponsorship.objects.filter(item=obj).count()
     current_amount.short_description = '目前贊助數'
 
+
 @admin.register(models.Signup)
 class SignupAdmin(admin.ModelAdmin):
     list_display = ('cid','company_name','seminar','jobfair','career_tutor','visit','lecture','payment')
+    inlines = (SponsorshipInline,)
 
     def company_name(self,obj):
         com = company.models.Company.objects.filter(cid=obj.cid).first()

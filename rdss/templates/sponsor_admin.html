@@ -23,7 +23,7 @@
 
 			{% for company in sponsorships_list %}
 			<tr>
-				<td>{{company.cid}}</td>
+        <td><a href="{{company.change_url}}#sponsorship_set-group">{{company.cid}}</a></td>
 				<td>{{company.shortname}}</td>
 				{% for item_num in company.counts%}
 					<td>{{item_num}}</td>
