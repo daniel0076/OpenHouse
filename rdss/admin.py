@@ -11,105 +11,88 @@ admin.AdminSite.index_template="admin/admin_index.html"
 
 @admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):
-	list_display = ('date', 'session', 'company_name')
-	def company_name(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return None if com == None else com.shortname
+    list_display = ('date', 'session', 'cid')
 
 @admin.register(models.Sponsor_Items)
 class Sponsor_ItemsAdmin(admin.ModelAdmin):
-	list_display = ('name', 'description', 'price','limit','current_amount')
-	def current_amount(self,obj):
-		return models.Sponsorship.objects.filter(item=obj).count()
-	current_amount.short_description = '目前贊助數'
+    list_display = ('name', 'description', 'price','limit','current_amount')
+    def current_amount(self,obj):
+        return models.Sponsorship.objects.filter(item=obj).count()
+    current_amount.short_description = '目前贊助數'
 
 @admin.register(models.Signup)
 class SignupAdmin(admin.ModelAdmin):
-	list_display = ('cid','company_name','seminar','jobfair','career_tutor','visit','lecture','payment')
-	def company_name(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.shortname
+    list_display = ('cid','company_name','seminar','jobfair','career_tutor','visit','lecture','payment')
 
-	#define export URLs eg:...admin/rdss/signup/export
-	def get_urls(self):
-		urls = super(SignupAdmin, self).get_urls()
-		my_urls = [
-				url(r'^export/$', rdss.export.Export_Signup),
-				]
-		return my_urls + urls
+    def company_name(self,obj):
+        com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return com.shortname
+
+    #define export URLs eg:...admin/rdss/signup/export
+    def get_urls(self):
+        urls = super(SignupAdmin, self).get_urls()
+        my_urls = [
+                url(r'^export/$', rdss.export.Export_Signup),
+                ]
+        return my_urls + urls
 
 
 
 @admin.register(models.Company)
 class CompanyAdmin(admin.ModelAdmin):
-	list_display = ('cid','company_name','category','hr_name','hr_phone','hr_mobile','hr_email')
+    list_display = ('cid','category','hr_name','hr_phone','hr_mobile','hr_email')
 
-	def get_urls(self):
-		urls = super(CompanyAdmin, self).get_urls()
-		my_urls = [
-				url(r'^export/$', rdss.export.Export_Company),
-				]
-		return my_urls + urls
+    def get_urls(self):
+        urls = super(CompanyAdmin, self).get_urls()
+        my_urls = [
+                url(r'^export/$', rdss.export.Export_Company),
+                ]
+        return my_urls + urls
 
-	def company_name(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.shortname
+    def category(self,obj):
+        com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return com.category
 
-	def category(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.category
+    def hr_name(self,obj):
+        com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return com.hr_name
 
-	def hr_name(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.hr_name
+    def hr_phone(self,obj):
+        com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return com.hr_phone
 
-	def hr_phone(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.hr_phone
+    def hr_mobile(self,obj):
+        com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return com.hr_mobile
 
-	def hr_mobile(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.hr_mobile
+    def hr_email(self,obj):
+        com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return com.hr_email
 
-	def hr_email(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.hr_email
-
-	company_name.short_description = '公司簡稱'
-	category.short_description = '類型'
-	hr_name.short_description = '人資姓名'
-	hr_phone.short_description = '人資電話'
-	hr_mobile.short_description = '人資手機'
-	hr_email.short_description = '人資Email'
+    category.short_description = '類型'
+    hr_name.short_description = '人資姓名'
+    hr_phone.short_description = '人資電話'
+    hr_mobile.short_description = '人資手機'
+    hr_email.short_description = '人資Email'
 
 @admin.register(models.Seminar_Order)
 class Seminar_OrderAdmin(admin.ModelAdmin):
-	list_display = ("cid","company_name","time","updated")
-
-	def company_name(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.shortname
-	company_name.short_description = '公司簡稱'
+    list_display = ("cid","time","updated")
 
 @admin.register(models.Jobfair_Order)
 class Jobfair_OrderAdmin(admin.ModelAdmin):
-	list_display = ("cid","company_name","time","updated")
-
-	def company_name(self,obj):
-		com = company.models.Company.objects.filter(cid=obj.cid).first()
-		return com.shortname
-	company_name.short_description = '公司簡稱'
+    list_display = ("cid","time","updated")
 
 @admin.register(models.RdssConfigs)
 class RdssConfigsAdmin(admin.ModelAdmin):
-	list_display = ("configs",)
+    list_display = ("configs",)
 
-	def configs(self,obj):
-		return "活動設定"
+    def configs(self,obj):
+        return "活動設定"
 
 @admin.register(models.CompanySurvey)
 class SurveyAdmin(admin.ModelAdmin):
-	list_display = ("company",)
+    list_display = ("company",)
 
 
 # Register your models here.
