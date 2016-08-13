@@ -11,7 +11,7 @@ admin.AdminSite.index_template="admin/admin_index.html"
 
 class SponsorshipInline(admin.TabularInline):
     model = models.Sponsorship
-    extra = 1
+    extra = 0
 
 @admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):

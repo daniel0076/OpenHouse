@@ -484,15 +484,15 @@ def SponsorAdmin(request):
         amount = 0
         for s in sponsorships:
             amount += s.item.price
-            sponsorships_list.append({
-                "cid":c.cid,
-                "counts":counts,
-                "amount":amount,
-                "shortname":shortname,
-                "id":c.id,
-                "change_url": urlresolvers.reverse('admin:rdss_signup_change',
-                                                   args=(c.id,))
-                            })
+        sponsorships_list.append({
+            "cid":c.cid,
+            "counts":counts,
+            "amount":amount,
+            "shortname":shortname,
+            "id":c.id,
+            "change_url": urlresolvers.reverse('admin:rdss_signup_change',
+                                                args=(c.id,))
+                        })
 
     return render(request,'sponsor_admin.html',locals())
 
