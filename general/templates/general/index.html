@@ -3,79 +3,81 @@
 
 {% block 'custom_head' %}
 <title>OpenHouse 交大企業校園徵才</title>
-<script src={% static "js/jsImgSlider/themes/1/js-image-slider.js" %}></script>
+<script src={% static "Ideal-Image-Slider/ideal-image-slider.js" %}></script>
+<script src={% static "Ideal-Image-Slider/extensions/captions/iis-captions.js" %}></script>
 <script src={% static "js/index.js" %}></script>
-<link href={% static "js/jsImgSlider/themes/1/js-image-slider.css" %} rel="stylesheet">
+<link href={% static "Ideal-Image-Slider/ideal-image-slider.css" %} rel="stylesheet">
+<link href={% static "Ideal-Image-Slider/themes/default/default.css" %} rel="stylesheet">
 {% endblock %}
 
 {% block 'body' %}
-<div id="sliderFrame" class="ui segment">
-	<div id="slider">
-	<!-- TODO:fix photos -->
-		<img src={% static "images/P3122622.jpg" %} alt="#oh_intro"/>
-		<img src={% static "images/P3122846.jpg" %} alt="#rdss_intro"/>
-		<img src={% static "images/P3122925.jpg" %} alt="#jobfair_intro"/>
-	</div>
-	<div id="oh_intro" style="display: none;">
-		<h1><em>OpenHouse</em> 國立交通大學 企業校園徵才</h1>
-	</div>
-	<div id="rdss_intro" style="display: none;">
-		<h1>OpenHouse 研發替代役：每年9~10月</h1>
-	</div>
-	<div id="jobfair_intro" style="display: none;">
-		<h1>OpenHouse 校園徵才：每年3~5月</h1>
-	</div>
+
+<div class="ui segment slider_seg">
+  <div id="slider">
+    <img data-src={% static "images/P3122622.jpg" %} data-caption="#caption-1">
+    <img data-src={% static "images/P3122846.jpg" %} data-caption="#caption-2">
+    <img data-src={% static "images/P3122925.jpg" %} data-caption="#caption-3">
+  </div>
+  <div id="caption-1" style="display:none;">
+    <h1>OpenHouse 交通大學 企業校園徵才</h1>
+  </div>
+  <div id="caption-2" style="display:none;">
+    <h1>研發替代役：每年9~11月</h1>
+  </div>
+  <div id="caption-3" style="display:none;">
+    <h1>校園徵才：每年3~5月</h1>
+  </div>
 </div>
 
-<div id="news">
-	<div class="ui equal width centered grid">
-		<div class="column">
-			<div class="ui header">最新消息</div>
-			<div class="ui segment">
-				<table class="ui very basic table">
-					<tbody>
-						{% for news in general_news_list %}
-						<tr>
-						<td><a href="/news/{{news.id}}/"> {{news.title}} </a></td>
-							<td class="right aligned collapsed">{{news.updated_time|date:"Y-m-d"}}</td>
-						</tr>
-						{% endfor %}
-						</tbody>
-						<tfoot><tr>
-							<th colspan="3">
-								<div style="float:right">
-									<p><a href="{% url 'general_news_list' %}">查看更多…</a></p>
-								</div>
-							</th>
-						</tr></tfoot>
+<div id="news" class="ui segment">
+  <div class="ui equal width centered grid">
+    <div class="column">
+      <div class="ui header">最新消息</div>
+      <div class="ui segment">
+        <table class="ui very basic table">
+          <tbody>
+            {% for news in general_news_list %}
+            <tr>
+              <td><a href="/news/{{news.id}}/"> {{news.title}} </a></td>
+              <td class="right aligned collapsed">{{news.updated_time|date:"Y-m-d"}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot><tr>
+              <th colspan="3">
+                <div style="float:right">
+                  <p><a href="{% url 'general_news_list' %}">查看更多…</a></p>
+                </div>
+              </th>
+            </tr></tfoot>
 
-						</table>
+        </table>
 
-			</div>
-		</div>
-		<div class="column">
-			<div class="ui header">企業徵才資訊</div>
-			<div class="ui segment">
-				<table class="ui very basic table">
-					<tbody>
-						{% for news in recruit_news_list %}
-						<tr>
-						<td><a href="/news/{{news.id}}/"> {{news.title}} </a></td>
-							<td class="right aligned collapsed">{{news.updated_time|date:"Y-m-d"}}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-					<tfoot><tr>
-						<th colspan="3">
-							<div style="float:right">
-								<p><a href="{% url 'recruit_news_list' %}">查看更多…</a></p>
-							</div>
-						</th>
-					</tr></tfoot>
-				</table>
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="ui header">企業徵才資訊</div>
+      <div class="ui segment">
+        <table class="ui very basic table">
+          <tbody>
+            {% for news in recruit_news_list %}
+            <tr>
+              <td><a href="/news/{{news.id}}/"> {{news.title}} </a></td>
+              <td class="right aligned collapsed">{{news.updated_time|date:"Y-m-d"}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot><tr>
+              <th colspan="3">
+                <div style="float:right">
+                  <p><a href="{% url 'recruit_news_list' %}">查看更多…</a></p>
+                </div>
+              </th>
+            </tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div>
