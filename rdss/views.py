@@ -252,7 +252,8 @@ def SeminarSelectControl(request):
             return_data[index] = {}
 
             return_data[index]["cid"] = "None" if not s.cid else\
-            company.models.Company.objects.filter(cid=s.cid).first().shortname
+            company.models.Company.objects.filter(cid=s.cid.cid).first().shortname
+
 
             seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
             #session wrong (signup noon but choose night)
@@ -374,7 +375,7 @@ def JobfairSelectControl(request):
             return_data = dict()
             return_data["serial_no"] = slot.serial_no
             return_data["company"] = None if not slot.cid else\
-            company.models.Company.objects.filter(cid=slot.cid).first().shortname
+            company.models.Company.objects.filter(cid=slot.cid.cid).first().shortname
             slot_list_return.append(return_data)
         my_slot_list = [slot.serial_no for slot in rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid)]
 
