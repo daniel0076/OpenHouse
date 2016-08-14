@@ -1,4 +1,59 @@
 {% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>研發替代役 - 活動資訊</title>
+<link href={% static "css/rdss/rdss_public.css" %} rel="stylesheet">
+
+{% endblock %}
 
 {% block 'content' %}
+<h1 class="ui header">研發替代役徵才 活動資訊及參加廠商</h2>
+<div class="ui segment">
+  <p>交大就輔組及Open House企業徵才小組配合內政部役政署辦理研發及產業訓儲替代役系列活動，與各企業間建立人才媒合的機制，為本校學、碩、博士役男學生提供充足的產業資訊，及協助各公司企業於本校尋得優秀人才，以<strong>服務企業、幫助同學</strong>的理念，期達到適才適用、產學雙贏之效果。</p>
+  <p>本次研替徵才活動為期三週，舉辦企業說明會、就業博覽及面談會、役男制度說明會等，協助有意申請研發替代役的同學更清楚申請制度及公司福利職缺等。</p>
+
+  <h2 class="ui dividing header">活動時間及地點</h2>
+  <ol class="ui list">
+
+    <li> 公司說明會日期：<span style="color:blue">2016年9月27日(二) ~ 10月18日(二)</span>
+      <p>舉辦地點: 國立交通大學浩然圖書館國際會議廳、交映樓國際會議廳、資訊館國際會議廳、工程四館合勤講堂等</p>
+    </li>
+
+    <li>就業博覽會及面談會時間：<span style="color:blue">2016年10月14日(五) 10:00 ~ 16:00</span>
+      <p>舉辦地點: 國立交通大學浩然圖書館國際會議廳與前廳</p>
+    </li>
+
+    <li>役政署役男制度說明會：<span style="color:blue">2016年10月6日(四) 12:20 ~ 13:10</span>
+      <p>舉辦地點: 國立交通大學浩然圖書館國際會議廳</p>
+    </li>
+    <li>企業職場導師/職涯教練 一對一諮詢服務：<span style="color:blue">2016年9月至12月</span>
+      <p>學生可於活動網頁依日期場次進行報名，企業主管與專業職涯管理師協助提供履歷健診、面談技巧與職涯潛能開發等諮詢服務。 </p>
+    </li>
+  </ol>
+  <h2 class="ui dividing header">徵才廠商</h2>
+  <div class="ui stackable four column stakable grid">
+    {% for company in company_list %}
+    <div class="column">
+      <div class="ui card">
+        <div class="image">
+          <img class="ui image logo" src="{{company.logo.url}}">
+        </div>
+        <div class="content">
+          <a class="header">{{company.name}}</a>
+          <div class="meta">
+            <span>{{company.category}}</span>
+          </div>
+        </div>
+        <div class="extra content">
+          <a href="{{company.website}}" target="_blank">
+            {{company.website}}
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
 {% endblock %}
