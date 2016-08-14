@@ -39,9 +39,15 @@ a{
 		研發替代役
 		<i class="dropdown inverted icon"></i>
 		<div class="menu">
-			<a class="item" href="/rdss">活動資訊</a>
-			<a class="item">說明會</a>
-			<a class="item">就博會</a>
+     <a class="item" href="{% url 'rdss_index' %}">
+		 活動資訊
+		 </a>
+		 <a class="item" href="{% url 'seminar_public' %}">
+		 說明會
+		 </a>
+		 <a class="item" href="{% url 'jobfair_public' %}">
+		 就博會
+		 </a>
 		</div>
 	</div>
 		<a class="item" id="navtop_rdss_btn" data-content="每年3~5月，敬請期待">

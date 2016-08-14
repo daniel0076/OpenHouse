@@ -3,9 +3,9 @@
 
 {% block 'body' %}
 <link href={% static "css/rdss/sidebar.css" %} rel="stylesheet">
-<div class="ui grid">
+<div class="ui stackable grid">
 	<div class="three wide column" style="margin-left:1em">
-		<div class="ui vertical menu" style="width:85%">
+		<div class="ui vertical stackable menu" style="width:85%">
 			{% if request.user.is_authenticated %}
 
 			<a class="{{sidebar_ui.index}} item" href="{%url 'rdss_company_index' %}">
@@ -42,13 +42,13 @@
 			</a>
 			{% else %}
 			<!-- public view --!>
-		 <a class="item" href="#">
+     <a class="item" href="{% url 'rdss_index' %}">
 		 活動資訊
 		 </a>
-		 <a class="item" href="#">
+		 <a class="item" href="{% url 'seminar_public' %}">
 		 說明會
 		 </a>
-		 <a class="item" href="#">
+		 <a class="item" href="{% url 'jobfair_public' %}">
 		 就博會
 		 </a>
 		 {% endif %}
