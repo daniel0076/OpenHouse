@@ -101,6 +101,9 @@ class RdssConfigsAdmin(admin.ModelAdmin):
 class SurveyAdmin(admin.ModelAdmin):
     list_display = ("company",)
 
+@admin.register(models.Files)
+class RDSSFilesAdmin(admin.ModelAdmin):
+	list_display=('title','category','upload_file','updated_time')
 
 # Register your models here.
 admin.site.register(models.Sponsorship)

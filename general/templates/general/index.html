@@ -14,19 +14,15 @@
 
 <div class="ui segment slider_seg">
   <div id="slider">
-    <img data-src={% static "images/P3122622.jpg" %} data-caption="#caption-1">
-    <img data-src={% static "images/P3122846.jpg" %} data-caption="#caption-2">
-    <img data-src={% static "images/P3122925.jpg" %} data-caption="#caption-3">
+    {% for slide in photo_slide_list %}
+    <img data-src={{slide.photo.url}} data-caption="#caption-{{slide.id}}">
+    {% endfor %}
   </div>
-  <div id="caption-1" style="display:none;">
-    <h1>OpenHouse 交通大學 企業校園徵才</h1>
-  </div>
-  <div id="caption-2" style="display:none;">
-    <h1>研發替代役：每年9~11月</h1>
-  </div>
-  <div id="caption-3" style="display:none;">
-    <h1>校園徵才：每年3~5月</h1>
-  </div>
+    {% for slide in photo_slide_list %}
+    <div id="caption-{{slide.id}}" style="display:none;">
+      <h1>{{slide.title}}</h1>
+    </div>
+    {% endfor %}
 </div>
 
 <div id="news" class="ui segment">

@@ -7,8 +7,8 @@ import rdss.models
 class NewsAdmin(admin.ModelAdmin):
 	list_display=('title','category','created_time','updated_time')
 
-@admin.register(rdss.models.Files)
-class RDSSFilesAdmin(admin.ModelAdmin):
-	list_display=('title','category','upload_file','updated_time')
+@admin.register(models.PhotoSlide)
+class PhotoSlideAdmin(admin.ModelAdmin):
+	list_display=('title','order','photo', 'updated_time')
 
 # Register your models here.

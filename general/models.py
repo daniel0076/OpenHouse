@@ -15,7 +15,7 @@ class News(models.Model):
             (u'both', u'顯示於首頁及廠商'),
             )
     id = models.AutoField(primary_key=True)
-    title = models.CharField(u'標題', jmax_length=100)
+    title = models.CharField(u'標題', max_length=100)
     category = models.CharField(u'公告類別', max_length=5, choices=CATEGORYS)
     perm = models.CharField(u'誰能看到這則公告', max_length=15, choices=PERM)
     content = RichTextUploadingField(u'內容')
@@ -25,3 +25,17 @@ class News(models.Model):
     class Meta:
         verbose_name = "公告系統"
         verbose_name_plural = "公告系統"
+
+
+class PhotoSlide(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(u'標題', max_length=50)
+    order = models.IntegerField(u'順序')
+    photo = models.ImageField(u"照片", upload_to='photo_slide',
+                              help_text="照片請小於300K，過大的圖片會增加伺服器和使用者的負擔"
+                              )
+    updated_time = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        verbose_name = "首頁相片動畫"
+        verbose_name_plural = "首頁相片動畫"
