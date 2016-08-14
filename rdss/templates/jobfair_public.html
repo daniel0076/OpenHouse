@@ -1,5 +1,24 @@
 {% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>研發替代役 - 就業博覽會</title>
+<link href={% static "css/rdss/rdss_public.css" %} rel="stylesheet">
+{% endblock %}
 
 {% block 'content' %}
-{{form.as_p}}
+<h1 class="ui header">企業徵才說明會</h2>
+<h2 class="ui dividing header">活動時間</h2>
+  <ul class="ui list">
+
+    <li>就業博覽會及面談會時間：<span style="color:blue">2016年10月14日(五) 10:00 ~ 16:00</span>
+    </li>
+    <li>舉辦地點: 國立交通大學浩然圖書館國際會議廳與前廳 </li>
+  </ul>
+<h2 class="ui dividing header">集點規則</h2>
+<p>正在規畫中</p>
+<h2 class="ui dividing header">集點獎項</h2>
+<p>正在規畫中</p>
+<h2 class="ui dividing header">攤位圖</h2>
+<p>正在規畫中</p>
 {% endblock %}

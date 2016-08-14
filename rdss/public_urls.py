@@ -8,6 +8,8 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$',views.RDSSPublicIndex,name="rdss_index"),
+    url(r'^seminar$',views.SeminarPublic,name="seminar_public"),
+    url(r'^jobfair$',views.JobfairPublic,name="jobfair_public"),
 
 	#export urls are defined in admin.py
 ]

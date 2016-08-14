@@ -1,0 +1,11 @@
+.ui.card{
+  height:100%;
+}
+
+.image img{
+  max-height:150px;
+  max-width:300px;
+  width:auto !important;
+  height:auto !important;
+  margin:auto;
+}
