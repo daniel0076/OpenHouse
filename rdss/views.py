@@ -232,6 +232,8 @@ def SeminarSelectFormGen(request):
         # separate into 5 in each list (there are 5 days in a week)
         dates_in_week.append( [(table_start_date + datetime.timedelta(days=day+week*7))\
                 for day in range(0,5)])
+
+    slot_colors = rdss.models.SlotColor.objects.all()
     return render(request,'seminar_select.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -251,18 +253,20 @@ def SeminarSelectControl(request):
             index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
             return_data[index] = {}
 
+            return_data[index]['place_color'] = None if not s.place else\
+                s.place.css_color
             return_data[index]["cid"] = "None" if not s.cid else\
             company.models.Company.objects.filter(cid=s.cid.cid).first().shortname
 
-
-            seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
+            my_seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
             #session wrong (signup noon but choose night)
             #and noon is not full yet
-            if (seminar_session not in s.session) and\
-                rdss.models.Seminar_Slot.objects.filter(session=seminar_session):
+            if (my_seminar_session not in s.session) and\
+                rdss.models.Seminar_Slot.objects.filter(session=my_seminar_session):
                 return_data[index]['valid'] = False
             else:
                 return_data[index]['valid'] = True
+
         my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
         if my_slot:
             return_data['my_slot'] = True

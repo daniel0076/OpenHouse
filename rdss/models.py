@@ -81,7 +81,7 @@ class Signup(models.Model):
 
     def __str__(self):
         com = company.models.Company.objects.filter(cid=self.cid).first()
-        return None if com is None else com.shortname
+        return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
 
 
 # Proxy model for AdminSite company list item
@@ -105,13 +105,32 @@ class Seminar_Slot(models.Model):
     cid = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',
                                on_delete=models.CASCADE, null=True, blank=True)
+    place = models.ForeignKey('SlotColor',null=True, blank=True,
+                              verbose_name=u'場地',
+                              )
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         managed = True
         verbose_name = u"說明會場次"
         verbose_name_plural = u"說明會場次"
-    # def __str__(self):
+    def __str__(self):
+        return '{} {}'.format(self.date,self.session)
+
+
+class SlotColor(models.Model):
+    id = models.AutoField(primary_key=True)
+    place = models.CharField(u'場地', max_length=20, unique=True)
+    css_color = models.CharField(u'文字顏色(css)',max_length=20, help_text=
+                                 '''請輸入顏色英文，比如: red, green, blue, purple, black等'''
+                                 )
+
+    class Meta:
+        managed = True
+        verbose_name = u"場地顏色"
+        verbose_name_plural = u"場地顏色"
+    def __str__(self):
+        return self.place
 
 
 class Seminar_Order(models.Model):
