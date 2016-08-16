@@ -15,7 +15,7 @@ class SponsorshipInline(admin.TabularInline):
 
 @admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):
-    list_display = ('date', 'session', 'cid')
+    list_display = ('date', 'session', 'cid', 'place')
 
 @admin.register(models.Sponsor_Items)
 class Sponsor_ItemsAdmin(admin.ModelAdmin):
@@ -103,7 +103,11 @@ class SurveyAdmin(admin.ModelAdmin):
 
 @admin.register(models.Files)
 class RDSSFilesAdmin(admin.ModelAdmin):
-	list_display=('title','category','upload_file','updated_time')
+    list_display=('title','category','upload_file','updated_time')
+
+@admin.register(models.SlotColor)
+class SlotColorAdmin(admin.ModelAdmin):
+    list_display=('place','css_color')
 
 # Register your models here.
 admin.site.register(models.Sponsorship)
