@@ -124,11 +124,12 @@ class SlotColor(models.Model):
     css_color = models.CharField(u'文字顏色(css)',max_length=20, help_text=
                                  '''請輸入顏色英文，比如: red, green, blue, purple, black等'''
                                  )
+    place_info = models.URLField(u'場地介紹網頁',max_length=256,default="http://")
 
     class Meta:
         managed = True
-        verbose_name = u"場地顏色"
-        verbose_name_plural = u"場地顏色"
+        verbose_name = u"場地顏色及資訊"
+        verbose_name_plural = u"場地顏色及資訊"
     def __str__(self):
         return self.place
 

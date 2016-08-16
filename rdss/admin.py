@@ -107,7 +107,7 @@ class RDSSFilesAdmin(admin.ModelAdmin):
 
 @admin.register(models.SlotColor)
 class SlotColorAdmin(admin.ModelAdmin):
-    list_display=('place','css_color')
+    list_display=('place','css_color', 'place_info')
 
 # Register your models here.
 admin.site.register(models.Sponsorship)

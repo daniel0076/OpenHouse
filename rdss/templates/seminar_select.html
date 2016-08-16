@@ -52,7 +52,9 @@
 <p>可選時段會以顏色標記場地，請自行參考以下對照表</p>
 <ul class="ui list">
   {% for slot_color in slot_colors %}
-  <li style="color:{{slot_color.css_color}}">{{slot_color.place}}</li>
+  <li style="color:{{slot_color.css_color}}">
+    <p>{{slot_color.place}} <a href={{slot_color.place_info}} target="_blank">場地資訊</a></p>
+  </li>
   {% endfor %}
 </ul>
 	<table class="ui celled striped table" style="text-align:center">
