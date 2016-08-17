@@ -182,7 +182,6 @@ def ExportAll(request):
             "shortname": shortname,
             "id": c.id,
                         })
-    print(sponsorships_list)
     spon_worksheet = workbook.add_worksheet("贊助")
     spon_worksheet.write(0, 0, "廠商/贊助品")
     spon_worksheet.write(1, 0, "目前數量/上限")
@@ -205,7 +204,7 @@ def ExportAll(request):
 @login_required(login_url='/company/login/')
 def ExportSurvey(request):
     # Create the HttpResponse object with the appropriate Excel header.
-    filename = "rdss_export_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    filename = "rdss_survey_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=' + filename
     workbook = xlsxwriter.Workbook(response)
@@ -222,7 +221,6 @@ def ExportSurvey(request):
         survey_worksheet.write(row_count+1, 0, survey.company)
         for col_count, field in enumerate(fields):
             survey_worksheet.write(row_count+1, col_count+1, getattr(survey, field.name))
-            print(getattr(survey, field.name))
 
     workbook.close()
     return response
