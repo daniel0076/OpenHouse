@@ -101,6 +101,14 @@ class RdssConfigsAdmin(admin.ModelAdmin):
 class SurveyAdmin(admin.ModelAdmin):
     list_display = ("company",)
 
+    #define export URLs eg:...admin/rdss/signup/export
+    def get_urls(self):
+        urls = super(SurveyAdmin, self).get_urls()
+        my_urls = [
+                url(r'^export/$', rdss.export.ExportSurvey),
+                ]
+        return my_urls + urls
+
 @admin.register(models.Files)
 class RDSSFilesAdmin(admin.ModelAdmin):
     list_display=('title','category','upload_file','updated_time')

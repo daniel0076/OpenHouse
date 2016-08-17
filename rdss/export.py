@@ -75,8 +75,9 @@ def Export_Company(request):
 
     fieldname_list = ['cid', 'name', 'shortname', 'category', 'phone',
                       'postal_code', 'address', 'website',
-                      'hr_name', 'hr_phone', 'hr_mobile', 'hr_name',
-                      'hr_email', 'brief', 'introduction']
+                      'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
+                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr_email', 'hr_ps',
+                      'brief', 'introduction']
     title_pairs = dict()
     for fieldname in fieldname_list:
         title_pairs[fieldname] = company.models.Company._meta.get_field(fieldname).verbose_name
@@ -162,11 +163,9 @@ def ExportAll(request):
     for row_count, signup in enumerate(signups_dict):
         for col_count, pairs in enumerate(title_pairs):
             signup_worksheet.write(row_count+1, col_count,
-                            signup['fields'][pairs['fieldname']])
-
+                                   signup['fields'][pairs['fieldname']])
 
     # Sponsorships
-
     sponsor_items = rdss.models.Sponsor_Items.objects.all().annotate(num_sponsor=Count('sponsorship'))
     sponsorships_list = list()
     for c in signups:
@@ -190,14 +189,40 @@ def ExportAll(request):
     spon_worksheet.write(0, len(sponsor_items)+1, "贊助額")
     for index, item in enumerate(sponsor_items):
         spon_worksheet.write(0, index+1, item.name)
-        spon_worksheet.write(1, index+1, "{}/{}".format(item.num_sponsor,item.limit))
+        spon_worksheet.write(1, index+1, "{}/{}".format(item.num_sponsor, item.limit))
 
     row_offset = 2
     for row_count, com in enumerate(sponsorships_list):
         spon_worksheet.write(row_count+row_offset, 0, com['shortname'])
         for col_count, count in enumerate(com['counts']):
-            spon_worksheet.write(row_count+row_offset, col_count+1,count)
+            spon_worksheet.write(row_count+row_offset, col_count+1, count)
         spon_worksheet.write(row_count+row_offset, len(com['counts'])+1, com['amount'])
+
+    workbook.close()
+    return response
+
+
+@login_required(login_url='/company/login/')
+def ExportSurvey(request):
+    # Create the HttpResponse object with the appropriate Excel header.
+    filename = "rdss_export_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    workbook = xlsxwriter.Workbook(response)
+
+    survey_worksheet = workbook.add_worksheet("廠商滿意度問卷")
+    survey_worksheet.write(0, 0, "廠商")
+    # start from index 1 because I don't want id field
+    fields = rdss.models.CompanySurvey._meta.get_fields()[1:]
+    for index, field in enumerate(fields):
+        survey_worksheet.write(0, index+1, field.verbose_name)
+
+    survey_list = rdss.models.CompanySurvey.objects.all()
+    for row_count, survey in enumerate(survey_list):
+        survey_worksheet.write(row_count+1, 0, survey.company)
+        for col_count, field in enumerate(fields):
+            survey_worksheet.write(row_count+1, col_count+1, getattr(survey, field.name))
+            print(getattr(survey, field.name))
 
     workbook.close()
     return response
