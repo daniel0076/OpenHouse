@@ -1,6 +1,6 @@
 *.swp
 .*.
-OpenHouse/
+OpenHouse/settings.py
 __pycache__/
 migrations/
 tools/
