@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
@@ -10,7 +10,7 @@ import rdss.models
 import company.models
 
 
-@login_required(login_url='/company/login/')
+@staff_member_required
 def Export_Signup(request):
     # Create the HttpResponse object with the appropriate Excel header.
     filename = "rdss_signup_info_{}.xlsx".format(
@@ -59,7 +59,7 @@ def Export_Signup(request):
     return response
 
 
-@login_required(login_url='/company/login/')
+@staff_member_required
 def Export_Company(request):
     # Create the HttpResponse object with the appropriate Excel header.
     filename = "rdss_company_{}.xlsx".format(
@@ -96,7 +96,7 @@ def Export_Company(request):
     return response
 
 
-@login_required(login_url='/company/login/')
+@staff_member_required
 def ExportAll(request):
     # Create the HttpResponse object with the appropriate Excel header.
     filename = "rdss_export_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
@@ -201,7 +201,7 @@ def ExportAll(request):
     return response
 
 
-@login_required(login_url='/company/login/')
+@staff_member_required
 def ExportSurvey(request):
     # Create the HttpResponse object with the appropriate Excel header.
     filename = "rdss_survey_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
