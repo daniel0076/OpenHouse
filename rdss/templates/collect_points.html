@@ -1,0 +1,48 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href={% static "node_modules/semantic-ui/dist/semantic.min.css" %} rel="stylesheet">
+<link href={% static "css/rdss/collect_points.css" %} rel="stylesheet">
+<script src={% static "node_modules/semantic-ui/dist/semantic.min.js" %}></script>
+<script src={% static "js/collect_points.js" %}></script>
+{% endblock %}
+
+{% block content %}
+<h1 class="ui dividing header" id="title">OpenHouse 說明會集點</h1>
+<div class="ui segment">
+  <div class="ui two column middle aligned relaxed stackable grid">
+    <div class="column">
+      <form class="ui form" method="POST" id="collect_form">
+        {% csrf_token %}
+        <div class="field">
+          <label>場次</label>
+          <select class="ui dropdown" name="seminar_id">
+            {% for seminar in seminar_list %}
+            <option value={{seminar.id}}>
+            {{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.cid}}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label>學生證卡號</label>
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input name="idcard_no" maxlength=10>
+          </div>
+        </div>
+        <button class="ui blue submit button" type="submit">集點</button>
+      </form>
+    </div>
+    <div class="ui vertical divider">
+    </div>
+    <div class="center aligned column">
+      <h1>卡號: {{student_obj.idcard_no}}</h1>
+      <h1>目前集點: {{student_obj.num_attend}} 場</h1>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

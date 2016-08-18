@@ -105,7 +105,7 @@ class Seminar_Slot(models.Model):
     cid = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',
                                on_delete=models.CASCADE, null=True, blank=True)
-    place = models.ForeignKey('SlotColor',null=True, blank=True,
+    place = models.ForeignKey('SlotColor', null=True, blank=True,
                               verbose_name=u'場地',
                               )
     updated = models.DateTimeField(u'更新時間', auto_now=True)
@@ -114,22 +114,58 @@ class Seminar_Slot(models.Model):
         managed = True
         verbose_name = u"說明會場次"
         verbose_name_plural = u"說明會場次"
+
     def __str__(self):
-        return '{} {}'.format(self.date,self.session)
+        return '{} {}'.format(self.date, self.session)
+
+
+class Student(models.Model):
+    idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
+    attendance = models.ManyToManyField(Seminar_Slot, through='StuAttendance')
+    student_id = models.CharField(u'學號', max_length=10, blank=True,
+                                  help_text='領獎時填')
+    name = models.CharField(u'姓名', max_length=64, blank=True,
+                            help_text='領獎時填')
+    dep = models.CharField(u'系級', max_length=16, blank=True,
+                           help_text='領獎時填')
+    email = models.EmailField(u'Email', max_length=64, blank=True,
+                           help_text='領獎時填')
+    phone = models.CharField(u'手機', max_length=20, blank=True,
+                             help_text='領獎時填')
+
+    class Meta:
+        verbose_name = u"說明會學生"
+        verbose_name_plural = u"說明會學生"
+
+class StuAttendance(models.Model):
+    student = models.ForeignKey(Student, to_field='idcard_no',
+                                verbose_name=u'學生證卡號',
+                                on_delete=models.CASCADE,)
+
+    seminar = models.ForeignKey(Seminar_Slot,
+                                on_delete=models.CASCADE,)
+
+    updated = models.DateTimeField(u'時間', auto_now=True)
+
+    class Meta:
+        unique_together = ("student",  "seminar")
+        verbose_name = u"說明會參加記錄"
+        verbose_name_plural = u"說明會參加記錄"
 
 
 class SlotColor(models.Model):
     id = models.AutoField(primary_key=True)
     place = models.CharField(u'場地', max_length=20, unique=True)
-    css_color = models.CharField(u'文字顏色(css)',max_length=20, help_text=
+    css_color = models.CharField(u'文字顏色(css)', max_length=20, help_text=
                                  '''請輸入顏色英文，比如: red, green, blue, purple, black等'''
                                  )
-    place_info = models.URLField(u'場地介紹網頁',max_length=256,default="http://")
+    place_info = models.URLField(u'場地介紹網頁', max_length=256, default="http://")
 
     class Meta:
         managed = True
         verbose_name = u"場地顏色及資訊"
         verbose_name_plural = u"場地顏色及資訊"
+
     def __str__(self):
         return self.place
 
@@ -242,7 +278,7 @@ class Sponsor_Items(models.Model):
     ps = models.CharField(u'備註', max_length=100, null=True, blank=True)
     price = models.IntegerField(u'價格')
     limit = models.IntegerField(u'數量限制')
-    sponsors = models.ManyToManyField(Signup,through='Sponsorship')
+    sponsors = models.ManyToManyField(Signup, through='Sponsorship')
     pic = models.ImageField(u"贊助品預覽圖", upload_to='sponsor_items',
                             null=True,
                             help_text='''提供過去做的贊助品圖片，做為參考''')

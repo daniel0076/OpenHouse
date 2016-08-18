@@ -13,15 +13,29 @@ class SponsorshipInline(admin.TabularInline):
     model = models.Sponsorship
     extra = 0
 
+
+class StuAttendanceInline(admin.TabularInline):
+    model = models.StuAttendance
+    extra = 0
+
+
+@admin.register(models.Student)
+class StudentAdmin(admin.ModelAdmin):
+    inlines = (StuAttendanceInline,)
+    list_display = ('idcard_no', 'student_id', 'name', 'phone')
+
+
 @admin.register(models.Seminar_Slot)
 class Seminar_SlotAdmin(admin.ModelAdmin):
     list_display = ('date', 'session', 'cid', 'place')
 
+
 @admin.register(models.Sponsor_Items)
 class Sponsor_ItemsAdmin(admin.ModelAdmin):
     inlines = (SponsorshipInline,)
-    list_display = ('name', 'description', 'price','limit','current_amount')
-    def current_amount(self,obj):
+    list_display = ('name', 'description', 'price', 'limit', 'current_amount')
+
+    def current_amount(self, obj):
         return models.Sponsorship.objects.filter(item=obj).count()
     current_amount.short_description = '目前贊助數'
 

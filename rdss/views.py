@@ -3,6 +3,7 @@ from django.http import  HttpResponseRedirect, JsonResponse,Http404,HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core import serializers
 from django.utils import timezone
 import rdss.forms
@@ -14,6 +15,7 @@ from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.core import urlresolvers
+from django.db.models import Q
 # Create your views here.
 
 @login_required(login_url='/company/login/')
@@ -476,7 +478,7 @@ def Sponsor(request):
     my_sponsor_items = [s.item for s in sponsorship ]
     return render(request,'sponsor.html',locals())
 
-@login_required(login_url='/company/login/')
+@staff_member_required
 def SponsorAdmin(request):
     site_header="OpenHouse 管理後台"
     site_title="OpenHouse"
@@ -527,7 +529,30 @@ def CompanySurvey(request):
     sidebar_ui = {'survey':"active"}
     return render(request,'survey_form.html',locals())
 
-#========================RDSS public view=================
+
+@staff_member_required
+def CollectPoints(request):
+    site_header = "OpenHouse 管理後台"
+    site_title = "OpenHouse"
+    today = timezone.now().date()
+    seminar_list = rdss.models.Seminar_Slot.objects.filter(Q(date__gte=today))
+    if request.method =="POST":
+        idcard_no = request.POST['idcard_no']
+        seminar_id = request.POST['seminar_id']
+        seminar_obj = rdss.models.Seminar_Slot.objects.get(id=seminar_id)
+        student_obj, created = rdss.models.Student.objects.get_or_create(
+            idcard_no=idcard_no
+        )
+        attendance_obj , created = rdss.models.StuAttendance.objects.get_or_create(
+            student=student_obj,
+            seminar=seminar_obj
+        )
+        student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
+            num_attend= Count('attendance')).first()
+
+    return render(request, 'collect_points.html', locals())
+
+# ========================RDSS public view=================
 def RDSSPublicIndex(request):
     all_company = company.models.Company.objects.all()
     rdss_company = rdss.models.Signup.objects.all()
