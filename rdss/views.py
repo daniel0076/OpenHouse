@@ -507,6 +507,13 @@ def SponsorAdmin(request):
 
 @login_required(login_url='/company/login/')
 def CompanySurvey(request):
+    configs=rdss.models.RdssConfigs.objects.all()[0]
+
+    if timezone.now() > configs.survey_end or timezone.now() < configs.survey_start :
+        error_msg="問卷填答已結束。期間為 {} 至 {}".format(
+                timezone.localtime(configs.survey_start).strftime("%Y/%m/%d %H:%M:%S"),
+                timezone.localtime(configs.survey_end).strftime("%Y/%m/%d %H:%M:%S"))
+        return render(request,'error.html',locals())
 
     try:
         my_survey = rdss.models.CompanySurvey.objects.get(cid=request.user.cid)

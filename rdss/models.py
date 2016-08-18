@@ -26,6 +26,10 @@ class RdssConfigs(models.Model):
     rdss_signup_start = models.DateTimeField(u'研替報名開始時間')
     rdss_signup_end = models.DateTimeField(u'研替報名結束時間')
 
+    #問卷
+    survey_start = models.DateTimeField(u'滿意度問卷開始填答')
+    survey_end = models.DateTimeField(u'滿意度問卷結束填答')
+
     # 說明會相關
     seminar_start_date = models.DateField(u'說明會開始日期')
     seminar_end_date = models.DateField(u'說明會結束日期')
