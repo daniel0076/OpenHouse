@@ -314,11 +314,12 @@ class Files(models.Model):
             ('企畫書', '企畫書'),
             ('報名說明書', '報名說明書'),
             ('選位相關', '選位相關'),
+            ('就博會攤位圖', '就博會攤位圖'),
             ('其它', '其它'),
             )
     id = models.AutoField(primary_key=True)
     title = models.CharField(u'標題', max_length=30)
-    category = models.CharField(u'類型', max_length=6, choices=FILE_CAT)
+    category = models.CharField(u'類型', max_length=10, choices=FILE_CAT)
     upload_file = models.FileField(u'上傳檔案',
                                    upload_to='rdss_files', null=False)
     updated_time = models.DateTimeField(u'更新時間', auto_now=True)

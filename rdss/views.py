@@ -364,6 +364,7 @@ def JobfairSelectFormGen(request):
         jobfair_select_time = "選位時間及順序尚未排定，您可以先參考攤位圖"
 
     slots = rdss.models.Jobfair_Slot.objects.all()
+    place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
 
     return render(request,'jobfair_select.html',locals())
 
