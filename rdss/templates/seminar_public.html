@@ -22,5 +22,46 @@
 <h2 class="ui dividing header">集點獎項</h2>
 <p>正在規畫中</p>
 <h2 class="ui dividing header">場次時間表</h2>
-<p>正在規畫中</p>
+	<table class="ui celled striped table" style="text-align:center">
+		{% for week in dates_in_week %}
+		<thead>
+			<tr>
+				<th>時間</th>
+				{% for day in week %}
+				<th>{{day.date|date:"m/d (D)" }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>{{configs.session_1_start}}~{{configs.session_1_end}}</td>
+				{% for day in week %}
+        <td style="color:{{day.noon.place_color}}">
+          {{day.noon.company}}
+				</td>
+				{% endfor %}
+			</tr>
+
+			<tr>
+				<td>{{configs.session_2_start}}~{{configs.session_2_end}}</td>
+				{% for day in week %}
+        <td style="color:{{day.night1.place_color}}">
+          {{day.night1.company}}
+				</td>
+				{% endfor %}
+			</tr>
+
+			<tr>
+				<td>{{configs.session_3_start}}~{{configs.session_3_end}}</td>
+				{% for day in week %}
+        <td style="color:{{day.night2.place_color}}">
+          {{day.night2.company}}
+				</td>
+				{% endfor %}
+			</tr>
+
+		</tbody>
+		{% endfor %}
+	</table>
 {% endblock %}

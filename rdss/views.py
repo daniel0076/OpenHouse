@@ -10,6 +10,7 @@ import rdss.forms
 import company.models
 import rdss.models
 import datetime,json,csv
+from company.models import Company
 from .forms import EmailPostForm
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
@@ -571,6 +572,49 @@ def RDSSPublicIndex(request):
     return render(request,'rdss_index.html',locals())
 
 def SeminarPublic(request):
+    #semanti ui control
+    configs=rdss.models.RdssConfigs.objects.all()[0]
+    seminar_start_date = configs.seminar_start_date
+    seminar_end_date = configs.seminar_end_date
+    seminar_days = (seminar_end_date - seminar_start_date).days
+    table_start_date = seminar_start_date
+    # find the nearest Monday
+    while(table_start_date.weekday() != 0 ):
+        table_start_date -= datetime.timedelta(days=1)
+    # make the length to 5 multiples
+    table_days = seminar_days + (seminar_days % 7) + 7
+    dates_in_week = list()
+    for week in range(0, int(table_days/7)):
+        # separate into 5 in each list (there are 5 days in a week)
+        week_slot_info = []
+        for day in range(5):
+            today = table_start_date + datetime.timedelta(days=day+week*7)
+            noon_slot = rdss.models.Seminar_Slot.objects.filter(date=today, session='noon').first()
+            night1_slot= rdss.models.Seminar_Slot.objects.filter(date=today, session='night1').first()
+            night2_slot= rdss.models.Seminar_Slot.objects.filter(date=today, session='night2').first()
+            week_slot_info.append(
+                {
+                    'date': today,
+                    'noon': '' if not noon_slot else
+                    {
+                        'company': Company.objects.filter(cid=noon_slot.cid.cid).first().shortname,
+                        'place_color':noon_slot.place
+                    },
+                    'night1': '' if not night1_slot else
+                    {
+                        'company': Company.objects.filter(cid=night1_slot.cid.cid).first().shortname,
+                        'place_color': night1_slot.place
+                    },
+                    'night2': '' if not night2_slot else
+                    {
+                        'company': Company.objects.filter(cid=night2_slot.cid.cid).first().shortname,
+                        'place_color': night2_slot.place
+                    },
+                }
+            )
+        dates_in_week.append(week_slot_info)
+
+    slot_colors = rdss.models.SlotColor.objects.all()
     return render(request,'seminar_public.html',locals())
 
 def JobfairPublic(request):
