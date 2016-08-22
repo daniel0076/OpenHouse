@@ -595,17 +595,17 @@ def SeminarPublic(request):
             week_slot_info.append(
                 {
                     'date': today,
-                    'noon': '' if not noon_slot else
+                    'noon': '' if not noon_slot or not noon_slot.cid else
                     {
                         'company': Company.objects.filter(cid=noon_slot.cid.cid).first().shortname,
                         'place_color':noon_slot.place
                     },
-                    'night1': '' if not night1_slot else
+                    'night1': '' if not night1_slot or not night1_slot.cid else
                     {
                         'company': Company.objects.filter(cid=night1_slot.cid.cid).first().shortname,
                         'place_color': night1_slot.place
                     },
-                    'night2': '' if not night2_slot else
+                    'night2': '' if not night2_slot or not night2_slot.cid else
                     {
                         'company': Company.objects.filter(cid=night2_slot.cid.cid).first().shortname,
                         'place_color': night2_slot.place
