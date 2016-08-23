@@ -38,6 +38,10 @@ def Export_Signup(request):
             {'fieldname': 'hr_phone', 'title': '人資電話'},
             {'fieldname': 'hr_mobile', 'title': '人資手機'},
             {'fieldname': 'hr_email', 'title': '人資Email'},
+            {'fieldname': 'hr2_name', 'title': '人資2姓名'},
+            {'fieldname': 'hr2_phone', 'title': '人資2電話'},
+            {'fieldname': 'hr2_mobile', 'title': '人資2手機'},
+            {'fieldname': 'hr2_email', 'title': '人資2Email'},
             {'fieldname': 'seminar', 'title': '說明會場次'},
             {'fieldname': 'jobfair', 'title': '就博會攤位數'},
             {'fieldname': 'visit', 'title': '提供企業參訪'},
@@ -76,7 +80,7 @@ def Export_Company(request):
     fieldname_list = ['cid', 'name', 'shortname', 'category', 'phone',
                       'postal_code', 'address', 'website',
                       'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
-                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr_email', 'hr_ps',
+                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr2_email', 'hr_ps',
                       'brief', 'introduction']
     title_pairs = dict()
     for fieldname in fieldname_list:
@@ -114,7 +118,7 @@ def ExportAll(request):
     fieldname_list = ['cid', 'name', 'shortname', 'category', 'phone',
                       'postal_code', 'address', 'website',
                       'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
-                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr_email', 'hr_ps',
+                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr2_email', 'hr_ps',
                       'brief', 'introduction']
     # avoid 'can't subtract offset-naive and offset-aware datetimes'
 
