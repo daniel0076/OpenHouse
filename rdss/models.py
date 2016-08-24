@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.db.models import Q
 import company.models
 
 
@@ -177,14 +178,18 @@ class SlotColor(models.Model):
 class Seminar_Order(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(u'選位開始時間')
-    cid = models.OneToOneField('Signup', to_field='cid', verbose_name=u'公司',
-                               on_delete=models.CASCADE)
+    cid = models.OneToOneField('Signup', to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE,
+                               limit_choices_to=~Q(seminar='')
+                               )
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         managed = True
         verbose_name = u"說明會選位順序"
         verbose_name_plural = u"說明會選位順序"
+
 
 
 class Seminar_Info(models.Model):
@@ -244,7 +249,10 @@ class Jobfair_Order(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(u'選位開始時間')
     cid = models.OneToOneField('Signup', to_field='cid',
-                               verbose_name=u'公司', on_delete=models.CASCADE)
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE,
+                               limit_choices_to=~Q(jobfair=0)
+                               )
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
