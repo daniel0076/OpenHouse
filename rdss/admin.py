@@ -131,8 +131,15 @@ class RDSSFilesAdmin(admin.ModelAdmin):
 class SlotColorAdmin(admin.ModelAdmin):
     list_display=('place','css_color', 'place_info')
 
+@admin.register(models.Seminar_Info)
+class SeminarInfoAdmin(admin.ModelAdmin):
+    list_display=('cid','topic', 'speaker', 'speaker_title','contact',
+                  'contact_email','contact_mobile', 'updated' )
+
+@admin.register(models.Jobfair_Info)
+class JobfairInfoAdmin(admin.ModelAdmin):
+    list_display=('cid', 'signname', 'parking_tickets', 'contact_email','contact_mobile', 'updated' )
+
 # Register your models here.
 admin.site.register(models.Sponsorship)
-admin.site.register(models.Seminar_Info)
 admin.site.register(models.Jobfair_Slot)
-admin.site.register(models.Jobfair_Info)
