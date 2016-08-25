@@ -81,6 +81,10 @@ def ControlPanel(request):
         seminar_info = rdss.models.Seminar_Info.objects.get(cid = request.user.cid)
     except ObjectDoesNotExist:
         seminar_info = None
+    try:
+        jobfair_info = rdss.models.Jobfair_Info.objects.get(cid = request.user.cid)
+    except ObjectDoesNotExist:
+        jobfair_info = None
 
     try:
         rdss.models.CompanySurvey.objects.get(cid = request.user.cid)

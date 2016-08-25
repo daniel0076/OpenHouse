@@ -147,8 +147,17 @@
 				</tr>
 				<tr>
 					<td>就博會資訊</td>
-					<td><i class="large red remove icon"></i></td>
+					<td>
+						{% if jobfair_info %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						<a href="{% url 'rdss_jobfair_info' %}">點此填寫</a>
+						{% endif %}
+					</td>
 				</tr>
+
 			</tbody>
 		</table>
 	</div>
