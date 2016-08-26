@@ -22,6 +22,14 @@
 <h2 class="ui dividing header">集點獎項</h2>
 <p>正在規畫中</p>
 <h2 class="ui dividing header">場次時間表</h2>
+<ul class="ui list">
+  <p>場地資訊</p>
+  {% for slot_color in slot_colors %}
+  <li style="color:{{slot_color.css_color}}">
+    <p>{{slot_color.place}}</p>
+  </li>
+  {% endfor %}
+</ul>
 	<table class="ui celled striped table" style="text-align:center">
 		{% for week in dates_in_week %}
 		<thead>

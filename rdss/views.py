@@ -602,17 +602,17 @@ def SeminarPublic(request):
                     'noon': '' if not noon_slot or not noon_slot.cid else
                     {
                         'company': Company.objects.filter(cid=noon_slot.cid.cid).first().shortname,
-                        'place_color':noon_slot.place
+                        'place_color':noon_slot.place.css_color
                     },
                     'night1': '' if not night1_slot or not night1_slot.cid else
                     {
                         'company': Company.objects.filter(cid=night1_slot.cid.cid).first().shortname,
-                        'place_color': night1_slot.place
+                        'place_color': night1_slot.place.css_color
                     },
                     'night2': '' if not night2_slot or not night2_slot.cid else
                     {
                         'company': Company.objects.filter(cid=night2_slot.cid.cid).first().shortname,
-                        'place_color': night2_slot.place
+                        'place_color': night2_slot.place.css_color
                     },
                 }
             )
@@ -622,4 +622,6 @@ def SeminarPublic(request):
     return render(request,'seminar_public.html',locals())
 
 def JobfairPublic(request):
+    place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
+    slots = rdss.models.Jobfair_Slot.objects.all()
     return render(request,'jobfair_public.html',locals())

@@ -19,6 +19,15 @@
 <p>正在規畫中</p>
 <h2 class="ui dividing header">集點獎項</h2>
 <p>正在規畫中</p>
-<h2 class="ui dividing header">攤位圖</h2>
-<p>正在規畫中</p>
+<h2 class="ui dividing header">就博會攤位圖</h2>
+<img class="ui image" src="{{place_map.upload_file.url}}" alt="就博會攤位圖">
+	<div class="ui six column padded grid">
+    {% for slot in slots %}
+		<div class="column" style="padding:0.5rem" >
+      <div class='ui blue center aligned segment'>
+        <p>攤位{{slot.serial_no}}: {{ slot.cid}}</p>
+			</div>
+		</div>
+    {% endfor %}
+	</div>
 {% endblock %}
