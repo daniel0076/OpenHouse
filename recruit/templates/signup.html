@@ -1,0 +1,146 @@
+{% extends 'recruit_base.html' %}
+{% load staticfiles %}
+
+{% block 'content' %}
+    {% if signup_info_exist %}
+        <div class="ui green message">
+            報名已完成，您也可以修改報名資料，再次送出。
+        </div>
+    {% endif %}
+    <form class="ui form" action="." method="post">
+
+
+        {% csrf_token %}
+        <div class="ui segment" id="seminar">
+            <h1>企業說明會</h1>
+            <table class="ui celled table">
+                <tr>
+                    <td>活動日期</td>
+                    <td>{{recruit_configs.seminar_start_date}} ~ {{recruit_configs.seminar_start_date}}</td>
+
+                </tr>
+                <tr>
+				    <td>活動地點</td>
+				    <td>本校國際會議廳 (浩然圖書館、交映樓、工程四館合勤講堂、資訊館)</td>
+			    </tr>
+			    <tr>
+				    <td>活動內容</td>
+				    <td>透過說明會提供完善的場地與設備，徵才企業可以近距離傳達公司訊息，解說公司內部企業文化、經營理念、薪資福利制度、徵才職缺以及需求等，為學生進一步認識企業之橋樑。</td>
+			    </tr>
+                <tr>
+				    <td>提供設備</td>
+				    <td>
+					    <ol>
+						    <li>可容納100至200人之國際會議廳</li>
+						    <li>單槍投影機、投影布幕、麥克風、筆記型電腦、簡報滑鼠等。※如有特殊需求請務必事先告知。</li>
+					    </ol>
+				    </td>
+			    </tr>
+                <tr>
+				    <td>注意事項</td>
+                    <td>
+					    <h5 class="ui header">場次選位方式：</h5>
+					    <ol>
+						    <li>公司說明會選位順序將由評選積分決定，詳細內容請參照參加方式第六點(Page 10)之說明。</li>
+						    <li>若遇評選積分相同之情形，說明會場次選位將同時開放給積分相同之廠商，採取先搶先贏制。</li>
+						    <li style="color:red">選位時間：8月25日(四)10:00至16:00。</li>
+					    </ol>
+					    <h5 class="ui header">舉辦與報到方式：</h5>
+					    <ol>
+						    <li>廠商以播放影片、書面介紹或其他方式做公司簡介，針對所需專業人才，提供必要之說明，並傳達企業專業理念與形象。</li>
+						    <li>廠商可提供自行設計活動內容並提供紀念文宣品以吸引參加人潮，例如填寫履歷抽獎、參加獎、QA獎等；抽獎券由企業自行設計與製作。</li>
+						    <li>請於活動前20分鐘到場，可提供資料給報到桌進行發放、亦可於現場擺設旗幟與易拉展架(如需旗桿、旗座、海報架請事先告知)，會議廳內牆壁桌椅不可使用膠帶、圖釘等固定展示物品。</li>
+						    <li>晚上各場次換場時間為10分鐘，請廠商把握時間，勿耽誤及佔用其他廠商時間，並請結束後盡量避免當場面談與個別QA，以免造成場面混亂。</li>
+						    <li>對於說明會之內容、設備等，若有其他特殊需求或問題請與我們聯絡。</li>
+					    </ol>
+				    </td>
+			    </tr>
+
+            </table>
+
+            <div class="ui segment">
+
+                <h3 class="ui header">選取欲報名說明會時間</h3>
+			    <p>活動費用：中午場：{{recruit_configs.session_1_fee}}，晚上場 {{recruit_configs.session_2_fee}} 元</p>
+                {{ form.seminar}}
+			    <div class="ui teal button seminar_clear">清除</div>
+                <div class="ui yellow message">
+				    交大保留專屬企業日之公司審核權，具較多職缺與完整職缺資訊者優先錄取。意者請與交通大學就業輔導組聯繫。
+			    </div>
+
+            </div>
+
+        </div>
+
+        <div class="ui segment">
+            <h1>就業博覽會</h1>
+            <table class="ui celled table">
+                <tr>
+				    <td style="width:8em">活動日期</td>
+				    <td>{{recruit_configs.jobfair_date}}</td>
+                </tr>
+                <tr>
+                    <td style="width:8em">活動時間</td>
+                    <td>{{recruit_configs.jobfair_start}} ~ {{recruit_configs.jobfair_end}}</td>
+                </tr>
+                <tr>
+                    <td>活動地點</td>
+                    <td>本校光復校區浩然圖書館國際會議廳與前廳</td>
+                </tr>
+                <tr>
+                    <td>活動內容</td>
+                    <td>
+                        研發替代役以展示會方式呈現，邀請多家企業廠商到學校設點，展示公司的產品或職務內容，提供研替同學未來就業的參考依據。徵才企業廠商亦可進行一對一面試方式，詢問學生興趣經歷等相關問題，藉此篩選出符合公司文化及經營理念的替代役人選。
+                        <p style="color:blue">※若報名廠商未達15家，則以協助借用場地進行面試為宜。</p>
+                </tr>
+                <tr>
+                    <td>提供設備</td>
+                    <td>
+                        <ol class="ui list">
+                            <li>攤位配備：提供公司名稱看板1片、投射燈3盞、接待長桌1桌2椅(含桌巾1條)、晤談圓桌1桌3椅、3孔110V電源插座2個(請自備延長線)、無線網路等。。</li>
+                            <li>攤位大小：展示空間為2.5m(寬)*2.5m(深)或3m(寬)*3m(深)。</li>
+                            <p style="color:blue">※實際大小與配備仍視場地將略有調整。</p>
+                        </ol>
+                    </td>
+                </tr>
+                <tr>
+                    <td>提供服務</td>
+                    <td>
+                        <ol>
+                            <li>本校工作人員協助報到及處理隨機突發狀況。</li>
+                            <li>提供企業免費校內停車證，中午提供各廠商便當與飲水，每攤位至多提供5份；素食餐點請事先告知。</li>
+                        </ol>
+                    </td>
+                </tr>
+                <tr>
+                    <td>注意事項</td>
+                    <td>
+                        <ol>
+                            <li>場地布置時間：活動當日8:30後開放企業到場布置，貴重器材與物品請企業自行保管，本校不負保管之責。</li>
+                            <li>當天請於8:30~10:00期間向服務台辦理報到</li>
+                        </ol>
+                    </td>
+                </tr>
+            </table>
+            <div class="ui segment">
+                <h3 class="ui header">報名就博會</h3>
+				<p>活動費用：攤位每單位 {{recruit_configs.jobfair_booth_fee}} 元，額滿為止。</p>
+			    <div class="ui labeled input">
+				    <div class="ui teal label">
+					    就博會攤位數量
+				    </div>
+				    {{form.jobfair}}
+			    </div>
+			    <div class="ui yellow message">
+				    若報名廠商未達 15 家,則以協助借用場地進行面試為宜
+			    </div>
+            </div>
+        </div>
+        <button class="ui teal button" type="submit">送出資料</button>
+
+
+    </form>
+
+    
+
+{% endblock %}
