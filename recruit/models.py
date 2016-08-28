@@ -1,4 +1,27 @@
 from django.db import models
+from company.models import Company
+CATEGORYS = (
+            (u'半導體',  u'半導體'),
+            (u'消費電子',  u'消費電子'),
+            (u'網路通訊',  u'網路通訊'),
+            (u'光電光學',  u'光電光學'),
+            (u'資訊軟體',  u'資訊軟體'),
+            (u'集團',  u'集團'),
+            (u'綜合',  u'綜合'),
+            (u'人力銀行',  u'人力銀行'),
+            (u'機構',  u'機構'),
+            (u'化工/化學',  u'化工/化學'),
+            (u'傳產/製造',  u'傳產/製造'),
+            (u'工商/服務',  u'工商/服務'),
+            (u'教育、政府及團體',  u'教育、政府及團體'),
+            (u'醫藥/農牧',  u'醫藥/農牧'),
+            (u'民生消費',  u'民生消費'),
+            (u'媒體/出版',  u'媒體/出版'),
+            (u'貿易/流通',  u'貿易/流通'),
+            (u'不動產相關',  u'不動產相關'),
+)
+
+
 
 class RecruitConfigs(models.Model):
     register_start = models.DateTimeField(u'廠商註冊開始時間')
@@ -50,13 +73,46 @@ class RecruitSignup(models.Model):
     career_tutor = models.BooleanField(u'企業職場導師')
     company_visit = models.BooleanField(u'企業參訪')
     lecture = models.BooleanField(u'就業力講座')
-    payment = models.BooleanField(u'完成付款',default=False)
+    payment = models.BooleanField(u'完成付款', default=False)
     receipt_no = models.CharField(u'收據號碼', blank=True, null=True, max_length=50)
     ps = models.TextField(u'備註', blank=True, null=True)
     added = models.TimeField(u'報名時間', auto_now_add=True)
     updated = models.TimeField(u'更新時間',auto_now=True)
+    def __str__(self):
+        company = Company.objects.get(cid=self.cid)
+        return company.name
     class Meta:
         managed = True
         verbose_name = u'活動報名情況'
         verbose_name_plural = u'活動報名情況'
 
+class JobfairSlot(models.Model):
+    id = models.AutoField(primary_key=True)
+    serial_number = models.CharField(u'攤位編號', max_length=8)
+    cid = models.ForeignKey(RecruitSignup, on_delete=models.CASCADE, verbose_name=u'公司')
+    category = models.CharField(u'類別', max_length=15, choices=CATEGORYS)
+    class Meta:
+        managed = True
+        verbose_name = u'就博會攤位'
+        verbose_name_plural = u'就博會攤位'
+
+class JobfairInfo(models.Model):
+    id = models.AutoField(primary_key=True)
+    cid = models.OneToOneField(RecruitSignup, verbose_name=u'公司')
+    sign_name = models.CharField(u'攤位招牌名稱', max_length=20)
+    contact_person = models.CharField(u'聯絡人', max_length=10)
+    contact_mobile = models.CharField(u'聯絡人手機', max_length=10)
+    contact_email = models.EmailField(u'聯絡人Email', max_length=20)
+    packing_tickets = models.IntegerField(u'停車證數量')
+    power_req = models.CharField(u'用電需求', max_length=30, blank=True, null=True)
+    ps = models.CharField(max_length=50, blank=True, null=True)
+    class Meta:
+        managed = True
+        verbose_name = u'就博會資訊'
+        verbose_name_plural = u'就博會資訊'
+
+class SeminarSlot(models.Model):
+
+    class Meta:
+        verbose_name = u'說明會場次'
+        verbose_name_plural = u'說明會場次'
