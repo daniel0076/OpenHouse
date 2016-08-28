@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import RecruitSignupForm
+from .forms import RecruitSignupForm,JobfairInfoForm
 from .models import RecruitConfigs
 from .models import RecruitSignup
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,3 +24,14 @@ def recruit_signup(request):
             form = RecruitSignupForm(instance=signup_info)
         return render(request, 'signup.html', locals())
 
+def jobfair_info(request):
+    
+    if request.POST:
+        form = JobfairInfoForm(data=request.POST)
+        if form.is_valid():
+            new_info = form.save(commit=False)
+            company = RecruitSignup.objects.get(cid=request.user.cid)
+            new_info.cid = company
+            new_info.save()
+    form = JobfairInfoForm()
+    return render(request,'jobfair_info.html',locals())

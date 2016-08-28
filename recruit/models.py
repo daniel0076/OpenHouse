@@ -105,7 +105,7 @@ class JobfairInfo(models.Model):
     contact_email = models.EmailField(u'聯絡人Email', max_length=20)
     packing_tickets = models.IntegerField(u'停車證數量')
     power_req = models.CharField(u'用電需求', max_length=30, blank=True, null=True)
-    ps = models.CharField(max_length=50, blank=True, null=True)
+    ps = models.CharField(u'備註', max_length=50, blank=True, null=True)
     class Meta:
         managed = True
         verbose_name = u'就博會資訊'
