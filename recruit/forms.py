@@ -11,4 +11,4 @@ class JobfairInfoForm(ModelForm):
     class Meta:
         model = JobfairInfo
         fields = '__all__'
-        exclude = ['cid']
+        exclude = ['company']

@@ -19,7 +19,7 @@ class JobfairSlotAdmin(admin.ModelAdmin):
 admin.site.register(JobfairSlot, JobfairSlotAdmin)
 
 class JobfairInfoAdmin(admin.ModelAdmin):
-    list_display = ('cid',)
+    list_display = ('company',)
 
 
-admin.site.register(JobfairInfo,JobfairInfoAdmin)
+admin.site.register(JobfairInfo, JobfairInfoAdmin)
