@@ -4,6 +4,7 @@ from django.core import serializers
 from django.forms.models import model_to_dict
 from django.utils import timezone
 from django.db.models import Count
+from django.conf import settings
 import xlsxwriter
 import json
 import rdss.models
@@ -225,6 +226,32 @@ def ExportSurvey(request):
         survey_worksheet.write(row_count+1, 0, survey.company)
         for col_count, field in enumerate(fields):
             survey_worksheet.write(row_count+1, col_count+1, getattr(survey, field.name))
+
+    workbook.close()
+    return response
+
+@staff_member_required
+def ExportAdFormat(request):
+    filename = "rdss_logos_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    workbook = xlsxwriter.Workbook(response)
+
+    all_company = company.models.Company.objects.all()
+    rdss_company = rdss.models.Signup.objects.all()
+    company_list = [
+        all_company.get(cid=c.cid) for c in rdss_company
+    ]
+    company_list.sort(key=lambda item:getattr(item,'category'))
+
+    worksheet = workbook.add_worksheet("廣告頁")
+    worksheet.set_column(0,3,50)
+    for row_count, com in enumerate(company_list):
+        worksheet.set_row(row_count, 200)
+        worksheet.insert_image(row_count, 0, settings.BASE_DIR+com.logo.url)
+        worksheet.write(row_count, 1, com.brief)
+        worksheet.write(row_count, 2, com.introduction)
+        worksheet.write(row_count, 3, com.category)
 
     workbook.close()
     return response

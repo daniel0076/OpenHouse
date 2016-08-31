@@ -21,5 +21,4 @@ urlpatterns = [
     url(r'^jobfair/select_ctrl$',views.JobfairSelectControl,name="rdss_jobfair_select_control"),
     url(r'^survey$',views.CompanySurvey,name="rdss_company_survey"),
 	# other export urls are defined in admin.py
-    url(r'^export_all$', export.ExportAll,name="rdss_export_all"),
 ]

@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'', include('general.urls')),  # add '' on the include path!!!
     url(r'^admin/rdss/sponsorship/$', rdss.views.SponsorAdmin),
     url(r'^admin/rdss/collect_points/$', rdss.views.CollectPoints, name="rdss_collect_points"),
+    url(r'^admin/rdss/export_all/$', rdss.export.ExportAll, name="rdss_export_all"),
+    url(r'^admin/rdss/export_ad/$', rdss.export.ExportAdFormat,name="rdss_export_ad"),
     url(r'^admin/', admin.site.urls),
     url(r'^company/', include('company.urls')),  # add '' on the include path!!!
     url(r'^company/rdss/', include('rdss.internal_urls')),  # add '' on the include path!!!
