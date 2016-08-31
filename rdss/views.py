@@ -46,22 +46,32 @@ def ControlPanel(request):
             "night1":"{}~{}".format(configs.session_2_start,configs.session_2_end),
             "night2":"{}~{}".format(configs.session_3_start,configs.session_3_end)
             }
+    # 問卷狀況
+    try:
+        rdss.models.CompanySurvey.objects.get(cid = request.user.cid)
+        fill_survey = True
+    except:
+        fill_survey = False
+
+    # 選位時間和數量狀態
     seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first()
     jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first()
     seminar_slot = rdss.models.Seminar_Slot.objects.filter(cid=mycid).first()
     jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid)
-    if seminar_select_time:
+    if seminar_select_time and not seminar_slot:
         slot_info['seminar_select_time'] = seminar_select_time.time
         slot_info['seminar_slot'] = "請依時段於左方選單選位"
-    if jobfair_select_time:
+    if jobfair_select_time and not jobfair_slot:
         slot_info['jobfair_select_time'] = jobfair_select_time.time
         slot_info['jobfair_slot'] = "請依時段於左方選單選位"
+
     if seminar_slot:
         slot_info['seminar_slot'] = "{} {}".format(seminar_slot.date,
                 seminar_session_display[seminar_slot.session])
     if jobfair_slot:
         slot_info['jobfair_slot'] = [int(s.serial_no) for s in jobfair_slot]
 
+    # Fee display
     fee = 0
     try:
         if signup_data.seminar == "noon":
@@ -72,11 +82,13 @@ def ControlPanel(request):
     except AttributeError:
         pass
 
+    # Sponsor fee display
     sponsor_amount = 0
     sponsorships = rdss.models.Sponsorship.objects.filter(cid__cid = request.user.cid)
     for s in sponsorships:
         sponsor_amount += s.item.price
 
+    # Seminar and Jobfair info status
     try:
         seminar_info = rdss.models.Seminar_Info.objects.get(cid = request.user.cid)
     except ObjectDoesNotExist:
@@ -86,23 +98,15 @@ def ControlPanel(request):
     except ObjectDoesNotExist:
         jobfair_info = None
 
-    try:
-        rdss.models.CompanySurvey.objects.get(cid = request.user.cid)
-        fill_survey = True
-    except:
-        fill_survey = False
-
-
     # control semantic ui class
     step_ui = ["","",""] # for step ui in template
     nav_rdss="active"
     sidebar_ui = {'status':"active"}
 
-    if not signup_data:
-        step_ui[0] = "active"
-    else:
-        step_ui[0] = "completed"
-        step_ui[1] = "active"
+    step_ui[0] = "completed" if signup_data else "active"
+    step_ui[1] = "completed" if jobfair_slot or seminar_slot else "active"
+    step_ui[2] = "completed" if jobfair_info or seminar_info else "active"
+
 
     return render(request,'status.html',locals())
 
