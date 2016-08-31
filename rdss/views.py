@@ -509,7 +509,7 @@ def SponsorAdmin(request):
                                                 args=(c.id,))
                         })
 
-    return render(request,'sponsor_admin.html',locals())
+    return render(request,'admin/sponsor_admin.html',locals())
 
 @login_required(login_url='/company/login/')
 def CompanySurvey(request):
@@ -563,7 +563,7 @@ def CollectPoints(request):
         student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
             num_attend= Count('attendance')).first()
 
-    return render(request, 'collect_points.html', locals())
+    return render(request, 'admin/collect_points.html', locals())
 
 # ========================RDSS public view=================
 def RDSSPublicIndex(request):

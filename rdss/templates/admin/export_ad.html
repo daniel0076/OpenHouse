@@ -1,0 +1,48 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href={% static "node_modules/semantic-ui/dist/semantic.min.css" %} rel="stylesheet">
+<link href={% static "css/rdss/collect_points.css" %} rel="stylesheet">
+<script src={% static "node_modules/semantic-ui/dist/semantic.min.js" %}></script>
+<script src={% static "js/collect_points.js" %}></script>
+{% endblock %}
+
+{% block content %}
+<h1 class="ui dividing header" id="title">OpenHouse 廣告頁匯出</h1>
+<div class="ui segment">
+  <table class="ui stripped celled table">
+    <thead>
+      <tr><th>Logo</th>
+        <th>企業名</th>
+        <th>類別</th>
+        <th>簡介</th>
+        <th>職缺</th>
+      </tr></thead>
+      <tbody>
+        {% for company in company_list %}
+        <tr>
+          <td>
+            <h4 class="ui image header">
+              <img src="{{company.logo.url}}" class="ui medium image">
+            </h4></td>
+            <td>
+              {{company.name}}
+            </td>
+            <td>
+              {{company.category}}
+            </td>
+            <td>
+              {{company.brief}}
+            </td>
+            <td>
+              {{company.introduction}}
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+{% endblock %}
+

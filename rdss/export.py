@@ -1,3 +1,4 @@
+from django.shortcuts import render,redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.core import serializers
@@ -232,11 +233,6 @@ def ExportSurvey(request):
 
 @staff_member_required
 def ExportAdFormat(request):
-    filename = "rdss_logos_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=' + filename
-    workbook = xlsxwriter.Workbook(response)
-
     all_company = company.models.Company.objects.all()
     rdss_company = rdss.models.Signup.objects.all()
     company_list = [
@@ -244,14 +240,4 @@ def ExportAdFormat(request):
     ]
     company_list.sort(key=lambda item:getattr(item,'category'))
 
-    worksheet = workbook.add_worksheet("廣告頁")
-    worksheet.set_column(0,3,50)
-    for row_count, com in enumerate(company_list):
-        worksheet.set_row(row_count, 200)
-        worksheet.insert_image(row_count, 0, settings.BASE_DIR+com.logo.url)
-        worksheet.write(row_count, 1, com.brief)
-        worksheet.write(row_count, 2, com.introduction)
-        worksheet.write(row_count, 3, com.category)
-
-    workbook.close()
-    return response
+    return render(request,'admin/export_ad.html',locals())
