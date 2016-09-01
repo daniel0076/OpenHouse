@@ -177,8 +177,8 @@ def ExportAll(request):
     sponsorships_list = list()
     for c in signups:
         shortname = company.models.Company.objects.filter(cid=c.cid).first().shortname
-        sponsorships = rdss.models.Sponsorship.objects.filter(cid=c)
-        counts = [rdss.models.Sponsorship.objects.filter(cid=c, item=item).count() for item in sponsor_items]
+        sponsorships = rdss.models.Sponsorship.objects.filter(company=c)
+        counts = [rdss.models.Sponsorship.objects.filter(company=c, item=item).count() for item in sponsor_items]
         amount = 0
         for s in sponsorships:
             amount += s.item.price
@@ -248,7 +248,7 @@ def ExportActivityInfo(request):
 
     seminar_into_list = rdss.models.SeminarInfo.objects.all()
     for row_count, info in enumerate(seminar_into_list):
-        worksheet.write(row_count+1, 0, info.cid.get_company_name())
+        worksheet.write(row_count+1, 0, info.company.get_company_name())
         for col_count, field in enumerate(fields):
             try:
                 worksheet.write(row_count+1, col_count+1, getattr(info, field.name))
@@ -266,7 +266,7 @@ def ExportActivityInfo(request):
 
     jobfair_into_list = rdss.models.JobfairInfo.objects.all()
     for row_count, info in enumerate(jobfair_into_list):
-        worksheet.write(row_count+1, 0, info.cid.get_company_name())
+        worksheet.write(row_count+1, 0, info.company.get_company_name())
         for col_count, field in enumerate(fields):
             try:
                 worksheet.write(row_count+1, col_count+1, getattr(info, field.name))

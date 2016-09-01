@@ -54,10 +54,10 @@ def ControlPanel(request):
         fill_survey = False
 
     # 選位時間和數量狀態
-    seminar_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first()
-    jobfair_select_time = rdss.models.JobfairOrder.objects.filter(cid=mycid).first()
+    seminar_select_time = rdss.models.SeminarOrder.objects.filter(company=mycid).first()
+    jobfair_select_time = rdss.models.JobfairOrder.objects.filter(company=mycid).first()
     seminar_slot = rdss.models.SeminarSlot.objects.filter(company=mycid).first()
-    jobfair_slot = rdss.models.JobfairSlot.objects.filter(cid=mycid)
+    jobfair_slot = rdss.models.JobfairSlot.objects.filter(company=mycid)
     if seminar_select_time and not seminar_slot:
         slot_info['seminar_select_time'] = seminar_select_time.time
         slot_info['seminar_slot'] = "請依時段於左方選單選位"
@@ -84,17 +84,17 @@ def ControlPanel(request):
 
     # Sponsor fee display
     sponsor_amount = 0
-    sponsorships = rdss.models.Sponsorship.objects.filter(cid__cid = request.user.cid)
+    sponsorships = rdss.models.Sponsorship.objects.filter(company__cid = request.user.cid)
     for s in sponsorships:
         sponsor_amount += s.item.price
 
     # Seminar and Jobfair info status
     try:
-        seminar_info = rdss.models.SeminarInfo.objects.get(cid = request.user.cid)
+        seminar_info = rdss.models.SeminarInfo.objects.get(company = request.user.cid)
     except ObjectDoesNotExist:
         seminar_info = None
     try:
-        jobfair_info = rdss.models.JobfairInfo.objects.get(cid = request.user.cid)
+        jobfair_info = rdss.models.JobfairInfo.objects.get(company = request.user.cid)
     except ObjectDoesNotExist:
         jobfair_info = None
 
@@ -153,13 +153,13 @@ def SignupRdss(request):
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
     try:
-        cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+        company = rdss.models.Signup.objects.get(cid=request.user.cid)
     except Exception as e:
         error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
         return render(request,'error.html',locals())
 
     try:
-        seminar_info = rdss.models.SeminarInfo.objects.get(cid=cid)
+        seminar_info = rdss.models.SeminarInfo.objects.get(company=company)
     except ObjectDoesNotExist:
         seminar_info = None
     if request.POST:
@@ -180,20 +180,20 @@ def SeminarInfo(request):
 def JobfairInfo(request):
 
     try:
-        cid = rdss.models.Signup.objects.get(cid=request.user.cid)
+        company = rdss.models.Signup.objects.get(cid=request.user.cid)
     except Exception as e:
         error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
         return render(request,'error.html',locals())
     # check whether the company job fair info is in the DB
     try:
-        jobfair_info = rdss.models.JobfairInfo.objects.get(cid=cid)
+        jobfair_info = rdss.models.JobfairInfo.objects.get(company=company)
     except ObjectDoesNotExist:
         jobfair_info = None
     if request.POST:
         form = rdss.forms.JobfairInfoCreationForm(data=request.POST,instance=jobfair_info)
         if form.is_valid():
             info = form.save(commit=False)
-            info.cid = cid
+            info.company= company
             info.save()
             return redirect('rdss_jobfair_info')
     else:
@@ -222,7 +222,7 @@ def SeminarSelectFormGen(request):
 
     #check the company have been assigned a slot select order and time
     try:
-        seminar_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first().time
+        seminar_select_time = rdss.models.SeminarOrder.objects.filter(company=mycid).first().time
     except Exception as e:
         seminar_select_time = "選位時間及順序尚未排定，您可以先參考下方說明會時間表"
 
@@ -287,7 +287,7 @@ def SeminarSelectControl(request):
             return_data['my_slot'] = False
 
         try:
-            my_select_time = rdss.models.SeminarOrder.objects.filter(cid=request.user.cid).first().time
+            my_select_time = rdss.models.SeminarOrder.objects.filter(company=request.user.cid).first().time
         except AttributeError:
             my_select_time = None
 
@@ -306,7 +306,7 @@ def SeminarSelectControl(request):
     #action select
     elif action == "select":
         mycid = request.user.cid
-        my_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first().time
+        my_select_time = rdss.models.SeminarOrder.objects.filter(company=mycid).first().time
         if not my_select_time or timezone.now() <my_select_time:
             return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 
@@ -368,7 +368,7 @@ def JobfairSelectFormGen(request):
         return render(request,'error.html',locals())
     #check the company have been assigned a slot select order and time
     try:
-        jobfair_select_time = rdss.models.JobfairOrder.objects.filter(cid=mycid).first().time
+        jobfair_select_time = rdss.models.JobfairOrder.objects.filter(company=mycid).first().time
     except Exception as e:
         jobfair_select_time = "選位時間及順序尚未排定，您可以先參考攤位圖"
 
@@ -392,13 +392,13 @@ def JobfairSelectControl(request):
         for slot in slot_list:
             return_data = dict()
             return_data["serial_no"] = slot.serial_no
-            return_data["company"] = None if not slot.cid else\
-            company.models.Company.objects.filter(cid=slot.cid.cid).first().shortname
+            return_data["company"] = None if not slot.company else\
+                slot.company.get_company_name()
             slot_list_return.append(return_data)
-        my_slot_list = [slot.serial_no for slot in rdss.models.JobfairSlot.objects.filter(cid__cid=request.user.cid)]
+        my_slot_list = [slot.serial_no for slot in rdss.models.JobfairSlot.objects.filter(company__cid=request.user.cid)]
 
         try:
-            my_select_time = rdss.models.JobfairOrder.objects.filter(cid=request.user.cid).first().time
+            my_select_time = rdss.models.JobfairOrder.objects.filter(company=request.user.cid).first().time
         except AttributeError:
             my_select_time = None
         if not my_select_time or timezone.now() < my_select_time:
@@ -422,26 +422,28 @@ def JobfairSelectControl(request):
             ret['success'] = False
             ret['msg'] = "選位失敗，攤位錯誤或貴公司未勾選參加就博會"
             return JsonResponse(ret)
-        if slot.cid != None:
+        if slot.company!= None:
             return JsonResponse({"success":False,'msg':'選位失敗，該攤位已被選定'})
 
-        my_select_time = rdss.models.JobfairOrder.objects.filter(cid=request.user.cid).first().time
+        my_select_time = rdss.models.JobfairOrder.objects.filter(company=request.user.cid).first().time
         if timezone.now() < my_select_time:
             return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 
-        my_slot_list = rdss.models.JobfairSlot.objects.filter(cid__cid = request.user.cid)
+        my_slot_list = rdss.models.JobfairSlot.objects.filter(company__cid = request.user.cid)
         if my_slot_list.count() >= my_signup.jobfair:
             return JsonResponse({"success":False,'msg':'選位失敗，貴公司攤位數已達上限'})
 
-        slot.cid = my_signup
+        slot.company = my_signup
         slot.save()
         return JsonResponse({"success":True})
 
     elif action == "cancel":
         cancel_slot_no = post_data.get('slot')
-        cancel_slot = rdss.models.JobfairSlot.objects.filter(cid__cid=request.user.cid, serial_no = cancel_slot_no).first()
+        cancel_slot = rdss.models.JobfairSlot.objects.filter(
+            company__cid=request.user.cid,
+            serial_no=cancel_slot_no).first()
         if cancel_slot:
-            cancel_slot.cid = None
+            cancel_slot.company = None
             cancel_slot.save()
             return JsonResponse({"success":True})
         else:
@@ -451,13 +453,13 @@ def JobfairSelectControl(request):
 
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
     #clear sponsor ships objects
-    old_sponsorships = rdss.models.Sponsorship.objects.filter(cid=sponsor)
+    old_sponsorships = rdss.models.Sponsorship.objects.filter(company=sponsor)
     for i in old_sponsorships:
         i.delete()
     for item in sponsor_items:
         if item.name in post_data and\
             rdss.models.Sponsorship.objects.filter(item=item).count() < item.limit:
-                rdss.models.Sponsorship.objects.create(cid=sponsor,item=item)
+                rdss.models.Sponsorship.objects.create(company=sponsor,item=item)
 
 
 @login_required(login_url='/company/login/')
@@ -484,7 +486,7 @@ def Sponsor(request):
             .annotate(num_sponsor = Count('sponsorship'))
     other_items = rdss.models.SponsorItems.objects.all().exclude(name__contains="活動專刊")\
             .annotate(num_sponsor = Count('sponsorship'))
-    sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
+    sponsorship = rdss.models.Sponsorship.objects.filter(company=sponsor)
     my_sponsor_items = [s.item for s in sponsorship ]
     return render(request,'sponsor.html',locals())
 
@@ -498,8 +500,8 @@ def SponsorAdmin(request):
     sponsorships_list = list()
     for c in companies:
         shortname = company.models.Company.objects.filter(cid=c.cid).first().shortname
-        sponsorships = rdss.models.Sponsorship.objects.filter(cid=c)
-        counts = [rdss.models.Sponsorship.objects.filter(cid = c,item=item).count() for item in sponsor_items]
+        sponsorships = rdss.models.Sponsorship.objects.filter(company=c)
+        counts = [rdss.models.Sponsorship.objects.filter(company= c,item=item).count() for item in sponsor_items]
         amount = 0
         for s in sponsorships:
             amount += s.item.price
@@ -605,19 +607,19 @@ def SeminarPublic(request):
             week_slot_info.append(
                 {
                     'date': today,
-                    'noon': '' if not noon_slot or not noon_slot.cid else
+                    'noon': '' if not noon_slot or not noon_slot.company else
                     {
-                        'company': Company.objects.filter(cid=noon_slot.cid.cid).first().shortname,
+                        'company': Company.objects.filter(cid=noon_slot.company.cid).first().shortname,
                         'place_color':noon_slot.place.css_color
                     },
-                    'night1': '' if not night1_slot or not night1_slot.cid else
+                    'night1': '' if not night1_slot or not night1_slot.company else
                     {
-                        'company': Company.objects.filter(cid=night1_slot.cid.cid).first().shortname,
+                        'company': Company.objects.filter(cid=night1_slot.company.cid).first().shortname,
                         'place_color': night1_slot.place.css_color
                     },
-                    'night2': '' if not night2_slot or not night2_slot.cid else
+                    'night2': '' if not night2_slot or not night2_slot.company else
                     {
-                        'company': Company.objects.filter(cid=night2_slot.cid.cid).first().shortname,
+                        'company': Company.objects.filter(cid=night2_slot.company.cid).first().shortname,
                         'place_color': night2_slot.place.css_color
                     },
                 }

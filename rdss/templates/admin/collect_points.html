@@ -20,7 +20,7 @@
           <select class="ui dropdown" name="seminar_id">
             {% for seminar in seminar_list %}
             <option value={{seminar.id}}>
-            {{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.cid}}
+            {{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.company}}
             </option>
             {% endfor %}
           </select>
