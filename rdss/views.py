@@ -609,17 +609,17 @@ def SeminarPublic(request):
                     'date': today,
                     'noon': '' if not noon_slot or not noon_slot.company else
                     {
-                        'company': Company.objects.filter(cid=noon_slot.company.cid).first().shortname,
+                        'company': noon_slot.company.get_company_name(),
                         'place_color':noon_slot.place.css_color
                     },
                     'night1': '' if not night1_slot or not night1_slot.company else
                     {
-                        'company': Company.objects.filter(cid=night1_slot.company.cid).first().shortname,
+                        'company': night1_slot.company.get_company_name(),
                         'place_color': night1_slot.place.css_color
                     },
                     'night2': '' if not night2_slot or not night2_slot.company else
                     {
-                        'company': Company.objects.filter(cid=night2_slot.company.cid).first().shortname,
+                        'company': night2_slot.company.get_company_name(),
                         'place_color': night2_slot.place.css_color
                     },
                 }
