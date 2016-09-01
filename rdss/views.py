@@ -90,7 +90,7 @@ def ControlPanel(request):
 
     # Seminar and Jobfair info status
     try:
-        seminar_info = rdss.models.Seminar_Info.objects.get(cid = request.user.cid)
+        seminar_info = rdss.models.SeminarInfo.objects.get(cid = request.user.cid)
     except ObjectDoesNotExist:
         seminar_info = None
     try:
@@ -159,7 +159,7 @@ def SeminarInfo(request):
         return render(request,'error.html',locals())
 
     try:
-        seminar_info = rdss.models.Seminar_Info.objects.get(cid=cid)
+        seminar_info = rdss.models.SeminarInfo.objects.get(cid=cid)
     except ObjectDoesNotExist:
         seminar_info = None
     if request.POST:

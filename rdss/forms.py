@@ -49,7 +49,7 @@ class SignupEditForm(forms.ModelForm):
 class SeminarInfoCreationForm(forms.ModelForm):
 
     class Meta:
-        model=rdss.models.Seminar_Info
+        model=rdss.models.SeminarInfo
         fields='__all__'
         exclude=['cid']
 

@@ -242,11 +242,11 @@ def ExportActivityInfo(request):
     worksheet = workbook.add_worksheet("說明會資訊")
     worksheet.write(0, 0, "廠商")
     # ignore id and cid which is index 0 and 1
-    fields = rdss.models.Seminar_Info._meta.get_fields()[2:]
+    fields = rdss.models.SeminarInfo._meta.get_fields()[2:]
     for index, field in enumerate(fields):
         worksheet.write(0, index+1, field.verbose_name)
 
-    seminar_into_list = rdss.models.Seminar_Info.objects.all()
+    seminar_into_list = rdss.models.SeminarInfo.objects.all()
     for row_count, info in enumerate(seminar_into_list):
         worksheet.write(row_count+1, 0, info.cid.get_company_name())
         for col_count, field in enumerate(fields):

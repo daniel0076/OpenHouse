@@ -196,7 +196,7 @@ class Seminar_Order(models.Model):
 
 
 
-class Seminar_Info(models.Model):
+class SeminarInfo(models.Model):
     id = models.AutoField(primary_key=True)
     cid = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',

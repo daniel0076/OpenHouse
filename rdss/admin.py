@@ -131,7 +131,7 @@ class RDSSFilesAdmin(admin.ModelAdmin):
 class SlotColorAdmin(admin.ModelAdmin):
     list_display=('place','css_color', 'place_info')
 
-@admin.register(models.Seminar_Info)
+@admin.register(models.SeminarInfo)
 class SeminarInfoAdmin(admin.ModelAdmin):
     list_display=('cid','topic', 'speaker', 'speaker_title','contact',
                   'contact_email','contact_mobile', 'updated' )
