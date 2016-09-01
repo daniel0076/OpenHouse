@@ -88,6 +88,10 @@ class Signup(models.Model):
         com = company.models.Company.objects.filter(cid=self.cid).first()
         return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
 
+    def get_company_name(self):
+        com = company.models.Company.objects.filter(cid=self.cid).first()
+        return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
+
 
 # Proxy model for AdminSite company list item
 class Company(Signup):

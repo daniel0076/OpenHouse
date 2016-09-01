@@ -8,6 +8,7 @@ from django.db.models import Count
 from django.conf import settings
 import xlsxwriter
 import json
+import datetime
 import rdss.models
 import company.models
 
@@ -230,6 +231,52 @@ def ExportSurvey(request):
 
     workbook.close()
     return response
+
+@staff_member_required
+def ExportActivityInfo(request):
+    # Create the HttpResponse object with the appropriate Excel header.
+    filename = "rdss_activity_info_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    workbook = xlsxwriter.Workbook(response)
+    worksheet = workbook.add_worksheet("說明會資訊")
+    worksheet.write(0, 0, "廠商")
+    # ignore id and cid which is index 0 and 1
+    fields = rdss.models.Seminar_Info._meta.get_fields()[2:]
+    for index, field in enumerate(fields):
+        worksheet.write(0, index+1, field.verbose_name)
+
+    seminar_into_list = rdss.models.Seminar_Info.objects.all()
+    for row_count, info in enumerate(seminar_into_list):
+        worksheet.write(row_count+1, 0, info.cid.get_company_name())
+        for col_count, field in enumerate(fields):
+            try:
+                worksheet.write(row_count+1, col_count+1, getattr(info, field.name))
+            except TypeError as e:
+                # xlsxwriter do not accept django timzeone aware time, so use
+                # except, to write string
+                worksheet.write(row_count+1, col_count+1,info.updated.strftime("%Y-%m-%d %H:%M:%S"))
+
+    worksheet = workbook.add_worksheet("就博會資訊")
+    worksheet.write(0, 0, "廠商")
+    # ignore id and cid which is index 0 and 1
+    fields = rdss.models.Jobfair_Info._meta.get_fields()[2:]
+    for index, field in enumerate(fields):
+        worksheet.write(0, index+1, field.verbose_name)
+
+    jobfair_into_list = rdss.models.Jobfair_Info.objects.all()
+    for row_count, info in enumerate(jobfair_into_list):
+        worksheet.write(row_count+1, 0, info.cid.get_company_name())
+        for col_count, field in enumerate(fields):
+            try:
+                worksheet.write(row_count+1, col_count+1, getattr(info, field.name))
+            except TypeError as e:
+                # same as above
+                worksheet.write(row_count+1, col_count+1,info.updated.strftime("%Y-%m-%d %H:%M:%S"))
+
+    workbook.close()
+    return response
+
 
 @staff_member_required
 def ExportAdFormat(request):
