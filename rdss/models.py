@@ -286,7 +286,7 @@ class JobfairInfo(models.Model):
         verbose_name_plural = u"就博會資訊"
 
 
-class Sponsor_Items(models.Model):
+class SponsorItems(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(u'贊助品名稱', max_length=64, unique=True)
     description = models.CharField(u'贊助品說明', max_length=250)
@@ -312,7 +312,7 @@ class Sponsorship(models.Model):
     cid = models.ForeignKey(Signup, to_field='cid',
                             verbose_name=u'公司',
                             on_delete=models.CASCADE)
-    item = models.ForeignKey(Sponsor_Items,
+    item = models.ForeignKey(SponsorItems,
                              to_field='name', on_delete=models.CASCADE)
 
     class Meta:

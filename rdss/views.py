@@ -473,16 +473,16 @@ def Sponsor(request):
         return render(request,'error.html',locals())
 
     if request.POST:
-        sponsor_items = rdss.models.Sponsor_Items.objects.all()
+        sponsor_items = rdss.models.SponsorItems.objects.all()
         Add_SponsorShip(sponsor_items,request.POST,sponsor)
         msg = {"display":True,"content":"儲存成功!"}
 
 
     #活動專刊的部份是變動不大，且版面特殊，採客製寫法
-    monograph_main = rdss.models.Sponsor_Items.objects.filter(name="活動專刊").first()
-    monograph_items = rdss.models.Sponsor_Items.objects.filter(name__contains="活動專刊(" )\
+    monograph_main = rdss.models.SponsorItems.objects.filter(name="活動專刊").first()
+    monograph_items = rdss.models.SponsorItems.objects.filter(name__contains="活動專刊(" )\
             .annotate(num_sponsor = Count('sponsorship'))
-    other_items = rdss.models.Sponsor_Items.objects.all().exclude(name__contains="活動專刊")\
+    other_items = rdss.models.SponsorItems.objects.all().exclude(name__contains="活動專刊")\
             .annotate(num_sponsor = Count('sponsorship'))
     sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
     my_sponsor_items = [s.item for s in sponsorship ]
@@ -492,7 +492,7 @@ def Sponsor(request):
 def SponsorAdmin(request):
     site_header="OpenHouse 管理後台"
     site_title="OpenHouse"
-    sponsor_items = rdss.models.Sponsor_Items.objects.all()\
+    sponsor_items = rdss.models.SponsorItems.objects.all()\
                 .annotate(num_sponsor = Count('sponsorship'))
     companies = rdss.models.Signup.objects.all()
     sponsorships_list = list()

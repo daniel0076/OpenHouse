@@ -30,8 +30,8 @@ class SeminarSlotAdmin(admin.ModelAdmin):
     list_display = ('date', 'session', 'cid', 'place')
 
 
-@admin.register(models.Sponsor_Items)
-class Sponsor_ItemsAdmin(admin.ModelAdmin):
+@admin.register(models.SponsorItems)
+class SponsorItemsAdmin(admin.ModelAdmin):
     inlines = (SponsorshipInline,)
     list_display = ('name', 'description', 'price', 'limit', 'current_amount')
 

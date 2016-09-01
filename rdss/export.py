@@ -173,7 +173,7 @@ def ExportAll(request):
                                    signup['fields'][pairs['fieldname']])
 
     # Sponsorships
-    sponsor_items = rdss.models.Sponsor_Items.objects.all().annotate(num_sponsor=Count('sponsorship'))
+    sponsor_items = rdss.models.SponsorItems.objects.all().annotate(num_sponsor=Count('sponsorship'))
     sponsorships_list = list()
     for c in signups:
         shortname = company.models.Company.objects.filter(cid=c.cid).first().shortname
