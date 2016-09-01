@@ -249,7 +249,7 @@ class JobfairSlot(models.Model):
         return self.serial_no
 
 
-class Jobfair_Order(models.Model):
+class JobfairOrder(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(u'選位開始時間')
     cid = models.OneToOneField('Signup', to_field='cid',

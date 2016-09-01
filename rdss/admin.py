@@ -100,8 +100,8 @@ class CompanyAdmin(admin.ModelAdmin):
 class SeminarOrderAdmin(admin.ModelAdmin):
     list_display = ("cid","time","updated")
 
-@admin.register(models.Jobfair_Order)
-class Jobfair_OrderAdmin(admin.ModelAdmin):
+@admin.register(models.JobfairOrder)
+class JobfairOrderAdmin(admin.ModelAdmin):
     list_display = ("cid","time","updated")
 
 @admin.register(models.RdssConfigs)
