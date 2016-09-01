@@ -25,8 +25,8 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ('idcard_no', 'student_id', 'name', 'phone')
 
 
-@admin.register(models.Seminar_Slot)
-class Seminar_SlotAdmin(admin.ModelAdmin):
+@admin.register(models.SeminarSlot)
+class SeminarSlotAdmin(admin.ModelAdmin):
     list_display = ('date', 'session', 'cid', 'place')
 
 

@@ -56,7 +56,7 @@ def ControlPanel(request):
     # 選位時間和數量狀態
     seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first()
     jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first()
-    seminar_slot = rdss.models.Seminar_Slot.objects.filter(cid=mycid).first()
+    seminar_slot = rdss.models.SeminarSlot.objects.filter(cid=mycid).first()
     jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid)
     if seminar_select_time and not seminar_slot:
         slot_info['seminar_select_time'] = seminar_select_time.time
@@ -257,7 +257,7 @@ def SeminarSelectControl(request):
 
     #action query
     if action == "query":
-        slots = rdss.models.Seminar_Slot.objects.all()
+        slots = rdss.models.SeminarSlot.objects.all()
         return_data={}
         for s in slots:
             #night1_20160707
@@ -273,14 +273,14 @@ def SeminarSelectControl(request):
             #session wrong (signup noon but choose night)
             #and noon is not full yet
             if (my_seminar_session not in s.session) and\
-                (rdss.models.Seminar_Slot.objects.filter(session=my_seminar_session, cid=None)):
+                (rdss.models.SeminarSlot.objects.filter(session=my_seminar_session, cid=None)):
             # 選別人的時段，而且自己的時段還沒滿
 
                 return_data[index]['valid'] = False
             else:
                 return_data[index]['valid'] = True
 
-        my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+        my_slot = rdss.models.SeminarSlot.objects.filter(cid__cid=request.user.cid).first()
         if my_slot:
             return_data['my_slot'] = True
         else:
@@ -313,7 +313,7 @@ def SeminarSelectControl(request):
         slot_session , slot_date_str = post_data.get("slot").split('_')
         slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
         try:
-            slot = rdss.models.Seminar_Slot.objects.get(date=slot_date,session=slot_session)
+            slot = rdss.models.SeminarSlot.objects.get(date=slot_date,session=slot_session)
             my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
 
         except:
@@ -326,7 +326,7 @@ def SeminarSelectControl(request):
 
             #不在公司時段，且該時段未滿
             if my_signup.seminar not in slot.session and\
-            rdss.models.Seminar_Slot.objects.filter(session=my_signup.seminar, cid=None):
+            rdss.models.SeminarSlot.objects.filter(session=my_signup.seminar, cid=None):
                 return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
 
             slot.cid = my_signup
@@ -338,7 +338,7 @@ def SeminarSelectControl(request):
     # end of action select
     elif action == "cancel":
 
-        my_slot = rdss.models.Seminar_Slot.objects.filter(cid__cid=request.user.cid).first()
+        my_slot = rdss.models.SeminarSlot.objects.filter(cid__cid=request.user.cid).first()
         if my_slot:
             my_slot.cid = None
             my_slot.save()
@@ -554,11 +554,11 @@ def CollectPoints(request):
     site_header = "OpenHouse 管理後台"
     site_title = "OpenHouse"
     today = timezone.now().date()
-    seminar_list = rdss.models.Seminar_Slot.objects.filter(Q(date__gte=today))
+    seminar_list = rdss.models.SeminarSlot.objects.filter(Q(date__gte=today))
     if request.method =="POST":
         idcard_no = request.POST['idcard_no']
         seminar_id = request.POST['seminar_id']
-        seminar_obj = rdss.models.Seminar_Slot.objects.get(id=seminar_id)
+        seminar_obj = rdss.models.SeminarSlot.objects.get(id=seminar_id)
         student_obj, created = rdss.models.Student.objects.get_or_create(
             idcard_no=idcard_no
         )
@@ -599,9 +599,9 @@ def SeminarPublic(request):
         week_slot_info = []
         for day in range(5):
             today = table_start_date + datetime.timedelta(days=day+week*7)
-            noon_slot = rdss.models.Seminar_Slot.objects.filter(date=today, session='noon').first()
-            night1_slot= rdss.models.Seminar_Slot.objects.filter(date=today, session='night1').first()
-            night2_slot= rdss.models.Seminar_Slot.objects.filter(date=today, session='night2').first()
+            noon_slot = rdss.models.SeminarSlot.objects.filter(date=today, session='noon').first()
+            night1_slot= rdss.models.SeminarSlot.objects.filter(date=today, session='night1').first()
+            night2_slot= rdss.models.SeminarSlot.objects.filter(date=today, session='night2').first()
             week_slot_info.append(
                 {
                     'date': today,

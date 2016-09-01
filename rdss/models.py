@@ -101,7 +101,7 @@ class Company(Signup):
         verbose_name_plural = u"2. 參加廠商"
 
 
-class Seminar_Slot(models.Model):
+class SeminarSlot(models.Model):
     # (value in db,display name)
     SESSIONS = (
             ("noon", "中午場"),
@@ -130,7 +130,7 @@ class Seminar_Slot(models.Model):
 
 class Student(models.Model):
     idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
-    attendance = models.ManyToManyField(Seminar_Slot, through='StuAttendance')
+    attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
     student_id = models.CharField(u'學號', max_length=10, blank=True,
                                   help_text='領獎時填')
     name = models.CharField(u'姓名', max_length=64, blank=True,
@@ -151,7 +151,7 @@ class StuAttendance(models.Model):
                                 verbose_name=u'學生證卡號',
                                 on_delete=models.CASCADE,)
 
-    seminar = models.ForeignKey(Seminar_Slot,
+    seminar = models.ForeignKey(SeminarSlot,
                                 on_delete=models.CASCADE,)
 
     updated = models.DateTimeField(u'時間', auto_now=True)
