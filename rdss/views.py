@@ -54,7 +54,7 @@ def ControlPanel(request):
         fill_survey = False
 
     # 選位時間和數量狀態
-    seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first()
+    seminar_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first()
     jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first()
     seminar_slot = rdss.models.SeminarSlot.objects.filter(cid=mycid).first()
     jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid)
@@ -222,7 +222,7 @@ def SeminarSelectFormGen(request):
 
     #check the company have been assigned a slot select order and time
     try:
-        seminar_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
+        seminar_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first().time
     except Exception as e:
         seminar_select_time = "選位時間及順序尚未排定，您可以先參考下方說明會時間表"
 
@@ -287,7 +287,7 @@ def SeminarSelectControl(request):
             return_data['my_slot'] = False
 
         try:
-            my_select_time = rdss.models.Seminar_Order.objects.filter(cid=request.user.cid).first().time
+            my_select_time = rdss.models.SeminarOrder.objects.filter(cid=request.user.cid).first().time
         except AttributeError:
             my_select_time = None
 
@@ -306,7 +306,7 @@ def SeminarSelectControl(request):
     #action select
     elif action == "select":
         mycid = request.user.cid
-        my_select_time = rdss.models.Seminar_Order.objects.filter(cid=mycid).first().time
+        my_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first().time
         if not my_select_time or timezone.now() <my_select_time:
             return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 

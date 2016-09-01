@@ -96,8 +96,8 @@ class CompanyAdmin(admin.ModelAdmin):
     hr_mobile.short_description = '人資手機'
     hr_email.short_description = '人資Email'
 
-@admin.register(models.Seminar_Order)
-class Seminar_OrderAdmin(admin.ModelAdmin):
+@admin.register(models.SeminarOrder)
+class SeminarOrderAdmin(admin.ModelAdmin):
     list_display = ("cid","time","updated")
 
 @admin.register(models.Jobfair_Order)

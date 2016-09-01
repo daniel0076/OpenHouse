@@ -179,7 +179,7 @@ class SlotColor(models.Model):
         return self.place
 
 
-class Seminar_Order(models.Model):
+class SeminarOrder(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(u'選位開始時間')
     cid = models.OneToOneField('Signup', to_field='cid',
