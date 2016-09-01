@@ -56,7 +56,7 @@ def ControlPanel(request):
     # 選位時間和數量狀態
     seminar_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first()
     jobfair_select_time = rdss.models.JobfairOrder.objects.filter(cid=mycid).first()
-    seminar_slot = rdss.models.SeminarSlot.objects.filter(cid=mycid).first()
+    seminar_slot = rdss.models.SeminarSlot.objects.filter(company=mycid).first()
     jobfair_slot = rdss.models.JobfairSlot.objects.filter(cid=mycid)
     if seminar_select_time and not seminar_slot:
         slot_info['seminar_select_time'] = seminar_select_time.time
@@ -266,21 +266,21 @@ def SeminarSelectControl(request):
 
             return_data[index]['place_color'] = None if not s.place else\
                 s.place.css_color
-            return_data[index]["cid"] = "None" if not s.cid else\
-            company.models.Company.objects.filter(cid=s.cid.cid).first().shortname
+            return_data[index]["cid"] = "None" if not s.company else\
+                s.company.get_company_name()
 
             my_seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
             #session wrong (signup noon but choose night)
             #and noon is not full yet
             if (my_seminar_session not in s.session) and\
-                (rdss.models.SeminarSlot.objects.filter(session=my_seminar_session, cid=None)):
+                (rdss.models.SeminarSlot.objects.filter(session=my_seminar_session, company=None)):
             # 選別人的時段，而且自己的時段還沒滿
 
                 return_data[index]['valid'] = False
             else:
                 return_data[index]['valid'] = True
 
-        my_slot = rdss.models.SeminarSlot.objects.filter(cid__cid=request.user.cid).first()
+        my_slot = rdss.models.SeminarSlot.objects.filter(company__cid=request.user.cid).first()
         if my_slot:
             return_data['my_slot'] = True
         else:
@@ -319,17 +319,17 @@ def SeminarSelectControl(request):
         except:
             return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
 
-        if slot.cid != None:
+        if slot.company != None:
             return JsonResponse({"success":False,'msg':'選位失敗，該時段已被選定'})
 
         if slot and my_signup:
 
             #不在公司時段，且該時段未滿
             if my_signup.seminar not in slot.session and\
-            rdss.models.SeminarSlot.objects.filter(session=my_signup.seminar, cid=None):
+            rdss.models.SeminarSlot.objects.filter(session=my_signup.seminar, company=None):
                 return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
 
-            slot.cid = my_signup
+            slot.company = my_signup
             slot.save()
             return JsonResponse({"success":True})
         else:
@@ -338,9 +338,9 @@ def SeminarSelectControl(request):
     # end of action select
     elif action == "cancel":
 
-        my_slot = rdss.models.SeminarSlot.objects.filter(cid__cid=request.user.cid).first()
+        my_slot = rdss.models.SeminarSlot.objects.filter(company__cid=request.user.cid).first()
         if my_slot:
-            my_slot.cid = None
+            my_slot.company = None
             my_slot.save()
             return JsonResponse({"success":True})
         else:

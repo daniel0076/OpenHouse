@@ -27,7 +27,7 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(models.SeminarSlot)
 class SeminarSlotAdmin(admin.ModelAdmin):
-    list_display = ('date', 'session', 'cid', 'place')
+    list_display = ('date', 'session', 'company', 'place')
 
 
 @admin.register(models.SponsorItems)
