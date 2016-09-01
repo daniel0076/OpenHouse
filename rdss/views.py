@@ -57,7 +57,7 @@ def ControlPanel(request):
     seminar_select_time = rdss.models.SeminarOrder.objects.filter(cid=mycid).first()
     jobfair_select_time = rdss.models.Jobfair_Order.objects.filter(cid=mycid).first()
     seminar_slot = rdss.models.SeminarSlot.objects.filter(cid=mycid).first()
-    jobfair_slot = rdss.models.Jobfair_Slot.objects.filter(cid=mycid)
+    jobfair_slot = rdss.models.JobfairSlot.objects.filter(cid=mycid)
     if seminar_select_time and not seminar_slot:
         slot_info['seminar_select_time'] = seminar_select_time.time
         slot_info['seminar_slot'] = "請依時段於左方選單選位"
@@ -372,7 +372,7 @@ def JobfairSelectFormGen(request):
     except Exception as e:
         jobfair_select_time = "選位時間及順序尚未排定，您可以先參考攤位圖"
 
-    slots = rdss.models.Jobfair_Slot.objects.all()
+    slots = rdss.models.JobfairSlot.objects.all()
     place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
 
     return render(request,'jobfair_select.html',locals())
@@ -387,7 +387,7 @@ def JobfairSelectControl(request):
         raise Http404("What are u looking for?")
 
     if action == "query":
-        slot_list = rdss.models.Jobfair_Slot.objects.all()
+        slot_list = rdss.models.JobfairSlot.objects.all()
         slot_list_return = list()
         for slot in slot_list:
             return_data = dict()
@@ -395,7 +395,7 @@ def JobfairSelectControl(request):
             return_data["company"] = None if not slot.cid else\
             company.models.Company.objects.filter(cid=slot.cid.cid).first().shortname
             slot_list_return.append(return_data)
-        my_slot_list = [slot.serial_no for slot in rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid)]
+        my_slot_list = [slot.serial_no for slot in rdss.models.JobfairSlot.objects.filter(cid__cid=request.user.cid)]
 
         try:
             my_select_time = rdss.models.Jobfair_Order.objects.filter(cid=request.user.cid).first().time
@@ -415,7 +415,7 @@ def JobfairSelectControl(request):
 
     elif action == "select":
         try:
-            slot = rdss.models.Jobfair_Slot.objects.get(serial_no = post_data.get('slot'))
+            slot = rdss.models.JobfairSlot.objects.get(serial_no = post_data.get('slot'))
             my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
         except:
             ret = dict()
@@ -429,7 +429,7 @@ def JobfairSelectControl(request):
         if timezone.now() < my_select_time:
             return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
 
-        my_slot_list = rdss.models.Jobfair_Slot.objects.filter(cid__cid = request.user.cid)
+        my_slot_list = rdss.models.JobfairSlot.objects.filter(cid__cid = request.user.cid)
         if my_slot_list.count() >= my_signup.jobfair:
             return JsonResponse({"success":False,'msg':'選位失敗，貴公司攤位數已達上限'})
 
@@ -439,7 +439,7 @@ def JobfairSelectControl(request):
 
     elif action == "cancel":
         cancel_slot_no = post_data.get('slot')
-        cancel_slot = rdss.models.Jobfair_Slot.objects.filter(cid__cid=request.user.cid, serial_no = cancel_slot_no).first()
+        cancel_slot = rdss.models.JobfairSlot.objects.filter(cid__cid=request.user.cid, serial_no = cancel_slot_no).first()
         if cancel_slot:
             cancel_slot.cid = None
             cancel_slot.save()
@@ -629,5 +629,5 @@ def SeminarPublic(request):
 
 def JobfairPublic(request):
     place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
-    slots = rdss.models.Jobfair_Slot.objects.all()
+    slots = rdss.models.JobfairSlot.objects.all()
     return render(request,'jobfair_public.html',locals())

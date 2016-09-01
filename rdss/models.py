@@ -230,7 +230,7 @@ class SeminarInfo(models.Model):
 # 以下為就博會
 
 
-class Jobfair_Slot(models.Model):
+class JobfairSlot(models.Model):
 
     id = models.AutoField(primary_key=True)
     serial_no = models.CharField(u'攤位編號', max_length=10)

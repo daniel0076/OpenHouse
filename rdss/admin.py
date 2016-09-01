@@ -142,4 +142,4 @@ class JobfairInfoAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(models.Sponsorship)
-admin.site.register(models.Jobfair_Slot)
+admin.site.register(models.JobfairSlot)
