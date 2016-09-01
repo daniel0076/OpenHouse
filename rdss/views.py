@@ -519,6 +519,9 @@ def SponsorAdmin(request):
 def CompanySurvey(request):
     configs=rdss.models.RdssConfigs.objects.all()[0]
 
+    #semantic ui
+    sidebar_ui = {'survey':"active"}
+
     if timezone.now() > configs.survey_end or timezone.now() < configs.survey_start :
         error_msg="問卷填答已結束。期間為 {} 至 {}".format(
                 timezone.localtime(configs.survey_start).strftime("%Y/%m/%d %H:%M:%S"),
@@ -542,8 +545,7 @@ def CompanySurvey(request):
             print(form.errors)
     else:
         form = rdss.forms.SurveyForm(instance=my_survey)
-    #semantic ui
-    sidebar_ui = {'survey':"active"}
+
     return render(request,'survey_form.html',locals())
 
 
