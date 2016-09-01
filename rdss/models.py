@@ -265,7 +265,7 @@ class Jobfair_Order(models.Model):
         verbose_name_plural = u"就博會選位順序"
 
 
-class Jobfair_Info(models.Model):
+class JobfairInfo(models.Model):
     id = models.AutoField(primary_key=True)
     cid = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',

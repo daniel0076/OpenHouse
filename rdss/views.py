@@ -94,7 +94,7 @@ def ControlPanel(request):
     except ObjectDoesNotExist:
         seminar_info = None
     try:
-        jobfair_info = rdss.models.Jobfair_Info.objects.get(cid = request.user.cid)
+        jobfair_info = rdss.models.JobfairInfo.objects.get(cid = request.user.cid)
     except ObjectDoesNotExist:
         jobfair_info = None
 
@@ -186,7 +186,7 @@ def JobfairInfo(request):
         return render(request,'error.html',locals())
     # check whether the company job fair info is in the DB
     try:
-        jobfair_info = rdss.models.Jobfair_Info.objects.get(cid=cid)
+        jobfair_info = rdss.models.JobfairInfo.objects.get(cid=cid)
     except ObjectDoesNotExist:
         jobfair_info = None
     if request.POST:

@@ -136,7 +136,7 @@ class SeminarInfoAdmin(admin.ModelAdmin):
     list_display=('cid','topic', 'speaker', 'speaker_title','contact',
                   'contact_email','contact_mobile', 'updated' )
 
-@admin.register(models.Jobfair_Info)
+@admin.register(models.JobfairInfo)
 class JobfairInfoAdmin(admin.ModelAdmin):
     list_display=('cid', 'signname', 'parking_tickets', 'contact_email','contact_mobile', 'updated' )
 

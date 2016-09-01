@@ -75,7 +75,7 @@ class SeminarInfoCreationForm(forms.ModelForm):
 class JobfairInfoCreationForm(forms.ModelForm):
 
     class Meta:
-        model=rdss.models.Jobfair_Info
+        model=rdss.models.JobfairInfo
         fields='__all__'
         exclude=['cid']
 

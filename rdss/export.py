@@ -260,11 +260,11 @@ def ExportActivityInfo(request):
     worksheet = workbook.add_worksheet("就博會資訊")
     worksheet.write(0, 0, "廠商")
     # ignore id and cid which is index 0 and 1
-    fields = rdss.models.Jobfair_Info._meta.get_fields()[2:]
+    fields = rdss.models.JobfairInfo._meta.get_fields()[2:]
     for index, field in enumerate(fields):
         worksheet.write(0, index+1, field.verbose_name)
 
-    jobfair_into_list = rdss.models.Jobfair_Info.objects.all()
+    jobfair_into_list = rdss.models.JobfairInfo.objects.all()
     for row_count, info in enumerate(jobfair_into_list):
         worksheet.write(row_count+1, 0, info.cid.get_company_name())
         for col_count, field in enumerate(fields):
