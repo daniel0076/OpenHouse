@@ -24,10 +24,10 @@ def RDSSCompanyIndex(request):
     sidebar_ui = {'index': 'active'}
     configs=rdss.models.RdssConfigs.objects.all()[0]
     plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
-    return render(request,'rdss_company_index.html',locals())
+    return render(request,'company/rdss_company_entrance.html',locals())
 
 @login_required(login_url='/company/login/')
-def ControlPanel(request):
+def Status(request):
     if request.user.is_staff:
         return redirect("/admin")
     mycid = request.user.cid
@@ -108,7 +108,7 @@ def ControlPanel(request):
     step_ui[2] = "completed" if jobfair_info or seminar_info else "active"
 
 
-    return render(request,'status.html',locals())
+    return render(request,'company/status.html',locals())
 
 @login_required(login_url='/company/login/')
 def SignupRdss(request):
@@ -148,7 +148,7 @@ def SignupRdss(request):
         form = rdss.forms.SignupCreationForm
 
     plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
-    return render(request,'signup_form.html',locals())
+    return render(request,'company/signup_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def SeminarInfo(request):
@@ -174,7 +174,7 @@ def SeminarInfo(request):
 
     #semantic ui
     sidebar_ui = {'seminar_info':"active"}
-    return render(request,'seminar_info_form.html',locals())
+    return render(request,'company/seminar_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def JobfairInfo(request):
@@ -201,7 +201,7 @@ def JobfairInfo(request):
 
     #semantic ui
     sidebar_ui = {'jobfair_info':"active"}
-    return render(request,'jobfair_info_form.html',locals())
+    return render(request,'company/jobfair_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def SeminarSelectFormGen(request):
@@ -245,7 +245,7 @@ def SeminarSelectFormGen(request):
                 for day in range(0,5)])
 
     slot_colors = rdss.models.SlotColor.objects.all()
-    return render(request,'seminar_select.html',locals())
+    return render(request,'company/seminar_select.html',locals())
 
 @login_required(login_url='/company/login/')
 def SeminarSelectControl(request):
@@ -375,7 +375,7 @@ def JobfairSelectFormGen(request):
     slots = rdss.models.JobfairSlot.objects.all()
     place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
 
-    return render(request,'jobfair_select.html',locals())
+    return render(request,'company/jobfair_select.html',locals())
 
 @login_required(login_url='/company/login/')
 def JobfairSelectControl(request):
@@ -488,7 +488,7 @@ def Sponsor(request):
             .annotate(num_sponsor = Count('sponsorship'))
     sponsorship = rdss.models.Sponsorship.objects.filter(company=sponsor)
     my_sponsor_items = [s.item for s in sponsorship ]
-    return render(request,'sponsor.html',locals())
+    return render(request,'company/sponsor.html',locals())
 
 @staff_member_required
 def SponsorAdmin(request):
@@ -548,7 +548,7 @@ def CompanySurvey(request):
     else:
         form = rdss.forms.SurveyForm(instance=my_survey)
 
-    return render(request,'survey_form.html',locals())
+    return render(request,'company/survey_form.html',locals())
 
 
 @staff_member_required
@@ -581,7 +581,7 @@ def RDSSPublicIndex(request):
         all_company.get(cid=c.cid) for c in rdss_company
     ]
     company_list.sort(key=lambda item:getattr(item,'category'))
-    return render(request,'rdss_index.html',locals())
+    return render(request,'public/rdss_index.html',locals())
 
 def SeminarPublic(request):
     #semanti ui control
@@ -627,9 +627,9 @@ def SeminarPublic(request):
         dates_in_week.append(week_slot_info)
 
     slot_colors = rdss.models.SlotColor.objects.all()
-    return render(request,'seminar_public.html',locals())
+    return render(request,'public/rdss_seminar.html',locals())
 
 def JobfairPublic(request):
     place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
     slots = rdss.models.JobfairSlot.objects.all()
-    return render(request,'jobfair_public.html',locals())
+    return render(request,'public/rdss_jobfair.html',locals())

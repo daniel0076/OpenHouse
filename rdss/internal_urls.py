@@ -8,7 +8,7 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$',views.RDSSCompanyIndex,name="rdss_company_index"),
-    url(r'^status$',views.ControlPanel,name="rdss_status"),
+    url(r'^status$',views.Status,name="rdss_status"),
     url(r'^signup/$',views.SignupRdss,name="rdss_signup"),
     #url(r'^seminar/$',views.SeminarPublic,name="rdss_seminar_public"),
     url(r'^seminar/info$',views.SeminarInfo,name="rdss_seminar_info"),

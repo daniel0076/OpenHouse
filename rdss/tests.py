@@ -17,6 +17,6 @@ class LoginReqTest(TestCase):
 		# an AnonymousUser instance.
 		request.user = AnonymousUser()
 		# Test my_view() as if it were deployed at /customer/details
-		response = rdss.views.ControlPanel(request)
+		response = rdss.views.Status(request)
 		# Use this syntax for class-based views.
 		self.assertEqual(response.status_code, 302)
