@@ -275,7 +275,6 @@ def SeminarSelectControl(request):
             if (my_seminar_session not in s.session) and\
                 (rdss.models.SeminarSlot.objects.filter(session=my_seminar_session, company=None)):
             # 選別人的時段，而且自己的時段還沒滿
-
                 return_data[index]['valid'] = False
             else:
                 return_data[index]['valid'] = True
@@ -315,7 +314,6 @@ def SeminarSelectControl(request):
         try:
             slot = rdss.models.SeminarSlot.objects.get(date=slot_date,session=slot_session)
             my_signup = rdss.models.Signup.objects.get(cid=request.user.cid)
-
         except:
             return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
 
@@ -323,7 +321,6 @@ def SeminarSelectControl(request):
             return JsonResponse({"success":False,'msg':'選位失敗，該時段已被選定'})
 
         if slot and my_signup:
-
             #不在公司時段，且該時段未滿
             if my_signup.seminar not in slot.session and\
             rdss.models.SeminarSlot.objects.filter(session=my_signup.seminar, company=None):
