@@ -313,6 +313,7 @@ class Sponsorship(models.Model):
                             on_delete=models.CASCADE)
     item = models.ForeignKey(SponsorItems,
                              to_field='name', on_delete=models.CASCADE)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         unique_together = ("company",  "item")
@@ -333,7 +334,7 @@ class Files(models.Model):
     category = models.CharField(u'類型', max_length=10, choices=FILE_CAT)
     upload_file = models.FileField(u'上傳檔案',
                                    upload_to='rdss_files', null=False)
-    updated_time = models.DateTimeField(u'更新時間', auto_now=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         verbose_name = u"活動檔案"
@@ -347,6 +348,7 @@ class CareerTutor(models.Model):
                             on_delete=models.CASCADE)
     time = models.DateTimeField(u'')
     limit = models.IntegerField(u'限制')
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         managed = True
@@ -528,6 +530,7 @@ class CompanySurvey(models.Model):
             (u'不動產相關',  u'不動產相關'),
             )
     category            = models.CharField(u'企業類別', max_length=10, choices=CATEGORYS)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         managed = True

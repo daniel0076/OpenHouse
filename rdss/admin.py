@@ -125,7 +125,7 @@ class SurveyAdmin(admin.ModelAdmin):
 
 @admin.register(models.Files)
 class RDSSFilesAdmin(admin.ModelAdmin):
-    list_display=('title','category','upload_file','updated_time')
+    list_display=('title','category','upload_file','updated')
 
 @admin.register(models.SlotColor)
 class SlotColorAdmin(admin.ModelAdmin):
