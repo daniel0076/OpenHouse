@@ -33,16 +33,16 @@ class RdssConfigs(models.Model):
     # 說明會相關
     seminar_start_date = models.DateField(u'說明會開始日期')
     seminar_end_date = models.DateField(u'說明會結束日期')
-    session_1_start = models.TimeField(u'說明會場次1_開始時間')
-    session_1_end = models.TimeField(u'說明會場次1_結束時間')
-    session_2_start = models.TimeField(u'說明會場次2_開始時間')
-    session_2_end = models.TimeField(u'說明會場次2_結束時間')
-    session_3_start = models.TimeField(u'說明會場次3_開始時間')
-    session_3_end = models.TimeField(u'說明會場次3_結束時間')
+    session1_start = models.TimeField(u'說明會場次1_開始時間')
+    session1_end = models.TimeField(u'說明會場次1_結束時間')
+    session2_start = models.TimeField(u'說明會場次2_開始時間')
+    session2_end = models.TimeField(u'說明會場次2_結束時間')
+    session3_start = models.TimeField(u'說明會場次3_開始時間')
+    session3_end = models.TimeField(u'說明會場次3_結束時間')
     # 費用
-    session_1_fee = models.IntegerField(u'說明會場次1_費用')
-    session_2_fee = models.IntegerField(u'說明會場次2_費用')
-    session_3_fee = models.IntegerField(u'說明會場次3_費用')
+    session1_fee = models.IntegerField(u'說明會場次1_費用')
+    session2_fee = models.IntegerField(u'說明會場次2_費用')
+    session3_fee = models.IntegerField(u'說明會場次3_費用')
 
     # 就博會相關
     jobfair_date = models.DateField(u'就博會日期')

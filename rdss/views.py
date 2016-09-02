@@ -42,9 +42,9 @@ def Status(request):
             "jobfair_slot":"-",
             }
     seminar_session_display = {
-            "noon":"{}~{}".format(configs.session_1_start,configs.session_1_end),
-            "night1":"{}~{}".format(configs.session_2_start,configs.session_2_end),
-            "night2":"{}~{}".format(configs.session_3_start,configs.session_3_end)
+            "noon":"{}~{}".format(configs.session1_start,configs.session1_end),
+            "night1":"{}~{}".format(configs.session2_start,configs.session2_end),
+            "night2":"{}~{}".format(configs.session3_start,configs.session3_end)
             }
     # 問卷狀況
     try:
@@ -75,9 +75,9 @@ def Status(request):
     fee = 0
     try:
         if signup_data.seminar == "noon":
-            fee += configs.session_1_fee
+            fee += configs.session1_fee
         elif signup_data.seminar == "night":
-            fee += configs.session_2_fee
+            fee += configs.session2_fee
         fee += signup_data.jobfair*configs.jobfair_booth_fee
     except AttributeError:
         pass
