@@ -17,7 +17,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.core import urlresolvers
 from django.db.models import Q
+# for logging
+import logging
 # Create your views here.
+
+logger = logging.getLogger('rdss')
+collect_pts_logger = logging.getLogger('stu_attend')
 
 @login_required(login_url='/company/login/')
 def RDSSCompanyIndex(request):
@@ -328,6 +333,7 @@ def SeminarSelectControl(request):
 
             slot.company = my_signup
             slot.save()
+            logger.info('{} select seminar slot {} {}'.format(my_signup.get_company_name(),slot.date,slot.session))
             return JsonResponse({"success":True})
         else:
             return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
@@ -337,6 +343,8 @@ def SeminarSelectControl(request):
 
         my_slot = rdss.models.SeminarSlot.objects.filter(company__cid=request.user.cid).first()
         if my_slot:
+            logger.info('{} cancel seminar slot {} {}'.format(
+                my_slot.company.get_company_name(),my_slot.date,my_slot.session))
             my_slot.company = None
             my_slot.save()
             return JsonResponse({"success":True})
@@ -432,6 +440,7 @@ def JobfairSelectControl(request):
 
         slot.company = my_signup
         slot.save()
+        logger.info('{} select jobfair slot {}'.format(my_signup.get_company_name(),slot.serial_no))
         return JsonResponse({"success":True})
 
     elif action == "cancel":
@@ -440,6 +449,7 @@ def JobfairSelectControl(request):
             company__cid=request.user.cid,
             serial_no=cancel_slot_no).first()
         if cancel_slot:
+            logger.info('{} cancel jobfair slot {}'.format(cancel_slot.company.get_company_name(),cancel_slot.serial_no))
             cancel_slot.company = None
             cancel_slot.save()
             return JsonResponse({"success":True})
@@ -567,6 +577,7 @@ def CollectPoints(request):
         )
         student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
             num_attend= Count('attendance')).first()
+        collect_pts_logger.info('{} attend {} {}'.format(idcard_no, seminar_obj.date, seminar.session))
 
     return render(request, 'admin/collect_points.html', locals())
 

@@ -21,7 +21,7 @@ def CompanyIndex(request):
     nav_company_index = "active"
 
     # rdss files
-    rdss_file_list = rdss.models.Files.objects.all().order_by('-updated_time')
+    rdss_file_list = rdss.models.Files.objects.all().order_by('-updated')
     return render(request,'company_index.html',locals())
 
 @login_required(login_url='/company/login/')
