@@ -33,7 +33,7 @@ class CompanyCreationForm(forms.ModelForm):
         exclude=['id','password','last_login','is_active']
         widgets = {
                 'brief': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
-                'introduction': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
+                'recruit_info': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
                 }
 
     class Media:
@@ -84,7 +84,7 @@ class CompanyEditForm(forms.ModelForm):
         exclude=['password','last_login','date_join','is_active']
         widgets = {
                 'brief': forms.Textarea(),
-                'introduction': forms.Textarea(),
+                'recruit_info': forms.Textarea(),
                 }
 
     #css/js for the form, need to put {{form.media}} in template

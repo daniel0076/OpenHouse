@@ -60,7 +60,6 @@ def CompanyEdit(request):
     #        messages.success(request, _("User '{0}' created.").format(user))
             return redirect(CompanyInfo)
         else:
-            print(form.errors)
             #messages.error(request, ("The user could not be created due to errors.") )
             return render(request,'company_edit_form.html',locals())
     form = CompanyEditForm(instance=user);
@@ -101,10 +100,7 @@ def forget_password(request):
         if form.is_valid():
             form.save(request=request)
             company_obj = company.models.Company.objects.get(cid=form.cleaned_data.get('user'))
-            print(company_obj)
             return render(request,'notify_password_reset.html',locals())
-        else:
-            print(form.errors)
     else:
         form = CompanyPasswordResetForm()
     return render(request,'forget_password.html',{'form':form,'send':send})

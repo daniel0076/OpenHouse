@@ -65,7 +65,8 @@ class UserAdmin(BaseUserAdmin):
 	fieldsets = (
 			("基本資料", {
 				'classes': ('wide',),
-				'fields': ('cid','password','name','shortname','category','phone','postal_code','address','website','brief','introduction','logo')
+				'fields': ('cid','password','name','shortname','category','phone',
+               'postal_code','address','website','brief','recruit_info','logo')
 				}
 				),
 			("人資資料", {
@@ -84,7 +85,8 @@ class UserAdmin(BaseUserAdmin):
 	add_fieldsets = (
 			("基本資料", {
 				'classes': ('wide',),
-				'fields': ('cid','password1', 'password2','name','shortname','category','phone','postal_code','address','website','brief','introduction','logo')
+				'fields': ('cid','password1', 'password2','name','shortname',
+               'category','phone','postal_code','address','website','brief','recruit_info','logo')
 				}
 				),
 			("人資資料", {
