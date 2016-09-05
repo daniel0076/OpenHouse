@@ -168,12 +168,15 @@ def SeminarInfo(request):
     except ObjectDoesNotExist:
         seminar_info = None
     if request.POST:
-        form = rdss.forms.SeminarInfoCreationForm(data=request.POST,instance=seminar_info)
+        data = request.POST.copy()
+        data['company'] = company.cid
+        form = rdss.forms.SeminarInfoCreationForm(data=data ,instance=seminar_info)
         if form.is_valid():
             info = form.save(commit=False)
-            info.cid = cid
             info.save()
             return redirect(SeminarInfo)
+        else:
+            print(form.errors)
     else:
         form = rdss.forms.SeminarInfoCreationForm(instance=seminar_info)
 
@@ -195,10 +198,10 @@ def JobfairInfo(request):
     except ObjectDoesNotExist:
         jobfair_info = None
     if request.POST:
-        form = rdss.forms.JobfairInfoCreationForm(data=request.POST,instance=jobfair_info)
+        data = request.POST.copy()
+        data['company'] = company.cid
+        form = rdss.forms.JobfairInfoCreationForm(data=data,instance=jobfair_info)
         if form.is_valid():
-            info = form.save(commit=False)
-            info.company= company
             info.save()
             return redirect('rdss_jobfair_info')
     else:
