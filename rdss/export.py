@@ -84,7 +84,7 @@ def Export_Company(request):
                       'postal_code', 'address', 'website',
                       'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
                       'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr2_email', 'hr_ps',
-                      'brief', 'introduction']
+                      'brief', 'recruit_info']
     title_pairs = dict()
     for fieldname in fieldname_list:
         title_pairs[fieldname] = company.models.Company._meta.get_field(fieldname).verbose_name
@@ -122,7 +122,7 @@ def ExportAll(request):
                       'postal_code', 'address', 'website',
                       'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
                       'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr2_email', 'hr_ps',
-                      'brief', 'introduction']
+                      'brief', 'recruit_info']
     # avoid 'can't subtract offset-naive and offset-aware datetimes'
 
     title_pairs = dict()
