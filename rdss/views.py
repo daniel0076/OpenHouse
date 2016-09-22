@@ -172,8 +172,7 @@ def SeminarInfo(request):
         data['company'] = company.cid
         form = rdss.forms.SeminarInfoCreationForm(data=data ,instance=seminar_info)
         if form.is_valid():
-            info = form.save(commit=False)
-            info.save()
+            form.save()
             return redirect(SeminarInfo)
         else:
             print(form.errors)
@@ -202,7 +201,7 @@ def JobfairInfo(request):
         data['company'] = company.cid
         form = rdss.forms.JobfairInfoCreationForm(data=data,instance=jobfair_info)
         if form.is_valid():
-            info.save()
+            form.save()
             return redirect('rdss_jobfair_info')
     else:
         form = rdss.forms.JobfairInfoCreationForm(instance=jobfair_info)
