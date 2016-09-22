@@ -111,3 +111,19 @@ class SurveyForm(forms.ModelForm):
         if commit:
             survey.save()
         return survey
+
+
+class StudentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+           super(StudentForm, self).__init__(*args, **kwargs)
+           self.fields['student_id'].widget.attrs['autofocus']=True
+
+    class Meta:
+        model = rdss.models.Student
+        fields = ['idcard_no','student_id','phone']
+
+    def save(self, commit=True):
+        form = super(StudentForm, self).save(commit=False)
+        if commit:
+            form.save()
+        return form

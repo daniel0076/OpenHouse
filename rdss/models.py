@@ -130,16 +130,17 @@ class SeminarSlot(models.Model):
 class Student(models.Model):
     idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
     attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
-    student_id = models.CharField(u'學號', max_length=10, blank=True,
-                                  help_text='領獎時填')
+    student_id = models.CharField(u'學號', max_length=7, blank=True,
+                                  help_text='註冊時填', unique=True)
+    phone = models.CharField(u'手機', max_length=20, blank=True,
+                             help_text='註冊時填')
     name = models.CharField(u'姓名', max_length=64, blank=True,
                             help_text='領獎時填')
     dep = models.CharField(u'系級', max_length=16, blank=True,
                            help_text='領獎時填')
     email = models.EmailField(u'Email', max_length=64, blank=True,
                            help_text='領獎時填')
-    phone = models.CharField(u'手機', max_length=20, blank=True,
-                             help_text='領獎時填')
+
 
     class Meta:
         verbose_name = u"說明會學生"

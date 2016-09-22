@@ -9,4 +9,10 @@ $( document ).ready(function() {
                     $('input[name="idcard_no"]').val('');
                 }
             });
+
+    $('#stu_reg').click(
+        function(){
+          $('.register.modal').modal('show');
+        }
+        );
 });

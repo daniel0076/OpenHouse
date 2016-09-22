@@ -1,0 +1,33 @@
+{% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>研發替代役 - 集點查詢</title>
+<link href={% static "css/rdss/rdss_public.css" %} rel="stylesheet">
+
+{% endblock %}
+
+{% block 'content' %}
+<h1 class="ui header">研發替代役說明會 集點查詢</h1>
+<form class="ui form" method="POST" style="margin:auto;margin-bottom:5em;">
+	{% csrf_token %}
+	<div class="field">
+		<label>學號</label>
+		<input name="student_id" type="text">
+	</div>
+	<div class="field">
+		<label>手機</label>
+		<input name="cellphone" type="text">
+	</div>
+	{% if error_display %}
+	<div class='ui red message'>{{error_msg}}</div>
+	{% endif %}
+	<button class="ui teal button" type="submit">查詢</button>
+</form>
+<div class="ui segment">
+  <h2>結果 Result</h2>
+  <p>學號：{{student_obj.student_id}}</p>
+  <p>手機：{{student_obj.phone}}</p>
+  <p>學生證卡號：{{student_obj.idcard_no}}</p>
+</div>
+{% endblock %}

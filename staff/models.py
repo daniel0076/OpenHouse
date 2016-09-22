@@ -18,25 +18,25 @@ def validate_phone(string):
 class Staff(AbstractUser):
 	GENDER = (('M', u'男生'), ('F', u'女生'))
 	ROLE = (
-			(u'就輔組',         u'就輔組'       ),
-			(u'行政組 - 總召',  u'行政組 - 總召'),
-			(u'行政組 - 副召',  u'行政組 - 副召'),
-			(u'行政組 - 執秘',  u'行政組 - 執秘'),
+			(u'就輔部',         u'就輔部'       ),
+			(u'行政部 - 總召',  u'行政部 - 總召'),
+			(u'行政部 - 副召',  u'行政部 - 副召'),
+			(u'行政部 - 執秘',  u'行政部 - 執秘'),
 
-			(u'廠聯組 - 組長',  u'廠聯組 - 組長'),
-			(u'廠聯組 - 組員',  u'廠聯組 - 組員'),
+			(u'公關部 - 部長',  u'公關部 - 部長'),
+			(u'公關部 - 部員',  u'公關部 - 部員'),
 
-			(u'設計組 - 組長',  u'設計組 - 組長'),
-			(u'設計組 - 組員',  u'設計組 - 組員'),
+			(u'設計部 - 部長',  u'設計部 - 部長'),
+			(u'設計部 - 部員',  u'設計部 - 部員'),
 
-			(u'活動組 - 組長',  u'活動組 - 組長'),
-			(u'活動組 - 組員',  u'活動組 - 組員'),
+			(u'企畫部 - 部長',  u'企畫部 - 部長'),
+			(u'企畫部 - 部員',  u'企畫部 - 部員'),
 
-			(u'資訊組 - 組長',  u'資訊組 - 組長'),
-			(u'資訊組 - 組員',  u'資訊組 - 組員'),
+			(u'資訊部 - 部長',  u'資訊部 - 部長'),
+			(u'資訊部 - 部員',  u'資訊部 - 部員'),
 
-			(u'專刊組 - 組長',  u'專刊組 - 組長'),
-			(u'專刊組 - 組員',  u'專刊組 - 組員'),
+			(u'編輯部 - 部長',  u'編輯部 - 部長'),
+			(u'編輯部 - 部員',  u'編輯部 - 部員'),
 
 			)
 
@@ -47,7 +47,7 @@ class Staff(AbstractUser):
 	birthday = models.DateField(u'出生年月日', default=timezone.now,help_text='格式: YYYY/MM/DD')
 	idno= models.CharField(u'身份證字號',max_length=10)
 	role = models.CharField(u'職位', choices=ROLE, blank=True, max_length=10)
-	mobile = models.CharField(u'手機',max_length=12,validators=[validate_mobile],help_text='格式: 0912-345678')
+	mobile = models.CharField(u'手機',max_length=12,help_text='格式: 0912-345678')
 	fb_url = models.CharField(u'FB個人首頁連結', default='', max_length=100)
 	account = models.CharField(u'郵局或玉山帳號', max_length=25,help_text='帳戶必需是自己的',
 			blank=True, null=True
