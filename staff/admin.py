@@ -63,12 +63,12 @@ class StaffAdmin(UserAdmin):
 	# These override the definitions on the base UserAdmin
 	# that reference specific fields on auth.User.
 	exclude = ['last_name','first_name','date_joined']
-	list_display = ('username','name', 'role',)
+	list_display = ('username','name', 'role','birthday', 'idno', 'account')
 	list_filter = ()
 	fieldsets = (
 			("基本資料", {
 				'classes': ('wide',),
-				'fields': ('username','password','name','gender','birthday','idno','role',
+				'fields': ('username','password','name','gender','birthday','g2_email', 'idno','role',
 					'mobile','email','fb_url','account')
 				}
 				),
@@ -83,7 +83,7 @@ class StaffAdmin(UserAdmin):
 	add_fieldsets = (
 			("基本資料", {
 				'classes': ('wide',),
-				'fields': ('username','password1','password2','name','gender','birthday','idno','role',
+				'fields': ('username','password1','password2','name','gender','g2_email','birthday','idno','role',
 					'mobile','email','fb_url','account')
 				}
 				),
