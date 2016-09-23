@@ -63,7 +63,7 @@ class StaffAdmin(UserAdmin):
 	# These override the definitions on the base UserAdmin
 	# that reference specific fields on auth.User.
 	exclude = ['last_name','first_name','date_joined']
-	list_display = ('username','name', 'role','birthday', 'idno', 'account')
+	list_display = ('username','name', 'role','birthday', 'idno', 'account','is_staff', 'is_superuser')
 	list_filter = ()
 	fieldsets = (
 			("基本資料", {
