@@ -682,3 +682,15 @@ def QueryPoints(request):
 
     return render(request,'public/rdss_querypts.html',locals())
 
+
+def ListJobs(request):
+
+    all_company = company.models.Company.objects.all()
+    rdss_company = rdss.models.Signup.objects.all()
+    company_list = [
+        all_company.get(cid=c.cid) for c in rdss_company
+    ]
+    company_list.sort(key=lambda item:getattr(item,'category'))
+
+    return render(request,'public/rdss_jobs.html',locals())
+

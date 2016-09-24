@@ -88,6 +88,10 @@ class Company(AbstractBaseUser):
 		return False
 
 	@property
+	def is_company(self):
+		return True
+
+	@property
 	def is_active(self):
 		return True
 

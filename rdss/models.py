@@ -133,7 +133,7 @@ class Student(models.Model):
     student_id = models.CharField(u'學號', max_length=7, blank=True,
                                   help_text='註冊時填', unique=True)
     phone = models.CharField(u'手機', max_length=20, blank=True,
-                             help_text='註冊時填')
+                             help_text='註冊時填，格式：0987654321')
     name = models.CharField(u'姓名', max_length=64, blank=True,
                             help_text='領獎時填')
     dep = models.CharField(u'系級', max_length=16, blank=True,
