@@ -564,51 +564,54 @@ def CompanySurvey(request):
 def CollectPoints(request):
     site_header = "OpenHouse 管理後台"
     site_title = "OpenHouse"
+    configs=rdss.models.RdssConfigs.objects.all()[0]
     today = timezone.now().date()
-    seminar_list = rdss.models.SeminarSlot.objects.filter(Q(date__gte=today))
+    now = datetime.datetime.now().time()
+    if now > configs.session1_end and now <configs.session2_end:
+        current_session = "noon"
+    elif now > configs.session2_end and now <configs.session3_end:
+        current_session = "night1"
+    elif now > configs.session3_end:
+        current_session = "night2"
+
+    seminar_list = rdss.models.SeminarSlot.objects.filter(date=today)
+    current_seminar = seminar_list.filter(session = current_session).first()
+    # put current seminar to the default
+    seminar_list = list(seminar_list)
+    seminar_list.remove(current_seminar)
+    seminar_list.insert(0,current_seminar)
     if request.method =="POST":
-        if request.POST['action'] == "query":
-            idcard_no = request.POST['idcard_no']
-            seminar_id = request.POST['seminar_id']
-            seminar_obj = rdss.models.SeminarSlot.objects.get(id=seminar_id)
-            student_obj, created = rdss.models.Student.objects.get_or_create(
-                idcard_no=idcard_no
-            )
-            attendance_obj , created = rdss.models.StuAttendance.objects.get_or_create(
-                student=student_obj,
-                seminar=seminar_obj
-            )
-            student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
-                num_attend= Count('attendance')).first()
-            collect_pts_logger.info('{} attend {} {}'.format(idcard_no, seminar_obj.date, seminar_obj.session))
+        idcard_no = request.POST['idcard_no']
+        seminar_id = request.POST['seminar_id']
+        seminar_obj = rdss.models.SeminarSlot.objects.get(id=seminar_id)
+        student_obj, created = rdss.models.Student.objects.get_or_create(
+            idcard_no=idcard_no
+        )
+        attendance_obj , created = rdss.models.StuAttendance.objects.get_or_create(
+            student=student_obj,
+            seminar=seminar_obj
+        )
+        student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
+            num_attend= Count('attendance')).first()
+        collect_pts_logger.info('{} attend {} {}'.format(idcard_no, seminar_obj.date, seminar_obj.session))
 
-        elif request.POST['action'] == 'register':
-            data = request.POST.copy()
-            student_obj = rdss.models.Student.objects.get(idcard_no = data['idcard_no'])
-            form = rdss.forms.StudentForm(data, instance = student_obj)
-            if form.is_valid():
-                form.save()
-                msg = {'content': '儲存成功', 'type': 'green'}
-            else:
-                msg = {'content': '儲存失敗', 'type': 'error'}
-                print(form.errors)
-
-    instance = student_obj if request.method == 'POST' else None
-    stu_form = rdss.forms.StudentForm(instance = instance)
     return render(request, 'admin/collect_points.html', locals())
 
 @staff_member_required
-def StudentReg(request):
+def RegisterCard(request):
+    stu_form = rdss.forms.StudentForm()
     if request.method =="POST":
         data = request.POST.copy()
         instance = rdss.models.Student.objects.get(idcard_no = data['idcard_no'])
         form = rdss.forms.StudentForm(data, instance = instance)
         if form.is_valid():
             form.save()
+            ui_message = {"type":"green", "msg":"註冊成功"}
         else:
             print(form.errors)
+            ui_message = {"type":"error", "msg":"註冊失敗"}
 
-    return redirect(CollectPoints)
+    return render(request, 'admin/reg_card.html', locals())
 
 # ========================RDSS public view=================
 def RDSSPublicIndex(request):

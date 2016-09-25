@@ -116,7 +116,7 @@ class SurveyForm(forms.ModelForm):
 class StudentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
            super(StudentForm, self).__init__(*args, **kwargs)
-           self.fields['student_id'].widget.attrs['autofocus']=True
+           self.fields['idcard_no'].widget.attrs['autofocus']=True
 
     class Meta:
         model = rdss.models.Student

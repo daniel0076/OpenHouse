@@ -15,7 +15,6 @@
     <div class="column">
       <form class="ui form" method="POST" id="collect_form">
         {% csrf_token %}
-        <input type="hidden" name="action" value="query"/>
         <div class="field">
           <label>場次</label>
           <select class="ui dropdown" name="seminar_id">
@@ -34,7 +33,6 @@
           </div>
         </div>
         <button class="ui blue submit button" type="submit">集點</button>
-        <div class="ui red button" id="stu_reg">註冊學生證</div>
       </form>
     </div>
     <div class="ui vertical divider">
@@ -51,38 +49,5 @@
     </div>
   </div>
 </div>
-
-<div class="ui modal register">
-<div class="ui segment">
-  <h1 class="header">
-    註冊學生證資料
-  </h1 >
-  <form class="ui form" method="POST" action="{% url 'rdss_collect_points' %}">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="register"/>
-    <div class="two fields">
-      <div class="field">
-        {{ stu_form.idcard_no.errors }}
-        {{ stu_form.idcard_no.label_tag }} {{ stu_form.idcard_no }}
-        <p class="help">{{ stu_form.idcard_no.help_text|safe }}</p>
-      </div>
-    </div>
-    <div class="two fields">
-      <div class="field">
-        {{ stu_form.student_id.errors }}
-        {{ stu_form.student_id.label_tag }} {{ stu_form.student_id }}
-        <p class="help">{{ stu_form.student_id.help_text|safe }}</p>
-      </div>
-      <div class="field">
-        {{ stu_form.phone.errors }}
-        {{ stu_form.phone.label_tag }} {{ stu_form.phone }}
-        <p class="help">{{ stu_form.phone.help_text|safe }}</p>
-      </div>
-    </div>
-    <button class="ui red submit button" type="submit">註冊</button>
-  </form>
-</div>
-</div>
-
 {% endblock %}
 
