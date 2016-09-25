@@ -567,11 +567,11 @@ def CollectPoints(request):
     configs=rdss.models.RdssConfigs.objects.all()[0]
     today = timezone.now().date()
     now = datetime.datetime.now().time()
-    if now > configs.session1_end and now <configs.session2_end:
+    if now > configs.session1_start and now <configs.session2_start:
         current_session = "noon"
-    elif now > configs.session2_end and now <configs.session3_end:
+    elif now > configs.session2_start and now <configs.session3_start:
         current_session = "night1"
-    elif now > configs.session3_end:
+    elif now > configs.session3_start:
         current_session = "night2"
 
     seminar_list = rdss.models.SeminarSlot.objects.filter(date=today)
