@@ -21,21 +21,21 @@
     <input type="hidden" name="action" value="register"/>
     <div class="two fields">
       <div class="field">
-        {{ stu_form.idcard_no.errors }}
-        {{ stu_form.idcard_no.label_tag }} {{ stu_form.idcard_no }}
-        <p class="help">{{ stu_form.idcard_no.help_text|safe }}</p>
+        {{ form.idcard_no.label_tag }} {{ form.idcard_no }}
+        {{ form.idcard_no.errors }}
+        <p class="help">{{ form.idcard_no.help_text|safe }}</p>
       </div>
     </div>
     <div class="two fields">
       <div class="field">
-        {{ stu_form.student_id.errors }}
-        {{ stu_form.student_id.label_tag }} {{ stu_form.student_id }}
-        <p class="help">{{ stu_form.student_id.help_text|safe }}</p>
+        {{ form.student_id.label_tag }} {{ form.student_id }}
+        {{ form.student_id.errors }}
+        <p class="help">{{ form.student_id.help_text|safe }}</p>
       </div>
       <div class="field">
-        {{ stu_form.phone.errors }}
-        {{ stu_form.phone.label_tag }} {{ stu_form.phone }}
-        <p class="help">{{ stu_form.phone.help_text|safe }}</p>
+        {{ form.phone.label_tag }} {{ form.phone }}
+        {{ form.phone.errors }}
+        <p class="help">{{ form.phone.help_text|safe }}</p>
       </div>
     </div>
     <button class="ui red submit button" type="submit">註冊</button>

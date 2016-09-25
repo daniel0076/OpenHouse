@@ -601,10 +601,10 @@ def CollectPoints(request):
 
 @staff_member_required
 def RegisterCard(request):
-    stu_form = rdss.forms.StudentForm()
+    form = rdss.forms.StudentForm()
     if request.method =="POST":
         data = request.POST.copy()
-        instance = rdss.models.Student.objects.get(idcard_no = data['idcard_no'])
+        instance = rdss.models.Student.objects.filter(idcard_no = data['idcard_no']).first()
         form = rdss.forms.StudentForm(data, instance = instance)
         if form.is_valid():
             form.save()
