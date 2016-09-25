@@ -575,11 +575,13 @@ def CollectPoints(request):
         current_session = "night2"
 
     seminar_list = rdss.models.SeminarSlot.objects.filter(date=today)
-    current_seminar = seminar_list.filter(session = current_session).first()
-    # put current seminar to the default
-    seminar_list = list(seminar_list)
-    seminar_list.remove(current_seminar)
-    seminar_list.insert(0,current_seminar)
+    if seminar_list:
+        # put current seminar to the default
+        current_seminar = seminar_list.filter(session = current_session).first()
+        seminar_list = list(seminar_list)
+        seminar_list.remove(current_seminar)
+        seminar_list.insert(0,current_seminar)
+
     if request.method =="POST":
         idcard_no = request.POST['idcard_no']
         seminar_id = request.POST['seminar_id']
