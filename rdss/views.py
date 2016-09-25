@@ -567,7 +567,9 @@ def CollectPoints(request):
     configs=rdss.models.RdssConfigs.objects.all()[0]
     today = timezone.now().date()
     now = datetime.datetime.now().time()
-    if now > configs.session1_start and now <configs.session2_start:
+    if now < configs.session1_start:
+        current_session = "noon"
+    elif now > configs.session1_start and now <configs.session2_start:
         current_session = "noon"
     elif now > configs.session2_start and now <configs.session3_start:
         current_session = "night1"
@@ -575,12 +577,7 @@ def CollectPoints(request):
         current_session = "night2"
 
     seminar_list = rdss.models.SeminarSlot.objects.filter(date=today)
-    if seminar_list:
-        # put current seminar to the default
-        current_seminar = seminar_list.filter(session = current_session).first()
-        seminar_list = list(seminar_list)
-        seminar_list.remove(current_seminar)
-        seminar_list.insert(0,current_seminar)
+    current_seminar = seminar_list.filter(session = current_session).first()
 
     if request.method =="POST":
         idcard_no = request.POST['idcard_no']
@@ -596,6 +593,15 @@ def CollectPoints(request):
         student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
             num_attend= Count('attendance')).first()
         collect_pts_logger.info('{} attend {} {}'.format(idcard_no, seminar_obj.date, seminar_obj.session))
+
+        #maintain current seminar from post
+        current_seminar = seminar_obj
+
+    if seminar_list:
+        # put current seminar to the default
+        seminar_list = list(seminar_list)
+        seminar_list.remove(current_seminar)
+        seminar_list.insert(0,current_seminar)
 
     return render(request, 'admin/collect_points.html', locals())
 

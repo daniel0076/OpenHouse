@@ -17,7 +17,7 @@
         {% csrf_token %}
         <div class="field">
           <label>場次</label>
-		  <p style="color:red">系統會自動抓取目前場次，但仍需注意是否正確</p>
+		  <p style="color:red">系統會自動抓取目前場次，換場時請重整網頁</p>
           <select class="ui dropdown" name="seminar_id">
             {% for seminar in seminar_list %}
             <option value={{seminar.id}}>
