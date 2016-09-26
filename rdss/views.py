@@ -597,7 +597,7 @@ def CollectPoints(request):
         #maintain current seminar from post
         current_seminar = seminar_obj
 
-    if seminar_list:
+    if seminar_list and current_seminar in seminar_list:
         # put current seminar to the default
         seminar_list = list(seminar_list)
         seminar_list.remove(current_seminar)
