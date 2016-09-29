@@ -619,6 +619,7 @@ def RegisterCard(request):
             print(form.errors)
             ui_message = {"type":"error", "msg":"註冊失敗"}
 
+    form = rdss.forms.StudentForm()
     return render(request, 'admin/reg_card.html', locals())
 
 # ========================RDSS public view=================
