@@ -131,7 +131,7 @@ class Student(models.Model):
     idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
     attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
     student_id = models.CharField(u'學號', max_length=7, blank=True,
-                                  help_text='註冊時填', unique=True)
+                                  help_text='註冊時填')
     phone = models.CharField(u'手機', max_length=20, blank=True,
                              help_text='註冊時填，格式：0987654321')
     name = models.CharField(u'姓名', max_length=64, blank=True,
