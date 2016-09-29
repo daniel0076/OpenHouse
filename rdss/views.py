@@ -615,6 +615,8 @@ def RegisterCard(request):
         if form.is_valid():
             form.save()
             ui_message = {"type":"green", "msg":"註冊成功"}
+            collect_pts_logger.info('{} registered {} {}'.format(data['idcard_no'], data['student_id'],
+                data['phone']))
         else:
             print(form.errors)
             ui_message = {"type":"error", "msg":"註冊失敗"}
