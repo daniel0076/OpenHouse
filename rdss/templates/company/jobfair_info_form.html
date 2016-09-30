@@ -37,13 +37,16 @@
             {{form.contact_email}}
             {{form.contact_email.errors}}
         </div>
-    </div>
-    <div class="fields">
-        <div class="fourteen wide field">
-            <label>{{form.power_req.label}}</label>
-          <p>如有特殊耗電器材(如爆米花機、可樂機、模擬機等)請務必填寫</p>
-            {{form.power_req}}
-            {{form.power_req.errors}}
+    </div> <div class="fields">
+        <div class="four wide field">
+            <label>{{ form.meat_lunchbox.label}}</label>
+            {{form.meat_lunchbox}}
+            {{form.meat_lunchbox.errors}}
+        </div>
+        <div class="four wide field">
+            <label>{{ form.vege_lunchbox.label}}</label>
+            {{form.vege_lunchbox}}
+            {{form.vege_lunchbox.errors}}
         </div>
         <div class="two wide field">
             <label>{{form.parking_tickets.label}}</label>
@@ -52,6 +55,15 @@
                 {{form.parking_tickets.errors}}
             </div>
         </div>
+    </div>
+    <div class="fields">
+        <div class="fourteen wide field">
+          <label>{{form.power_req.label}}</label>
+          <p>{{form.power_req.help_text}}</p>
+            {{form.power_req}}
+            {{form.power_req.errors}}
+        </div>
+
     </div>
     <div class="field">
         <label>{{form.ps.label}}</label>

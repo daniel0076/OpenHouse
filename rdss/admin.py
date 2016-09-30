@@ -138,7 +138,8 @@ class SeminarInfoAdmin(admin.ModelAdmin):
 
 @admin.register(models.JobfairInfo)
 class JobfairInfoAdmin(admin.ModelAdmin):
-    list_display=('company', 'signname', 'parking_tickets', 'contact_email','contact_mobile', 'updated' )
+    list_display=('company', 'signname','meat_lunchbox','vege_lunchbox',
+                  'parking_tickets', 'contact_email','contact_mobile', 'updated' )
 
 # Register your models here.
 admin.site.register(models.Sponsorship)

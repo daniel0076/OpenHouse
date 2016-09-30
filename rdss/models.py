@@ -275,8 +275,11 @@ class JobfairInfo(models.Model):
     contact_mobile = models.CharField(u'聯絡人手機', max_length=16,
                                       validators=[validate_mobile])
     contact_email = models.EmailField(u'聯絡人Email', max_length=254)
+    meat_lunchbox = models.SmallIntegerField(u'葷食便當數量', default=0)
+    vege_lunchbox = models.SmallIntegerField(u'素食便當數量', default=0)
     parking_tickets = models.SmallIntegerField(u'停車證數量')
-    power_req = models.CharField(u'用電需求', max_length=256)
+    power_req = models.CharField(u'用電需求', max_length=256,
+                                 help_text="請填寫當天會使用的用電設備")
     ps = models.TextField(u'其它需求', blank=True)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
