@@ -106,6 +106,7 @@ class SeminarSlot(models.Model):
             ("noon", "中午場"),
             ("night1", "晚上場1"),
             ("night2", "晚上場2"),
+            ("extra", "加(補)場"),
             )
     id = models.AutoField(primary_key=True)
     date = models.DateField(u'日期')
