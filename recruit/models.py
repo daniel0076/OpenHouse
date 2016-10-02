@@ -111,8 +111,29 @@ class JobfairInfo(models.Model):
         verbose_name = u'就博會資訊'
         verbose_name_plural = u'就博會資訊'
 
+class SeminarInfo(models.Model):
+    company = models.OneToOneField(RecruitSignup)
+    topic = models.CharField(max_length=40)
+    speaker = models.CharField(max_length=5)
+    speaker_title = models.CharField(max_length=10)
+    speaker_email = models.EmailField()
+    
 class SeminarSlot(models.Model):
 
     class Meta:
         verbose_name = u'說明會場次'
         verbose_name_plural = u'說明會場次'
+        
+class SponsorItem(models.Model):
+    name = models.CharField(u'贊助品名稱', max_length=20)
+    description = models.CharField(u'贊助品說明', max_length=100)
+    spec = models.CharField(u'規格', blank=True, null=True, max_length=100)
+    ps = models.CharField(u'備註', blank=True, null=True, max_length=100)
+    price = models.IntegerField(u'價格')
+    number_limit = models.IntegerField(u'數量限制')
+    pic = models.ImageField(u'贊助品預覽圖',upload_to='recruit_sponsor_item',null=True)
+
+    class Meta:
+        verbose_name = u'贊助品'
+        verbose_name_plural = u'贊助品'
+
