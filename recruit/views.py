@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .forms import RecruitSignupForm,JobfairInfoForm
-from .models import RecruitConfigs
+from .forms import RecruitSignupForm, JobfairInfoForm
+from .models import RecruitConfigs, SponsorItem
 from .models import RecruitSignup
 from django.core.exceptions import ObjectDoesNotExist
 def recruit_signup(request):
@@ -34,4 +34,12 @@ def jobfair_info(request):
             new_info.company = company
             new_info.save()
     form = JobfairInfoForm()
-    return render(request,'jobfair_info.html',locals())
+    return render(request, 'jobfair_info.html', locals())
+
+def sponsor(request):
+    print("sponsor")
+    if request.POST:
+        pass
+    sponsor_items = SponsorItem.objects.all()
+    return render(request, 'sponsor.html', locals())
+

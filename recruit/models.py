@@ -137,3 +137,4 @@ class SponsorItem(models.Model):
         verbose_name = u'贊助品'
         verbose_name_plural = u'贊助品'
 
+
