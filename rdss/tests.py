@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AnonymousUser, User
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
 from django.core.urlresolvers import reverse
 from rdss.public_urls import urlpatterns as pub_urls
 from rdss.internal_urls import urlpatterns as inter_urls
@@ -9,13 +9,15 @@ import company.models
 import rdss.models
 
 class UrlsTest(TestCase):
+    fixtures = ['company.json']
+
     def setUp(self):
         data = {"register_start": "2016-07-05T15:17:00Z",
              "register_end": "2016-07-23T15:17:00Z",
              "rdss_signup_start": "2016-06-20T16:09:00Z",
              "rdss_signup_end": "2016-10-18T16:09:00Z",
              "survey_start": "2016-08-18T10:00:00Z",
-             "survey_end": "2016-08-18T10:08:00Z",
+             "survey_end": "2016-10-18T10:08:00Z",
              "seminar_start_date": "2016-09-27",
              "seminar_end_date": "2016-10-18",
              "session1_start": "12:20:00", "session1_end": "13:10:00",
@@ -29,16 +31,26 @@ class UrlsTest(TestCase):
         init_configs.save()
 
     def test_public(self):
-        print("Testing all public url accessibility")
         for url in pub_urls:
             response = self.client.get(reverse(url.name))
             self.assertEqual(response.status_code, 200)
 
-    def test_internal(self):
+    def test_internal_anony(self):
         for url in inter_urls:
             response = self.client.get(reverse(url.name))
             # AnonymousUser can't login
             self.assertEqual(response.status_code, 302)
+
+    def test_internal_logged_in(self):
+        ignore_url = ['rdss_seminar_select_control','rdss_jobfair_select_control']
+        user = company.models.Company.objects.get(cid='77777777')
+        self.client.force_login(user,'company.backends.CompanyBackend')
+        test_url = [url for url in inter_urls if url.name not in ignore_url]
+        for url in test_url:
+            response = self.client.get(reverse(url.name))
+            self.assertEqual(response.status_code, 200)
+
+
 
 class LoginReqTest(TestCase):
     def setUp(self):
@@ -81,6 +93,7 @@ class CompanyTest(StaticLiveServerTestCase):
         super(CompanyTest, self).tearDownClass()
 
     def company_create(self):
+        print("測試創建公司帳號...", end="")
         driver = self.driver
         driver.get(self.base_url + "/company/create/")
         driver.find_element_by_id("id_cid").clear()
@@ -122,10 +135,11 @@ class CompanyTest(StaticLiveServerTestCase):
         driver.find_element_by_id("id_recruit_info").send_keys("ggg")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         self.assertEqual("OpenHouse 企業校園徵才 廠商入口", driver.find_element_by_xpath("//div[@id='container']/h1").text)
-        print("測試創建公司帳號…OK")
+        print("OK")
 
 
     def company_login(self):
+        print("測試登入...", end="")
         driver = self.driver
         driver.get(self.base_url + "/company/login/")
         driver.find_element_by_name("username").clear()
@@ -134,9 +148,10 @@ class CompanyTest(StaticLiveServerTestCase):
         driver.find_element_by_name("password").send_keys("test")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         try: self.assertNotEqual("帳號或密碼錯誤", driver.find_element_by_xpath("//div[@id='full']/form/div[3]").text)
-        except NoSuchElementException: print("測試登入…OK")
+        except NoSuchElementException: print("OK")
 
     def register_rdss(self):
+        print("測試報名...", end="")
         driver = self.driver
         driver.get(self.base_url + "/company/rdss/signup/")
         driver.find_element_by_id("id_jobfair").clear()
@@ -144,9 +159,10 @@ class CompanyTest(StaticLiveServerTestCase):
         driver.find_element_by_css_selector("label").click()
         driver.find_element_by_xpath("//button[@type='submit']").click()
         self.assertEqual(u"報名已完成，您也可以修改報名資料，再次送出。", driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div").text)
-        print("測試報名研替…OK")
+        print("OK")
 
     def seminar_info_valid(self):
+        print("測試填寫說明會資訊...", end="")
         driver = self.driver
         driver.get(self.base_url + "/company/rdss/seminar/info")
         driver.find_element_by_id("id_topic").clear()
@@ -183,9 +199,10 @@ class CompanyTest(StaticLiveServerTestCase):
         driver.find_element_by_id("id_attend_prize_amount").send_keys("4")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         self.assertEqual(u"說明會資訊填寫已完成，您也可以修改資訊，再次送出。", driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div").text)
-        print("測試填寫說明會資訊…OK")
+        print("OK")
 
     def jobfair_info_valid(self):
+        print("測試填寫就博會資訊...", end="")
         driver = self.driver
         driver.get(self.base_url + "/company/rdss/jobfair/info")
         driver.find_element_by_id("id_signname").clear()
@@ -208,7 +225,76 @@ class CompanyTest(StaticLiveServerTestCase):
         driver.find_element_by_id("id_ps").send_keys("test")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         self.assertEqual(u"就博會資訊填寫已完成，您也可以修改資訊，再次送出。", driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div").text)
-        print("測試填寫就博會資訊…OK")
+        print("OK")
+
+    def survey_valid(self):
+        print("測試填寫公司問卷...", end="")
+        driver = self.driver
+        driver.get(self.base_url + "/company/rdss/survey")
+        Select(driver.find_element_by_id("id_salary_avg_bachelor")).select_by_visible_text(u"4萬以下")
+        Select(driver.find_element_by_id("id_nctu_salary_avg_bachelor")).select_by_visible_text(u"50萬以下")
+        Select(driver.find_element_by_id("id_salary_avg_master")).select_by_visible_text(u"4萬以下")
+        Select(driver.find_element_by_id("id_nctu_salary_avg_master")).select_by_visible_text(u"50萬以下")
+        Select(driver.find_element_by_id("id_salary_avg_phd")).select_by_visible_text(u"4萬以下")
+        driver.find_element_by_css_selector("label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[8]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[2]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[9]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[3]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[3]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[10]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[3]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[4]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[11]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[5]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[12]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[6]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[13]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[3]/table/tbody/tr[15]/td/div[7]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div[5]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div[2]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div[6]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div[3]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div[7]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr/td[2]/div[4]/label").click()
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/div[5]/table/tbody/tr[2]/td[2]/div/label").click()
+        driver.find_element_by_id("id_suggestions").clear()
+        driver.find_element_by_id("id_suggestions").send_keys("testtttttttt")
+        Select(driver.find_element_by_id("id_nctu_salary_avg_phd")).select_by_visible_text(u"50萬以下")
+        Select(driver.find_element_by_id("id_professional_skill_rate")).select_by_visible_text(u"佳")
+        Select(driver.find_element_by_id("id_attitude_rate")).select_by_visible_text(u"普通")
+        Select(driver.find_element_by_id("id_civic_duty_rate")).select_by_visible_text(u"普通")
+        Select(driver.find_element_by_id("id_pro_moral_rate")).select_by_visible_text(u"差")
+        Select(driver.find_element_by_id("id_humanities_rate")).select_by_visible_text(u"差")
+        Select(driver.find_element_by_id("id_cultural_rate")).select_by_visible_text(u"差")
+        Select(driver.find_element_by_id("id_international_view_rate")).select_by_visible_text(u"佳")
+        Select(driver.find_element_by_id("id_diverse_thinking_rate")).select_by_visible_text(u"佳")
+        Select(driver.find_element_by_id("id_group_cognitive_rate")).select_by_visible_text(u"普通")
+        Select(driver.find_element_by_id("id_major")).select_by_visible_text(u"無幫助")
+        Select(driver.find_element_by_id("id_graduation_school")).select_by_visible_text(u"略有幫助")
+        Select(driver.find_element_by_id("id_second_major")).select_by_visible_text(u"略有幫助")
+        Select(driver.find_element_by_id("id_club")).select_by_visible_text(u"頗有幫助")
+        Select(driver.find_element_by_id("id_common_class")).select_by_visible_text(u"略有幫助")
+        Select(driver.find_element_by_id("id_national_exam")).select_by_visible_text(u"略有幫助")
+        Select(driver.find_element_by_id("id_cert")).select_by_visible_text(u"無幫助")
+        Select(driver.find_element_by_id("id_work_exp")).select_by_visible_text(u"頗有幫助")
+        Select(driver.find_element_by_id("id_travel_study")).select_by_visible_text(u"有幫助")
+        driver.find_element_by_id("id_company").clear()
+        driver.find_element_by_id("id_company").send_keys("test")
+        driver.find_element_by_id("id_submiter_name").clear()
+        driver.find_element_by_id("id_submiter_name").send_keys("test")
+        driver.find_element_by_id("id_submiter_phone").clear()
+        driver.find_element_by_id("id_submiter_phone").send_keys("test")
+        driver.find_element_by_id("id_submiter_email").clear()
+        driver.find_element_by_id("id_submiter_email").send_keys("test")
+        driver.find_element_by_id("id_nctu_employees").clear()
+        driver.find_element_by_id("id_nctu_employees").send_keys("100000")
+        Select(driver.find_element_by_id("id_company_size")).select_by_visible_text(u"101~500人")
+        Select(driver.find_element_by_id("id_category")).select_by_visible_text(u"消費電子")
+        driver.find_element_by_xpath("//div[@id='full']/div/div[2]/form/button").click()
+        self.assertEqual(u"問卷填寫完成，感謝您", driver.find_element_by_xpath("//div[@id='full']/div/div[2]/div[2]").text)
+        print("OK")
 
     def test_company(self):
         self.company_create()
@@ -216,6 +302,7 @@ class CompanyTest(StaticLiveServerTestCase):
         self.register_rdss()
         self.seminar_info_valid()
         self.jobfair_info_valid()
+        self.survey_valid()
 
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
