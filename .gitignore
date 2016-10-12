@@ -9,3 +9,4 @@ static/*
 !static/js/
 !static/Ideal-Image-Slider
 .ropeproject/
+*.log
