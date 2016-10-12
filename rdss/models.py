@@ -117,6 +117,7 @@ class SeminarSlot(models.Model):
     place = models.ForeignKey('SlotColor', null=True, blank=True,
                               verbose_name=u'場地',
                               )
+    points = models.SmallIntegerField(u'集點點數', default=1)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
