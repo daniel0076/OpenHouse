@@ -14,7 +14,7 @@ from company.models import Company
 from .forms import EmailPostForm
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.core import urlresolvers
 from django.db.models import Q
 # for logging
@@ -591,7 +591,7 @@ def CollectPoints(request):
             seminar=seminar_obj
         )
         student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
-            num_attend= Count('attendance')).first()
+            points=Sum('attendance__points')).first()
         collect_pts_logger.info('{} attend {} {}'.format(idcard_no, seminar_obj.date, seminar_obj.session))
 
         #maintain current seminar from post
@@ -690,8 +690,8 @@ def QueryPoints(request):
         data = request.POST.copy()
         student_id = data.get('student_id')
         cellphone = data.get('cellphone')
-        student_obj = rdss.models.Student.objects.filter(student_id=student_id,
-                                                         phone=cellphone).first()
+        student_obj = rdss.models.Student.objects.filter(student_id=student_id,phone=cellphone).annotate(
+            points=Sum('attendance__points')).first()
         records = rdss.models.StuAttendance.objects.filter(student=student_obj)
 
     return render(request,'public/rdss_querypts.html',locals())

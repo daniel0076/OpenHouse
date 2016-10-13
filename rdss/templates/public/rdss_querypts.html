@@ -51,10 +51,10 @@
             <td>
               <div class="ui horizontal statistic">
                 <div class="value">
-                  {{records.count}}
+                  {{student_obj.points}}
                 </div>
                 <div class="label">
-                  場
+                  點
                 </div>
               </div>
             </td>
@@ -68,7 +68,7 @@
     <div class="center aligned column">
     <ul class="ui list">
       {% for record in records %}
-      <li>{{record.seminar.date}} {{record.seminar.company}}</li>
+      <li>{{record.seminar.date}} {{record.seminar.company}} | {{record.seminar.points}} 點</li>
       {% endfor %}
     </ul>
     </div>
