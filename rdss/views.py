@@ -565,7 +565,7 @@ def CollectPoints(request):
     site_header = "OpenHouse 管理後台"
     site_title = "OpenHouse"
     configs=rdss.models.RdssConfigs.objects.all()[0]
-    today = timezone.now().date()
+    today = datetime.datetime.now().date()
     now = datetime.datetime.now().time()
     if now < configs.session1_start:
         current_session = "noon"
