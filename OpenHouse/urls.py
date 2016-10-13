@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^staff/', include('staff.urls')),  # add '' on the include path!!!
     url(r'^rdss/', include('rdss.public_urls')),  # add '' on the include path!!!
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^recruit/', include('recruit.urls')),
 ]

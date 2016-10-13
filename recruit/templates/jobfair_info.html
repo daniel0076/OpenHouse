@@ -1,0 +1,8 @@
+{% extends 'recruit_base.html' %}
+{% block 'content' %}
+    <form method="post" class="ui form" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="ui teal button">送出</button>
+    </form>
+{% endblock %}
