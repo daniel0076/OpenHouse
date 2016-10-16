@@ -606,6 +606,19 @@ def CollectPoints(request):
     return render(request, 'admin/collect_points.html', locals())
 
 @staff_member_required
+def RedeemPrize(request):
+    site_header = "OpenHouse 管理後台"
+    site_title = "OpenHouse"
+
+    if request.method =="POST":
+        idcard_no = request.POST['idcard_no']
+        student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
+            points=Sum('attendance__points')).first()
+        collect_pts_logger.info('{} attend {} {}'.format(idcard_no, seminar_obj.date, seminar_obj.session))
+
+    return render(request, 'admin/redeem_prize.html', locals())
+
+@staff_member_required
 def RegisterCard(request):
     form = rdss.forms.StudentForm()
     if request.method =="POST":
