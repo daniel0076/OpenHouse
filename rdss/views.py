@@ -731,9 +731,9 @@ def QueryPoints(request):
         data = request.POST.copy()
         student_id = data.get('student_id')
         cellphone = data.get('cellphone')
-        student_obj = rdss.models.Student.objects.filter(student_id=student_id,phone=cellphone).annotate(
-            points=Sum('attendance__points')).first()
+        student_obj = rdss.models.Student.objects.filter(student_id=student_id,phone=cellphone).first()
         records = rdss.models.StuAttendance.objects.filter(student=student_obj)
+        redeems = rdss.models.RedeemPrize.objects.filter(student=student_obj)
 
     return render(request,'public/rdss_querypts.html',locals())
 

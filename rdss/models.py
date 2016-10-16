@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.db.models import Q
+from django.db.models import Count, Sum
 import company.models
+import rdss.models
 
 
 def validate_mobile(string):
@@ -147,6 +149,18 @@ class Student(models.Model):
 
     def __str__(self):
         return self.idcard_no if not self.student_id else self.student_id
+
+    def get_points(self):
+        points = sum([i.points for i in self.attendance.all()])
+        redeem_records = rdss.models.RedeemPrize.objects.filter(student=self)
+        redeemed = sum([i.points for i in redeem_records])
+        return points-redeemed
+
+    def get_redeemed(self):
+        redeem_records = rdss.models.RedeemPrize.objects.filter(student=self)
+        redeemed = sum([i.points for i in redeem_records])
+        return redeemed
+
 
 class StuAttendance(models.Model):
     student = models.ForeignKey(Student, to_field='idcard_no',

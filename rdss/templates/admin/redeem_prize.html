@@ -33,7 +33,8 @@
       {% endif %}
       <h1 class="info">卡號: {{student_obj.idcard_no}}</h1>
       <h1 class="info">學號: {{student_obj.student_id | default:"未註冊"}}</h1>
-      <h1 class="info">目前集點: {{student_obj.points}} 點</h1>
+      <h1 class="info">目前集點: {{student_obj.get_points}} 點</h1>
+      <h1 class="info">已兌換: {{student_obj.get_redeemed}} 點</h1>
     </div>
   </div>
 </div>

@@ -51,7 +51,7 @@
             <td>
               <div class="ui horizontal statistic">
                 <div class="value">
-                  {{student_obj.points}}
+                  {{student_obj.get_points}}
                 </div>
                 <div class="label">
                   點
@@ -67,11 +67,19 @@
     </div>
     <div class="center aligned column">
     <ul class="ui list">
+      <p>參加場次</p>
       {% for record in records %}
       <li>{{record.seminar.date}} {{record.seminar.company}} | {{record.seminar.points}} 點</li>
       {% endfor %}
     </ul>
+
+    <ul class="ui list">
+      <p>兌換獎項</p>
+      {% for r in redeems %}
+      <li>{{r.prize}} {{r.points}} 點</li>
+      {% endfor %}
     </div>
+    </ul>
   </div>
 
   {% elif not student_obj and request.POST %}
