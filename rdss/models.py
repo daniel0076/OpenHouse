@@ -133,21 +133,20 @@ class SeminarSlot(models.Model):
 class Student(models.Model):
     idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
     attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
-    student_id = models.CharField(u'學號', max_length=7, blank=True,
-                                  help_text='註冊時填')
+    student_id = models.CharField(u'學號', max_length=7, blank=True)
     phone = models.CharField(u'手機', max_length=20, blank=True,
-                             help_text='註冊時填，格式：0987654321')
-    name = models.CharField(u'姓名', max_length=64, blank=True,
-                            help_text='領獎時填')
-    dep = models.CharField(u'系級', max_length=16, blank=True,
-                           help_text='領獎時填')
-    email = models.EmailField(u'Email', max_length=64, blank=True,
-                           help_text='領獎時填')
+                             help_text='格式：0987654321')
+    name = models.CharField(u'姓名', max_length=64, blank=True)
+    dep = models.CharField(u'系級', max_length=16, blank=True)
+    email = models.EmailField(u'Email', max_length=64, blank=True)
 
 
     class Meta:
         verbose_name = u"說明會學生"
         verbose_name_plural = u"說明會學生"
+
+    def __str__(self):
+        return self.idcard_no if not self.student_id else self.student_id
 
 class StuAttendance(models.Model):
     student = models.ForeignKey(Student, to_field='idcard_no',
@@ -163,6 +162,18 @@ class StuAttendance(models.Model):
         unique_together = ("student",  "seminar")
         verbose_name = u"說明會參加記錄"
         verbose_name_plural = u"說明會參加記錄"
+
+class RedeemPrize(models.Model):
+    student = models.ForeignKey(Student, to_field='idcard_no',
+                                verbose_name=u'學生證卡號',
+                                on_delete=models.CASCADE,)
+    prize = models.CharField(u'獎品',max_length = 100, default='', blank=True)
+    points = models.IntegerField(u'所需點數',default=0, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        verbose_name = u"兌獎紀錄"
+        verbose_name_plural = u"兌獎紀錄"
 
 
 class SlotColor(models.Model):

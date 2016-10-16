@@ -24,6 +24,9 @@ class StudentAdmin(admin.ModelAdmin):
     inlines = (StuAttendanceInline,)
     list_display = ('idcard_no', 'student_id', 'name', 'phone')
 
+@admin.register(models.RedeemPrize)
+class RedeemAdmin(admin.ModelAdmin):
+    list_display=('student','prize','points','updated')
 
 @admin.register(models.SeminarSlot)
 class SeminarSlotAdmin(admin.ModelAdmin):
