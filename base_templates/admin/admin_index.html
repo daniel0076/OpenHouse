@@ -6,7 +6,6 @@
 {% block coltype %}colMS{% endblock %}
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
-
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
@@ -60,6 +59,7 @@
         <h2>說明會集點系統</h2>
         <p><a href="{% url 'rdss_collect_points' %}">說明會集點系統</a></p>
         <p><a href="{% url 'rdss_reg_card' %}">學生證註冊</a></p>
+        <p><a href="{% url 'rdss_redeem' %}">兌獎</a></p>
         <p><a href="/static/data/apps/card_reader.zip">讀卡程式及驅動</a></p>
 
     </div>
