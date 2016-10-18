@@ -606,8 +606,49 @@ def CollectPoints(request):
     return render(request, 'admin/collect_points.html', locals())
 
 @staff_member_required
+def RedeemPrize(request):
+    site_header = "OpenHouse 管理後台"
+    site_title = "OpenHouse"
+    if request.method == "GET":
+        idcard_no = request.GET.get('idcard_no','')
+        if idcard_no:
+            student_obj = rdss.models.Student.objects.filter(idcard_no=idcard_no).annotate(
+                points=Sum('attendance__points')).first()
+
+            if student_obj:
+                student_form = rdss.forms.StudentForm(instance=student_obj)
+                redeem_form = rdss.forms.RedeemForm()
+
+    if request.method == "POST":
+        data = request.POST.copy()
+        student_obj = rdss.models.Student.objects.filter(idcard_no = data['idcard_no']).first()
+        redeem_obj = rdss.models.RedeemPrize.objects.create(
+            student=student_obj
+        )
+
+        form = rdss.forms.StudentForm(data, instance = student_obj)
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+            ui_message = {"type":"error", "msg":"註冊失敗"}
+        redeem_form = rdss.forms.RedeemForm(data, instance = redeem_obj)
+        if redeem_form.is_valid():
+            redeem_form.save()
+            ui_message = {"type":"green", "msg":"儲存成功，已兌換{}，花費{}點".format(
+            data['prize'],data['points'])}
+            redeem_form = rdss.forms.RedeemForm()
+        else:
+            print(redeem_form.errors)
+            ui_message = {"type":"error", "msg":"註冊失敗"}
+
+        student_form = rdss.forms.StudentForm(instance=student_obj)
+
+
+    return render(request, 'admin/redeem_prize.html', locals())
+
+@staff_member_required
 def RegisterCard(request):
-    form = rdss.forms.StudentForm()
     if request.method =="POST":
         data = request.POST.copy()
         instance = rdss.models.Student.objects.filter(idcard_no = data['idcard_no']).first()
@@ -690,9 +731,9 @@ def QueryPoints(request):
         data = request.POST.copy()
         student_id = data.get('student_id')
         cellphone = data.get('cellphone')
-        student_obj = rdss.models.Student.objects.filter(student_id=student_id,phone=cellphone).annotate(
-            points=Sum('attendance__points')).first()
+        student_obj = rdss.models.Student.objects.filter(student_id=student_id,phone=cellphone).first()
         records = rdss.models.StuAttendance.objects.filter(student=student_obj)
+        redeems = rdss.models.RedeemPrize.objects.filter(student=student_obj)
 
     return render(request,'public/rdss_querypts.html',locals())
 

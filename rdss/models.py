@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.db.models import Q
+from django.db.models import Count, Sum
 import company.models
+import rdss.models
 
 
 def validate_mobile(string):
@@ -133,21 +135,32 @@ class SeminarSlot(models.Model):
 class Student(models.Model):
     idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
     attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
-    student_id = models.CharField(u'學號', max_length=7, blank=True,
-                                  help_text='註冊時填')
+    student_id = models.CharField(u'學號', max_length=7, blank=True)
     phone = models.CharField(u'手機', max_length=20, blank=True,
-                             help_text='註冊時填，格式：0987654321')
-    name = models.CharField(u'姓名', max_length=64, blank=True,
-                            help_text='領獎時填')
-    dep = models.CharField(u'系級', max_length=16, blank=True,
-                           help_text='領獎時填')
-    email = models.EmailField(u'Email', max_length=64, blank=True,
-                           help_text='領獎時填')
+                             help_text='格式：0987654321')
+    name = models.CharField(u'姓名', max_length=64, blank=True)
+    dep = models.CharField(u'系級', max_length=16, blank=True)
+    email = models.EmailField(u'Email', max_length=64, blank=True)
 
 
     class Meta:
         verbose_name = u"說明會學生"
         verbose_name_plural = u"說明會學生"
+
+    def __str__(self):
+        return self.idcard_no if not self.student_id else self.student_id
+
+    def get_points(self):
+        points = sum([i.points for i in self.attendance.all()])
+        redeem_records = rdss.models.RedeemPrize.objects.filter(student=self)
+        redeemed = sum([i.points for i in redeem_records])
+        return points-redeemed
+
+    def get_redeemed(self):
+        redeem_records = rdss.models.RedeemPrize.objects.filter(student=self)
+        redeemed = sum([i.points for i in redeem_records])
+        return redeemed
+
 
 class StuAttendance(models.Model):
     student = models.ForeignKey(Student, to_field='idcard_no',
@@ -163,6 +176,18 @@ class StuAttendance(models.Model):
         unique_together = ("student",  "seminar")
         verbose_name = u"說明會參加記錄"
         verbose_name_plural = u"說明會參加記錄"
+
+class RedeemPrize(models.Model):
+    student = models.ForeignKey(Student, to_field='idcard_no',
+                                verbose_name=u'學生證卡號',
+                                on_delete=models.CASCADE,)
+    prize = models.CharField(u'獎品',max_length = 100, default='', blank=True)
+    points = models.IntegerField(u'所需點數',default=0, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        verbose_name = u"兌獎紀錄"
+        verbose_name_plural = u"兌獎紀錄"
 
 
 class SlotColor(models.Model):
@@ -353,14 +378,44 @@ class CareerTutor(models.Model):
     company = models.ForeignKey('Signup', to_field='cid',
                             verbose_name=u'公司',
                             on_delete=models.CASCADE)
-    time = models.DateTimeField(u'')
-    limit = models.IntegerField(u'限制')
+    title = models.CharField(u'標題', max_length=100)
+    date = models.DateField(u'日期')
+    start_time = models.TimeField(u'開始時間')
+    end_time = models.TimeField(u'結束時間')
+    speaker = models.CharField(u'主講人', max_length=30, default='', blank=True)
+    speaker_title = models.CharField(u'主講人稱謂', max_length=30, default='', blank=True)
+    speaker_email = models.EmailField(u'主講人Email', max_length=254, default='', blank=True)
+    mode = models.CharField(u'進行方式', max_length=50, default='', blank=True)
+    place = models.CharField(u'地點', max_length=50)
+    limit = models.IntegerField(u'人數限制', help_text='0表不限')
+    remark = models.CharField(u'備註', max_length=100, default='', blank=True)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         managed = True
         verbose_name = u"企業職場導師"
         verbose_name_plural = u"企業職場導師"
+
+class CareerTutorSignup(models.Model):
+    id = models.AutoField(primary_key=True)
+    career_tutor = models.ForeignKey('CareerTutor', to_field='id',
+                            verbose_name=u'場次',
+                            on_delete=models.CASCADE)
+    name = models.CharField(u'姓名', max_length=64, blank=True)
+    student_id = models.CharField(u'學號', max_length=7, blank=True)
+    dep = models.CharField(u'系級', max_length=16, blank=True)
+    phone = models.CharField(u'手機', max_length=20, blank=True,
+                             help_text='格式：0987654321')
+    email = models.EmailField(u'Email', max_length=64, blank=True)
+    time_available = models.CharField(u'場次時段內可以的時間',max_length=100)
+    question = models.CharField(u'諮詢的內容', max_length=100, default='', blank=True)
+    remark = models.CharField(u'備註', max_length=100, default='', blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        managed = True
+        verbose_name = u"學生登記職場導師"
+        verbose_name_plural = u"學生登記職場導師"
 
 
 class CompanySurvey(models.Model):

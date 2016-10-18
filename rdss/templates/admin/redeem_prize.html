@@ -3,29 +3,16 @@
 {% block extrastyle %}{{ block.super }}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <link href={% static "node_modules/semantic-ui/dist/semantic.min.css" %} rel="stylesheet">
-<link href={% static "css/rdss/collect_points.css" %} rel="stylesheet">
 <script src={% static "node_modules/semantic-ui/dist/semantic.min.js" %}></script>
-<script src={% static "js/collect_points.js" %}></script>
 {% endblock %}
 
 {% block content %}
-<h1 class="ui dividing header" id="title">OpenHouse 說明會集點</h1>
+<h1 class="ui dividing header" id="title">OpenHouse 集點兌換</h1>
+<p>請用讀卡機讀入卡號</p>
 <div class="ui segment">
   <div class="ui two column middle aligned relaxed stackable grid">
     <div class="column">
-      <form class="ui form" method="POST" id="collect_form">
-        {% csrf_token %}
-        <div class="field">
-          <label>場次</label>
-		  <p style="color:red">系統會自動抓取目前場次，換場時請重整網頁</p>
-          <select class="ui dropdown" name="seminar_id">
-            {% for seminar in seminar_list %}
-            <option value={{seminar.id}}>
-            {{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.company}}
-            </option>
-            {% endfor %}
-          </select>
-        </div>
+      <form class="ui form" method="GET" id="collect_form">
         <div class="field">
           <label>學生證卡號</label>
           <div class="ui left icon input">
@@ -33,7 +20,7 @@
             <input name="idcard_no" maxlength=10 autofocus>
           </div>
         </div>
-        <button class="ui blue submit button" type="submit">集點</button>
+        <button class="ui blue submit button" type="submit">查詢</button>
       </form>
     </div>
     <div class="ui vertical divider">
@@ -50,6 +37,32 @@
       <h1 class="info">已兌換: {{student_obj.get_redeemed}} 點</h1>
     </div>
   </div>
+</div>
+
+<div class="ui segment">
+  <form class="ui form" method="POST">
+    <div class="ui two column middle aligned relaxed stackable grid">
+      <div class="column">
+        {% if student_form %}
+        {% csrf_token %}
+        <div class="header">請填寫兌獎人資料</div>
+        {{student_form.as_p}}
+        {% endif %}
+      </div>
+      <div class="ui vertical divider">
+      </div>
+      <div class="center aligned column">
+        {% if redeem_form %}
+        {% if ui_message %}
+        <div class="ui {{ui_message.type}} message">{{ui_message.msg}}</div>
+        {% endif %}
+
+        {{redeem_form.as_p}}
+        <button class="ui blue submit button" type="submit">兌換獎品</button>
+        {% endif %}
+      </div>
+    </div>
+  </form>
 </div>
 {% endblock %}
 

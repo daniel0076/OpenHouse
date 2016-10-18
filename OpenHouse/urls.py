@@ -21,12 +21,7 @@ import general.views
 urlpatterns = [
 	#custom sponsorship admin url and view
     url(r'', include('general.urls')),  # add '' on the include path!!!
-    url(r'^admin/rdss/sponsorship/$', rdss.views.SponsorAdmin),
-    url(r'^admin/rdss/collect_points/$', rdss.views.CollectPoints, name="rdss_collect_points"),
-    url(r'^admin/rdss/reg_card/$', rdss.views.RegisterCard, name="rdss_reg_card"),
-    url(r'^admin/rdss/export_activity_info/$', rdss.export.ExportActivityInfo, name="rdss_export_activity_info"),
-    url(r'^admin/rdss/export_all/$', rdss.export.ExportAll, name="rdss_export_all"),
-    url(r'^admin/rdss/export_ad/$', rdss.export.ExportAdFormat,name="rdss_export_ad"),
+    url(r'^admin/rdss/', include('rdss.admin_urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^company/', include('company.urls')),  # add '' on the include path!!!
     url(r'^company/rdss/', include('rdss.internal_urls')),  # add '' on the include path!!!

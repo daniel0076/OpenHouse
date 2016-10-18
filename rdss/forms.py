@@ -120,10 +120,25 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = rdss.models.Student
-        fields = ['idcard_no','student_id','phone']
+        fields = ['idcard_no','student_id','phone', 'name', 'dep']
 
     def save(self, commit=True):
         form = super(StudentForm, self).save(commit=False)
+        if commit:
+            form.save()
+        return form
+
+class RedeemForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+           super(RedeemForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = rdss.models.RedeemPrize
+        fields = '__all__'
+        exclude = ['updated','student']
+
+    def save(self, commit=True):
+        form = super(RedeemForm, self).save(commit=False)
         if commit:
             form.save()
         return form
