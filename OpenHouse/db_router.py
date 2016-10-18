@@ -6,7 +6,7 @@ class OH_router(object):
 
 	def __init__(self):
 		self.current_year_db="oh_2016"
-		self.use_separate_db_list = ['rdss']
+		self.use_separate_db_list = ['rdss','recruit',]
 
 	def db_for_read(self, model, **hints):
 		if model._meta.app_label in self.use_separate_db_list:

@@ -144,15 +144,6 @@ class JobfairInfoAdmin(admin.ModelAdmin):
     list_display=('company', 'signname','meat_lunchbox','vege_lunchbox',
                   'parking_tickets', 'contact_email','contact_mobile', 'updated' )
 
-@admin.register(models.CareerTutor)
-class CareerTutorAdmin(admin.ModelAdmin):
-    list_display=('title', 'company', 'date','start_time','end_time',
-                  'speaker', 'place','limit', 'updated' )
-
-@admin.register(models.CareerTutorSignup)
-class CareerTutorAdmin(admin.ModelAdmin):
-    list_display=('career_tutor', 'name', 'student_id','dep','phone',
-                  'email', 'time_available','question', 'updated' )
 
 # Register your models here.
 admin.site.register(models.Sponsorship)
