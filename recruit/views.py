@@ -38,9 +38,10 @@ def jobfair_info(request):
 
 def recruit_sponsor(request):
     if request.POST:
-        pass
+        
+        if form.is_valid():
+            pass
     sponsor_items = SponsorItem.objects.all()
-    for sponsor_item in sponsor_items:
-        print(sponsor_item.name)
+
     return render(request, 'recruit_sponsor.html', locals())
 

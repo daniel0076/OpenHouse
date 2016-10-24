@@ -477,7 +477,7 @@ def Sponsor(request):
             .annotate(num_sponsor = Count('sponsorship'))
     sponsorship = rdss.models.Sponsorship.objects.filter(cid=sponsor)
     my_sponsor_items = [s.item for s in sponsorship ]
-    return render(request,'recruit_sponsor.html',locals())
+    return render(request,'company/sponsor.html',locals())
 
 @staff_member_required
 def SponsorAdmin(request):
