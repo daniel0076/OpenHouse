@@ -25,5 +25,5 @@ admin.site.register(JobfairInfo, JobfairInfoAdmin)
 class SponsorItemAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
-admin.site.register(SponsorItem,SponsorItemAdmin)
+admin.site.register(SponsorItem, SponsorItemAdmin)
 

@@ -131,8 +131,8 @@ class SponsorItem(models.Model):
     ps = models.CharField(u'備註', blank=True, null=True, max_length=100)
     price = models.IntegerField(u'價格')
     number_limit = models.IntegerField(u'數量限制')
-    pic = models.ImageField(u'贊助品預覽圖',upload_to='recruit_sponsor_item',null=True)
-
+    pic = models.ImageField(u'贊助品預覽圖', upload_to='recruit_sponsor_item', null=True)
+    company = models.ManyToManyField(Company)
     class Meta:
         verbose_name = u'贊助品'
         verbose_name_plural = u'贊助品'
