@@ -1,0 +1,119 @@
+{% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>研發替代役 - 說明會</title>
+<link href={% static "css/rdss/rdss_public.css" %} rel="stylesheet">
+
+{% endblock %}
+{% block 'content' %}
+<h1 class="ui header">企業徵才說明會</h2>
+<h2 class="ui dividing header">活動時間</h2>
+  <ol class="ui list">
+
+    <li>日期：<span style="color:blue">2016年9月27日(二) ~ 10月18日(二)</span>
+      <p>舉辦地點: 國立交通大學浩然圖書館國際會議廳、交映樓國際會議廳、資訊館國際會議廳、工程四館合勤講堂等</p>
+    </li>
+    <li>時間： 午間場次12：20~13：10， 晚間場次17：40~18：30、18：40~19：30</p>
+    </li>
+  </ol>
+<h2 class="ui dividing header">活動目地</h2>
+<p>本集點活動是為鼓勵本校大學部與研究所役男，增加研發及產業訓儲替代役制度之認識，與瞭解各企業機構提供研替職缺之內容，協助役男進行服役和就業生涯規畫。</p>
+<h2 class="ui dividing header">集點規則</h2>
+<p style="color:blue">藍色為電子集點規則</p>
+  <ol class="ui list">
+    <li>集點期間自105年9月27日至105年10月18日止，參加對象為交大在學學生(105上學期需註冊完成)。Open House粉絲專頁、官方網站以及集點卡背面登載之企業說明會、企業日場次，方列入本次集點活動。
+    </li>
+    <li class="blue">本次集點活動採紙本集點或電子集點。</li>
+    <li>每場次結束後，可於服務台蓋章或刷學生證集點，集至指定點數即可兌換對應獎品。</li>
+    <li class="blue">除Open House公布之特別活動外，每人每場次限集一點，且紙本集點卡與電子集點，只能擇一。</li>
+    <li class="blue">不接受集點卡或電子集點以合併方式兌換獎品。</li>
+    <li>如點數有缺漏請即時於現場反應，若非當場次，恕不接受補登。</li>
+    <li>集點兌換獎品期限至105年10月27日16時止，逾時不候。各項獎品數量有限，換完為止，請盡速收集以免向隅。</li>
+    <li>兌獎人請務必攜帶交大學生證，至就業與升學輔導組（資訊技術中心三樓）進行兌換作業，須為本人，不接受代領。</li>
+    <li>Open House與就業與升學輔導組保有變更所有活動規則與獎項內容之權利，若有爭議處請遵照現場工作人員指示。</li>
+  </ol>
+<h2 class="ui dividing header">集點獎項</h2>
+<ul>
+  <li>7點： 7-11咖啡券(45元)乙張，共200份</li>
+  <li>15點：7-11或萊爾富 $100元商品卡，共100份</li>
+  <li>21點：威秀影城電影票乙張，共50份</li>
+  <li>30點：新竹老爺飯店下午茶券兩張，共15份</li>
+</ul>
+<h2 class="ui dividing header">場次時間表</h2>
+<ul class="ui list">
+  <p>場地資訊</p>
+  {% for slot_color in slot_colors %}
+  <li style="color:{{slot_color.css_color}}">
+    <p>{{slot_color.place}}</p>
+  </li>
+  {% endfor %}
+</ul>
+<h3 style="color:red">因颱風延期之場次</h3>
+	<table class="ui celled striped table" style="text-align:center">
+		<thead>
+			<tr>
+			<th>時間</th>
+			<th>10/3 (一)</th>
+			<th>10/4 (二)</th>
+			<th>10/5 (三)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>13:20~14:10</td>
+				<td>台積電</td>
+				<td>華碩電腦</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>16:30~17:20</td>
+				<td></td>
+				<td></td>
+				<td style="color:purple">Synopsys</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="ui celled striped table" style="text-align:center">
+		{% for week in dates_in_week %}
+		<thead>
+			<tr>
+				<th>時間</th>
+				{% for day in week %}
+				<th>{{day.date|date:"m/d (D)" }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>{{configs.session1_start}}~{{configs.session1_end}}</td>
+				{% for day in week %}
+        <td style="color:{{day.noon.place_color}}">
+          {{day.noon.company}}
+				</td>
+				{% endfor %}
+			</tr>
+
+			<tr>
+				<td>{{configs.session2_start}}~{{configs.session2_end}}</td>
+				{% for day in week %}
+        <td style="color:{{day.night1.place_color}}">
+          {{day.night1.company}}
+				</td>
+				{% endfor %}
+			</tr>
+
+			<tr>
+				<td>{{configs.session3_start}}~{{configs.session3_end}}</td>
+				{% for day in week %}
+        <td style="color:{{day.night2.place_color}}">
+          {{day.night2.company}}
+				</td>
+				{% endfor %}
+			</tr>
+
+		</tbody>
+		{% endfor %}
+	</table>
+{% endblock %}

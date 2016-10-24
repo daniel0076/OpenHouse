@@ -1,0 +1,65 @@
+{% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>研發替代役 - 就業博覽會</title>
+<link href={% static "css/rdss/rdss_public.css" %} rel="stylesheet">
+{% endblock %}
+
+{% block 'content' %}
+<h1 class="ui header">研發替代役就業博覽會</h1>
+<h2 class="ui dividing header">1. 時間與地點</h2>
+  <ul class="ui list">
+
+    <li><span style="color:blue">2016年10月14日(五) 10:00 ~ 16:00</span>
+    </li>
+    <li>國立交通大學 浩然圖書館B1國際會議廳與前廳</li>
+  </ul>
+
+<h2 class="ui dividing header">2. 流程</h2>
+  <ul class="ui list">
+    <li>10:00 開幕</li>
+    <li>12:30 第一場抽獎</li>
+    <li>14:00 第二場抽獎</li>
+    <li>15:30 第三場抽獎</li>
+    <li>16:00 閉幕</li>
+  </ul>
+
+<h2 class="ui dividing header">3. 抽獎活動</h2>
+<h3>參加資格：</h3>
+<p>大三以上具備產業訓儲或研發替代役資格之交通大學學生</p>
+<h3>參加辦法：</h3>
+<p>每在一家企業填寫履歷可蓋一個章，每集滿五個章即可至服務台領取一張抽獎券。</p>
+<h3>活動規則：</h3>
+<ol class="ui list">
+  <li>每人於每家企業限蓋一個章，若集點地圖遺失恕不補蓋。</li>
+  <li>每集滿五個章即可至服務台兌換一張抽獎券，但不接受不同張地圖合併兌換抽獎券。</li>
+  <li>抽獎券資料須完整填寫，否則不具抽獎資格。</li>
+  <li>每場抽獎前十分鐘停止收取抽獎券。</li>
+  <li>每人限獲得一獎項，唱名三次本人未到者失去抽獎資格，且隔場不得再抽。</li>
+  <li>得獎者領獎時須出示證件以茲證明符合抽獎資格，不接受代領。</li>
+  <li>2016 Open House相關工作人員皆不得參與抽獎活動。</li>
+  <li>2016 Open House與就輔組保有變更所有活動規則與獎項內容之權利，若有爭議請遵照現場工作人員指示。</li>
+</ol>
+
+<h3>獎項：</h3>
+<ul class="ui list">
+  <li>Apple Watch 乙只</li>
+  <li>鐵三角耳機 二副</li>
+  <li>Logitech無線滑鼠鍵盤組 三組</li>
+  <li>小米藍芽喇叭 四組</li>
+  <li>Transcend 32GB 隨身碟 六份</li>
+</ul>
+
+<h2 class="ui dividing header">就博會攤位圖</h2>
+<img class="ui image" src="{{place_map.upload_file.url}}" alt="就博會攤位圖">
+	<div class="ui six column padded grid">
+    {% for slot in slots %}
+		<div class="column" style="padding:0.5rem" >
+      <div class='ui blue center aligned segment'>
+        <p>攤位{{slot.serial_no}}: {{ slot.company}}</p>
+			</div>
+		</div>
+    {% endfor %}
+	</div>
+{% endblock %}

@@ -6,7 +6,6 @@
 {% block coltype %}colMS{% endblock %}
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
-
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
@@ -47,6 +46,8 @@
 				<h3>研發替代役</h3>
 
         <p><a href="{% url 'rdss_export_all' %}">匯出全部資料</a></p>
+        <p><a href="{% url 'rdss_export_ad' %}">匯出Logo和簡介(廣告用)</a></p>
+        <p><a href="{% url 'rdss_export_activity_info' %}">匯出說明會/就博會資訊</a></p>
         <p><a href="/admin/rdss/companysurvey/export/">廠商滿意度問卷</a></p>
 				<p><a href="/admin/rdss/company/export/">參加廠商列表</a></p>
 				<p><a href="/admin/rdss/signup/export/">活動報名情況(含人資資訊)</a></p>
@@ -56,7 +57,10 @@
 				<h3>其它</h3>
 
         <h2>說明會集點系統</h2>
-        <p><a href="{% url 'rdss_collect_points' %}">研替說明會集點</a></p>
+        <p><a href="{% url 'rdss_collect_points' %}">說明會集點系統</a></p>
+        <p><a href="{% url 'rdss_reg_card' %}">學生證註冊</a></p>
+        <p><a href="{% url 'rdss_redeem' %}">兌獎</a></p>
+        <p><a href="/static/data/apps/card_reader.zip">讀卡程式及驅動</a></p>
 
     </div>
 </div>

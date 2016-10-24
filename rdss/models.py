@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.db.models import Q
+from django.db.models import Count, Sum
 import company.models
+import rdss.models
 
 
 def validate_mobile(string):
@@ -20,9 +23,8 @@ CATEGORYS = (
 
 
 class RdssConfigs(models.Model):
-    # TODO:fix variable ambiguous
-    signup_start = models.DateTimeField(u'廠商註冊開始時間')
-    signup_end = models.DateTimeField(u'廠商註冊結束時間')
+    register_start = models.DateTimeField(u'廠商註冊開始時間')
+    register_end = models.DateTimeField(u'廠商註冊結束時間')
     rdss_signup_start = models.DateTimeField(u'研替報名開始時間')
     rdss_signup_end = models.DateTimeField(u'研替報名結束時間')
 
@@ -33,16 +35,16 @@ class RdssConfigs(models.Model):
     # 說明會相關
     seminar_start_date = models.DateField(u'說明會開始日期')
     seminar_end_date = models.DateField(u'說明會結束日期')
-    session_1_start = models.TimeField(u'說明會場次1_開始時間')
-    session_1_end = models.TimeField(u'說明會場次1_結束時間')
-    session_2_start = models.TimeField(u'說明會場次2_開始時間')
-    session_2_end = models.TimeField(u'說明會場次2_結束時間')
-    session_3_start = models.TimeField(u'說明會場次3_開始時間')
-    session_3_end = models.TimeField(u'說明會場次3_結束時間')
+    session1_start = models.TimeField(u'說明會場次1_開始時間')
+    session1_end = models.TimeField(u'說明會場次1_結束時間')
+    session2_start = models.TimeField(u'說明會場次2_開始時間')
+    session2_end = models.TimeField(u'說明會場次2_結束時間')
+    session3_start = models.TimeField(u'說明會場次3_開始時間')
+    session3_end = models.TimeField(u'說明會場次3_結束時間')
     # 費用
-    session_1_fee = models.IntegerField(u'說明會場次1_費用')
-    session_2_fee = models.IntegerField(u'說明會場次2_費用')
-    session_3_fee = models.IntegerField(u'說明會場次3_費用')
+    session1_fee = models.IntegerField(u'說明會場次1_費用')
+    session2_fee = models.IntegerField(u'說明會場次2_費用')
+    session3_fee = models.IntegerField(u'說明會場次3_費用')
 
     # 就博會相關
     jobfair_date = models.DateField(u'就博會日期')
@@ -87,6 +89,10 @@ class Signup(models.Model):
         com = company.models.Company.objects.filter(cid=self.cid).first()
         return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
 
+    def get_company_name(self):
+        com = company.models.Company.objects.filter(cid=self.cid).first()
+        return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
+
 
 # Proxy model for AdminSite company list item
 class Company(Signup):
@@ -96,22 +102,25 @@ class Company(Signup):
         verbose_name_plural = u"2. 參加廠商"
 
 
-class Seminar_Slot(models.Model):
+class SeminarSlot(models.Model):
     # (value in db,display name)
     SESSIONS = (
             ("noon", "中午場"),
             ("night1", "晚上場1"),
             ("night2", "晚上場2"),
+            ("extra", "加(補)場"),
+            ("jobfair", "就博會"), # 因為集點需要，公司留空
             )
     id = models.AutoField(primary_key=True)
     date = models.DateField(u'日期')
-    session = models.CharField(u'時段', max_length=6, choices=SESSIONS)
-    cid = models.OneToOneField('Signup', to_field='cid',
+    session = models.CharField(u'時段', max_length=10, choices=SESSIONS)
+    company = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',
                                on_delete=models.CASCADE, null=True, blank=True)
     place = models.ForeignKey('SlotColor', null=True, blank=True,
                               verbose_name=u'場地',
                               )
+    points = models.SmallIntegerField(u'集點點數', default=1)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
@@ -125,28 +134,40 @@ class Seminar_Slot(models.Model):
 
 class Student(models.Model):
     idcard_no = models.CharField(u'學生證卡號', max_length=10, primary_key=True)
-    attendance = models.ManyToManyField(Seminar_Slot, through='StuAttendance')
-    student_id = models.CharField(u'學號', max_length=10, blank=True,
-                                  help_text='領獎時填')
-    name = models.CharField(u'姓名', max_length=64, blank=True,
-                            help_text='領獎時填')
-    dep = models.CharField(u'系級', max_length=16, blank=True,
-                           help_text='領獎時填')
-    email = models.EmailField(u'Email', max_length=64, blank=True,
-                           help_text='領獎時填')
+    attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
+    student_id = models.CharField(u'學號', max_length=7, blank=True)
     phone = models.CharField(u'手機', max_length=20, blank=True,
-                             help_text='領獎時填')
+                             help_text='格式：0987654321')
+    name = models.CharField(u'姓名', max_length=64, blank=True)
+    dep = models.CharField(u'系級', max_length=16, blank=True)
+    email = models.EmailField(u'Email', max_length=64, blank=True)
+
 
     class Meta:
         verbose_name = u"說明會學生"
         verbose_name_plural = u"說明會學生"
+
+    def __str__(self):
+        return self.idcard_no if not self.student_id else self.student_id
+
+    def get_points(self):
+        points = sum([i.points for i in self.attendance.all()])
+        redeem_records = rdss.models.RedeemPrize.objects.filter(student=self)
+        redeemed = sum([i.points for i in redeem_records])
+        return points-redeemed
+
+    def get_redeemed(self):
+        redeem_records = rdss.models.RedeemPrize.objects.filter(student=self)
+        redeemed = sum([i.points for i in redeem_records])
+        return redeemed
+
 
 class StuAttendance(models.Model):
     student = models.ForeignKey(Student, to_field='idcard_no',
                                 verbose_name=u'學生證卡號',
                                 on_delete=models.CASCADE,)
 
-    seminar = models.ForeignKey(Seminar_Slot,
+    seminar = models.ForeignKey(SeminarSlot,
                                 on_delete=models.CASCADE,)
 
     updated = models.DateTimeField(u'時間', auto_now=True)
@@ -155,6 +176,18 @@ class StuAttendance(models.Model):
         unique_together = ("student",  "seminar")
         verbose_name = u"說明會參加記錄"
         verbose_name_plural = u"說明會參加記錄"
+
+class RedeemPrize(models.Model):
+    student = models.ForeignKey(Student, to_field='idcard_no',
+                                verbose_name=u'學生證卡號',
+                                on_delete=models.CASCADE,)
+    prize = models.CharField(u'獎品',max_length = 100, default='', blank=True)
+    points = models.IntegerField(u'所需點數',default=0, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        verbose_name = u"兌獎紀錄"
+        verbose_name_plural = u"兌獎紀錄"
 
 
 class SlotColor(models.Model):
@@ -174,11 +207,14 @@ class SlotColor(models.Model):
         return self.place
 
 
-class Seminar_Order(models.Model):
+class SeminarOrder(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(u'選位開始時間')
-    cid = models.OneToOneField('Signup', to_field='cid', verbose_name=u'公司',
-                               on_delete=models.CASCADE)
+    company = models.OneToOneField('Signup', to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE,
+                               limit_choices_to=~Q(seminar='')
+                               )
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
@@ -187,9 +223,10 @@ class Seminar_Order(models.Model):
         verbose_name_plural = u"說明會選位順序"
 
 
-class Seminar_Info(models.Model):
+
+class SeminarInfo(models.Model):
     id = models.AutoField(primary_key=True)
-    cid = models.OneToOneField('Signup', to_field='cid',
+    company = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',
                                on_delete=models.CASCADE)
     topic = models.CharField(u'說明會主題', max_length=30)
@@ -221,12 +258,12 @@ class Seminar_Info(models.Model):
 # 以下為就博會
 
 
-class Jobfair_Slot(models.Model):
+class JobfairSlot(models.Model):
 
     id = models.AutoField(primary_key=True)
     serial_no = models.CharField(u'攤位編號', max_length=10)
     category = models.CharField(u'類別', max_length=37, choices=CATEGORYS)
-    cid = models.ForeignKey('Signup', to_field='cid',
+    company = models.ForeignKey('Signup', to_field='cid',
                             verbose_name=u'公司',
                             on_delete=models.CASCADE, blank=True, null=True)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
@@ -240,11 +277,14 @@ class Jobfair_Slot(models.Model):
         return self.serial_no
 
 
-class Jobfair_Order(models.Model):
+class JobfairOrder(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(u'選位開始時間')
-    cid = models.OneToOneField('Signup', to_field='cid',
-                               verbose_name=u'公司', on_delete=models.CASCADE)
+    company = models.OneToOneField('Signup', to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE,
+                               limit_choices_to=~Q(jobfair=0)
+                               )
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
@@ -253,9 +293,9 @@ class Jobfair_Order(models.Model):
         verbose_name_plural = u"就博會選位順序"
 
 
-class Jobfair_Info(models.Model):
+class JobfairInfo(models.Model):
     id = models.AutoField(primary_key=True)
-    cid = models.OneToOneField('Signup', to_field='cid',
+    company = models.OneToOneField('Signup', to_field='cid',
                                verbose_name=u'公司',
                                on_delete=models.CASCADE)
     signname = models.CharField(u'攤位招牌名稱', max_length=30)
@@ -263,8 +303,11 @@ class Jobfair_Info(models.Model):
     contact_mobile = models.CharField(u'聯絡人手機', max_length=16,
                                       validators=[validate_mobile])
     contact_email = models.EmailField(u'聯絡人Email', max_length=254)
+    meat_lunchbox = models.SmallIntegerField(u'葷食便當數量', default=0)
+    vege_lunchbox = models.SmallIntegerField(u'素食便當數量', default=0)
     parking_tickets = models.SmallIntegerField(u'停車證數量')
-    power_req = models.CharField(u'用電需求', max_length=256)
+    power_req = models.CharField(u'用電需求', max_length=256,
+                                 help_text="請填寫當天會使用的用電設備")
     ps = models.TextField(u'其它需求', blank=True)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
@@ -274,7 +317,7 @@ class Jobfair_Info(models.Model):
         verbose_name_plural = u"就博會資訊"
 
 
-class Sponsor_Items(models.Model):
+class SponsorItems(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(u'贊助品名稱', max_length=64, unique=True)
     description = models.CharField(u'贊助品說明', max_length=250)
@@ -297,14 +340,15 @@ class Sponsor_Items(models.Model):
 
 
 class Sponsorship(models.Model):
-    cid = models.ForeignKey(Signup, to_field='cid',
+    company = models.ForeignKey(Signup, to_field='cid',
                             verbose_name=u'公司',
                             on_delete=models.CASCADE)
-    item = models.ForeignKey(Sponsor_Items,
+    item = models.ForeignKey(SponsorItems,
                              to_field='name', on_delete=models.CASCADE)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
-        unique_together = ("cid",  "item")
+        unique_together = ("company",  "item")
         verbose_name = u"5. 贊助情況"
         verbose_name_plural = u"5. 贊助情況"
 
@@ -322,25 +366,11 @@ class Files(models.Model):
     category = models.CharField(u'類型', max_length=10, choices=FILE_CAT)
     upload_file = models.FileField(u'上傳檔案',
                                    upload_to='rdss_files', null=False)
-    updated_time = models.DateTimeField(u'更新時間', auto_now=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         verbose_name = u"活動檔案"
         verbose_name_plural = u"活動檔案"
-
-
-class CareerTutor(models.Model):
-    id = models.AutoField(primary_key=True)
-    cid = models.ForeignKey('Signup', to_field='cid',
-                            verbose_name=u'公司',
-                            on_delete=models.CASCADE)
-    time = models.DateTimeField(u'')
-    limit = models.IntegerField(u'限制')
-
-    class Meta:
-        managed = True
-        verbose_name = u"企業職場導師"
-        verbose_name_plural = u"企業職場導師"
 
 
 class CompanySurvey(models.Model):
@@ -517,6 +547,7 @@ class CompanySurvey(models.Model):
             (u'不動產相關',  u'不動產相關'),
             )
     category            = models.CharField(u'企業類別', max_length=10, choices=CATEGORYS)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
         managed = True

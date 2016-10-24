@@ -125,11 +125,11 @@
 					<td>{{slot_info.jobfair_select_time}}</td>
 				</tr>
 				<tr>
-					<td>說明會場次</td>
+					<td>說明會已選場次</td>
 					<td>{{slot_info.seminar_slot}}</td>
 				</tr>
 				<tr>
-					<td>就博會攤位</td>
+					<td>就博會已選攤位</td>
 					<td>編號： {{slot_info.jobfair_slot}}</td>
 				</tr>
 
@@ -147,8 +147,17 @@
 				</tr>
 				<tr>
 					<td>就博會資訊</td>
-					<td><i class="large red remove icon"></i></td>
+					<td>
+						{% if jobfair_info %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						<a href="{% url 'rdss_jobfair_info' %}">點此填寫</a>
+						{% endif %}
+					</td>
 				</tr>
+
 			</tbody>
 		</table>
 	</div>

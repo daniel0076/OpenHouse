@@ -1,11 +1,14 @@
+from django.shortcuts import render,redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.utils import timezone
 from django.db.models import Count
+from django.conf import settings
 import xlsxwriter
 import json
+import datetime
 import rdss.models
 import company.models
 
@@ -38,6 +41,10 @@ def Export_Signup(request):
             {'fieldname': 'hr_phone', 'title': '人資電話'},
             {'fieldname': 'hr_mobile', 'title': '人資手機'},
             {'fieldname': 'hr_email', 'title': '人資Email'},
+            {'fieldname': 'hr2_name', 'title': '人資2姓名'},
+            {'fieldname': 'hr2_phone', 'title': '人資2電話'},
+            {'fieldname': 'hr2_mobile', 'title': '人資2手機'},
+            {'fieldname': 'hr2_email', 'title': '人資2Email'},
             {'fieldname': 'seminar', 'title': '說明會場次'},
             {'fieldname': 'jobfair', 'title': '就博會攤位數'},
             {'fieldname': 'visit', 'title': '提供企業參訪'},
@@ -76,8 +83,8 @@ def Export_Company(request):
     fieldname_list = ['cid', 'name', 'shortname', 'category', 'phone',
                       'postal_code', 'address', 'website',
                       'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
-                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr_email', 'hr_ps',
-                      'brief', 'introduction']
+                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr2_email', 'hr_ps',
+                      'brief', 'recruit_info']
     title_pairs = dict()
     for fieldname in fieldname_list:
         title_pairs[fieldname] = company.models.Company._meta.get_field(fieldname).verbose_name
@@ -114,8 +121,8 @@ def ExportAll(request):
     fieldname_list = ['cid', 'name', 'shortname', 'category', 'phone',
                       'postal_code', 'address', 'website',
                       'hr_name', 'hr_phone', 'hr_mobile', 'hr_email',
-                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr_email', 'hr_ps',
-                      'brief', 'introduction']
+                      'hr2_name', 'hr2_phone', 'hr2_mobile', 'hr2_email', 'hr_ps',
+                      'brief', 'recruit_info']
     # avoid 'can't subtract offset-naive and offset-aware datetimes'
 
     title_pairs = dict()
@@ -166,12 +173,12 @@ def ExportAll(request):
                                    signup['fields'][pairs['fieldname']])
 
     # Sponsorships
-    sponsor_items = rdss.models.Sponsor_Items.objects.all().annotate(num_sponsor=Count('sponsorship'))
+    sponsor_items = rdss.models.SponsorItems.objects.all().annotate(num_sponsor=Count('sponsorship'))
     sponsorships_list = list()
     for c in signups:
         shortname = company.models.Company.objects.filter(cid=c.cid).first().shortname
-        sponsorships = rdss.models.Sponsorship.objects.filter(cid=c)
-        counts = [rdss.models.Sponsorship.objects.filter(cid=c, item=item).count() for item in sponsor_items]
+        sponsorships = rdss.models.Sponsorship.objects.filter(company=c)
+        counts = [rdss.models.Sponsorship.objects.filter(company=c, item=item).count() for item in sponsor_items]
         amount = 0
         for s in sponsorships:
             amount += s.item.price
@@ -224,3 +231,60 @@ def ExportSurvey(request):
 
     workbook.close()
     return response
+
+@staff_member_required
+def ExportActivityInfo(request):
+    # Create the HttpResponse object with the appropriate Excel header.
+    filename = "rdss_activity_info_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    workbook = xlsxwriter.Workbook(response)
+    worksheet = workbook.add_worksheet("說明會資訊")
+    worksheet.write(0, 0, "廠商")
+    # ignore id and cid which is index 0 and 1
+    fields = rdss.models.SeminarInfo._meta.get_fields()[2:]
+    for index, field in enumerate(fields):
+        worksheet.write(0, index+1, field.verbose_name)
+
+    seminar_into_list = rdss.models.SeminarInfo.objects.all()
+    for row_count, info in enumerate(seminar_into_list):
+        worksheet.write(row_count+1, 0, info.company.get_company_name())
+        for col_count, field in enumerate(fields):
+            try:
+                worksheet.write(row_count+1, col_count+1, getattr(info, field.name))
+            except TypeError as e:
+                # xlsxwriter do not accept django timzeone aware time, so use
+                # except, to write string
+                worksheet.write(row_count+1, col_count+1,info.updated.strftime("%Y-%m-%d %H:%M:%S"))
+
+    worksheet = workbook.add_worksheet("就博會資訊")
+    worksheet.write(0, 0, "廠商")
+    # ignore id and cid which is index 0 and 1
+    fields = rdss.models.JobfairInfo._meta.get_fields()[2:]
+    for index, field in enumerate(fields):
+        worksheet.write(0, index+1, field.verbose_name)
+
+    jobfair_into_list = rdss.models.JobfairInfo.objects.all()
+    for row_count, info in enumerate(jobfair_into_list):
+        worksheet.write(row_count+1, 0, info.company.get_company_name())
+        for col_count, field in enumerate(fields):
+            try:
+                worksheet.write(row_count+1, col_count+1, getattr(info, field.name))
+            except TypeError as e:
+                # same as above
+                worksheet.write(row_count+1, col_count+1,info.updated.strftime("%Y-%m-%d %H:%M:%S"))
+
+    workbook.close()
+    return response
+
+
+@staff_member_required
+def ExportAdFormat(request):
+    all_company = company.models.Company.objects.all()
+    rdss_company = rdss.models.Signup.objects.all()
+    company_list = [
+        all_company.get(cid=c.cid) for c in rdss_company
+    ]
+    company_list.sort(key=lambda item:getattr(item,'category'))
+
+    return render(request,'admin/export_ad.html',locals())

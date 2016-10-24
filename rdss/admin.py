@@ -24,14 +24,17 @@ class StudentAdmin(admin.ModelAdmin):
     inlines = (StuAttendanceInline,)
     list_display = ('idcard_no', 'student_id', 'name', 'phone')
 
+@admin.register(models.RedeemPrize)
+class RedeemAdmin(admin.ModelAdmin):
+    list_display=('student','prize','points','updated')
 
-@admin.register(models.Seminar_Slot)
-class Seminar_SlotAdmin(admin.ModelAdmin):
-    list_display = ('date', 'session', 'cid', 'place')
+@admin.register(models.SeminarSlot)
+class SeminarSlotAdmin(admin.ModelAdmin):
+    list_display = ('date', 'session', 'company', 'place')
 
 
-@admin.register(models.Sponsor_Items)
-class Sponsor_ItemsAdmin(admin.ModelAdmin):
+@admin.register(models.SponsorItems)
+class SponsorItemsAdmin(admin.ModelAdmin):
     inlines = (SponsorshipInline,)
     list_display = ('name', 'description', 'price', 'limit', 'current_amount')
 
@@ -46,8 +49,8 @@ class SignupAdmin(admin.ModelAdmin):
     inlines = (SponsorshipInline,)
 
     def company_name(self,obj):
-        com = company.models.Company.objects.filter(cid=obj.cid).first()
-        return com.shortname
+        # com = company.models.Company.objects.filter(cid=obj.cid).first()
+        return obj.get_company_name()
 
     #define export URLs eg:...admin/rdss/signup/export
     def get_urls(self):
@@ -96,13 +99,13 @@ class CompanyAdmin(admin.ModelAdmin):
     hr_mobile.short_description = '人資手機'
     hr_email.short_description = '人資Email'
 
-@admin.register(models.Seminar_Order)
-class Seminar_OrderAdmin(admin.ModelAdmin):
-    list_display = ("cid","time","updated")
+@admin.register(models.SeminarOrder)
+class SeminarOrderAdmin(admin.ModelAdmin):
+    list_display = ("company","time","updated")
 
-@admin.register(models.Jobfair_Order)
-class Jobfair_OrderAdmin(admin.ModelAdmin):
-    list_display = ("cid","time","updated")
+@admin.register(models.JobfairOrder)
+class JobfairOrderAdmin(admin.ModelAdmin):
+    list_display = ("company","time","updated")
 
 @admin.register(models.RdssConfigs)
 class RdssConfigsAdmin(admin.ModelAdmin):
@@ -125,14 +128,23 @@ class SurveyAdmin(admin.ModelAdmin):
 
 @admin.register(models.Files)
 class RDSSFilesAdmin(admin.ModelAdmin):
-    list_display=('title','category','upload_file','updated_time')
+    list_display=('title','category','upload_file','updated')
 
 @admin.register(models.SlotColor)
 class SlotColorAdmin(admin.ModelAdmin):
     list_display=('place','css_color', 'place_info')
 
+@admin.register(models.SeminarInfo)
+class SeminarInfoAdmin(admin.ModelAdmin):
+    list_display=('company','topic', 'speaker', 'speaker_title','contact',
+                  'contact_email','contact_mobile', 'updated' )
+
+@admin.register(models.JobfairInfo)
+class JobfairInfoAdmin(admin.ModelAdmin):
+    list_display=('company', 'signname','meat_lunchbox','vege_lunchbox',
+                  'parking_tickets', 'contact_email','contact_mobile', 'updated' )
+
+
 # Register your models here.
 admin.site.register(models.Sponsorship)
-admin.site.register(models.Seminar_Info)
-admin.site.register(models.Jobfair_Slot)
-admin.site.register(models.Jobfair_Info)
+admin.site.register(models.JobfairSlot)

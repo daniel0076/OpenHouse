@@ -6,7 +6,7 @@
 <div class="ui stackable grid">
 	<div class="three wide column" style="margin-left:1em">
 		<div class="ui vertical stackable menu" style="width:85%">
-			{% if request.user.is_authenticated %}
+			{% if request.user.is_authenticated and request.user.is_company %}
 
 			<a class="{{sidebar_ui.index}} item" href="{%url 'rdss_company_index' %}">
 				活動首頁
@@ -20,7 +20,7 @@
 			<a class="{{sidebar_ui.signup}} item big" href="{%url 'rdss_signup' %}">
 				填寫報名資料
 			</a>
-			<a class="{{sidebar_ui.survey}} active teal item big" href="{%url 'rdss_company_survey' %}">
+			<a class="{{sidebar_ui.survey}} item big" href="{%url 'rdss_company_survey' %}">
 				企業滿意度問卷
 			</a>
 			<a class="{{sidebar_ui.sponsor}} item big" href="{%url 'rdss_sponsor' %}">
@@ -45,11 +45,17 @@
      <a class="item" href="{% url 'rdss_index' %}">
 		 活動資訊
 		 </a>
+     <a class="item" href="{% url 'rdss_jobs' %}">
+     職缺列表
+		 </a>
 		 <a class="item" href="{% url 'seminar_public' %}">
 		 說明會
 		 </a>
 		 <a class="item" href="{% url 'jobfair_public' %}">
 		 就博會
+		 </a>
+     <a class="item" href="{% url 'rdss_querypts' %}">
+     查集點
 		 </a>
 		 {% endif %}
 		 </div>

@@ -9,6 +9,7 @@ static/*
 !static/js/
 !static/Ideal-Image-Slider
 .ropeproject/
-default.sqlite3
+<<<<<<< HEAD
+*.log
+*.sqlite3
 .idea/
-oh_2016.sqlite3

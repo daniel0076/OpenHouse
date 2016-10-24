@@ -1,0 +1,46 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_static %}
+{% block extrastyle %}{{ block.super }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href={% static "node_modules/semantic-ui/dist/semantic.min.css" %} rel="stylesheet">
+<link href={% static "css/rdss/collect_points.css" %} rel="stylesheet">
+<script src={% static "node_modules/semantic-ui/dist/semantic.min.js" %}></script>
+{% endblock %}
+
+{% block content %}
+<h1 class="ui dividing header" id="title">OpenHouse 註冊學生證</h1>
+
+{% if ui_message %}
+<div class="ui {{ui_message.type}} message">
+  {{ui_message.msg}}
+</div>
+{% endif %}
+<div class="ui segment">
+  <form class="ui form" method="POST" action="{% url 'rdss_reg_card' %}">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="register"/>
+    <div class="two fields">
+      <div class="field">
+        {{ form.idcard_no.label_tag }} {{ form.idcard_no }}
+        {{ form.idcard_no.errors }}
+        <p class="help">{{ form.idcard_no.help_text|safe }}</p>
+      </div>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        {{ form.student_id.label_tag }} {{ form.student_id }}
+        {{ form.student_id.errors }}
+        <p class="help">{{ form.student_id.help_text|safe }}</p>
+      </div>
+      <div class="field">
+        {{ form.phone.label_tag }} {{ form.phone }}
+        {{ form.phone.errors }}
+        <p class="help">{{ form.phone.help_text|safe }}</p>
+      </div>
+    </div>
+    <button class="ui red submit button" type="submit">註冊</button>
+  </form>
+</div>
+
+{% endblock %}
+

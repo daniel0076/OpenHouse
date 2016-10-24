@@ -1,0 +1,89 @@
+{% extends 'rdss_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>研發替代役 - 集點查詢</title>
+<link href={% static "css/rdss/rdss_public.css" %} rel="stylesheet">
+
+{% endblock %}
+
+{% block 'content' %}
+<h1 class="ui header">研發替代役說明會 集點查詢</h1>
+<p>需先在會場註冊學號及手機，才能使用線上查集點功能</p>
+<form class="ui form" method="POST" style="margin:auto;margin-bottom:5em;">
+  {% csrf_token %}
+  <div class="two fields">
+    <div class="field">
+      <label>學號</label>
+      <input name="student_id" type="text" placeholder="0312345">
+    </div>
+    <div class="field">
+      <label>手機</label>
+      <input name="cellphone" type="text" placeholder="0987654321">
+    </div>
+  </div>
+  {% if error_display %}
+  <div class='ui red message'>{{error_msg}}</div>
+  {% endif %}
+  <button class="ui teal button" type="submit">查詢</button>
+</form>
+<h2>結果 Result</h2>
+<div class="ui segment">
+  {% if student_obj %}
+  <div class="ui two column middle aligned very relaxed stackable grid">
+    <div class="column">
+      <table class="ui definition table">
+        <tbody>
+          <tr>
+            <td class="five wide column">學號</td>
+            <td>{{student_obj.student_id}}</td>
+          </tr>
+          <tr>
+            <td>手機</td>
+            <td>{{student_obj.phone}}</td>
+          </tr>
+          <tr>
+            <td>學生證卡號</td>
+            <td>{{student_obj.idcard_no}}</td>
+          </tr>
+          <tr>
+            <td>集點</td>
+            <td>
+              <div class="ui horizontal statistic">
+                <div class="value">
+                  {{student_obj.get_points}}
+                </div>
+                <div class="label">
+                  點
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ui vertical divider">
+      明細
+    </div>
+    <div class="center aligned column">
+    <ul class="ui list">
+      <p>參加場次</p>
+      {% for record in records %}
+      <li>{{record.seminar.date}} {{record.seminar.company}} | {{record.seminar.points}} 點</li>
+      {% endfor %}
+    </ul>
+
+    <ul class="ui list">
+      <p>兌換獎項</p>
+      {% for r in redeems %}
+      <li>{{r.prize}} {{r.points}} 點</li>
+      {% endfor %}
+    </div>
+    </ul>
+  </div>
+
+  {% elif not student_obj and request.POST %}
+  <p>找不到這個人QAQ，有到會場註冊學生證了嗎?</p>
+  {% endif %}
+</div>
+{% endblock %}

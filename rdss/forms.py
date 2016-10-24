@@ -49,7 +49,7 @@ class SignupEditForm(forms.ModelForm):
 class SeminarInfoCreationForm(forms.ModelForm):
 
     class Meta:
-        model=rdss.models.Seminar_Info
+        model=rdss.models.SeminarInfo
         fields='__all__'
         exclude=['cid']
 
@@ -75,7 +75,7 @@ class SeminarInfoCreationForm(forms.ModelForm):
 class JobfairInfoCreationForm(forms.ModelForm):
 
     class Meta:
-        model=rdss.models.Jobfair_Info
+        model=rdss.models.JobfairInfo
         fields='__all__'
         exclude=['cid']
 
@@ -111,3 +111,34 @@ class SurveyForm(forms.ModelForm):
         if commit:
             survey.save()
         return survey
+
+
+class StudentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+           super(StudentForm, self).__init__(*args, **kwargs)
+           self.fields['idcard_no'].widget.attrs['autofocus']=True
+
+    class Meta:
+        model = rdss.models.Student
+        fields = ['idcard_no','student_id','phone', 'name', 'dep']
+
+    def save(self, commit=True):
+        form = super(StudentForm, self).save(commit=False)
+        if commit:
+            form.save()
+        return form
+
+class RedeemForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+           super(RedeemForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = rdss.models.RedeemPrize
+        fields = '__all__'
+        exclude = ['updated','student']
+
+    def save(self, commit=True):
+        form = super(RedeemForm, self).save(commit=False)
+        if commit:
+            form.save()
+        return form

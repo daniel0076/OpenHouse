@@ -17,10 +17,11 @@
         {% csrf_token %}
         <div class="field">
           <label>場次</label>
+		  <p style="color:red">系統會自動抓取目前場次，換場時請重整網頁</p>
           <select class="ui dropdown" name="seminar_id">
             {% for seminar in seminar_list %}
             <option value={{seminar.id}}>
-            {{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.cid}}
+            {{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.company}}
             </option>
             {% endfor %}
           </select>
@@ -29,7 +30,7 @@
           <label>學生證卡號</label>
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input name="idcard_no" maxlength=10>
+            <input name="idcard_no" maxlength=10 autofocus>
           </div>
         </div>
         <button class="ui blue submit button" type="submit">集點</button>
@@ -38,11 +39,17 @@
     <div class="ui vertical divider">
     </div>
     <div class="center aligned column">
-      <h1>卡號: {{student_obj.idcard_no}}</h1>
-      <h1>目前集點: {{student_obj.num_attend}} 場</h1>
+      {% if msg %}
+      <div class="ui {{msg.type}} message">
+        {{msg.content}}
+      </div>
+      {% endif %}
+      <h1 class="info">卡號: {{student_obj.idcard_no}}</h1>
+      <h1 class="info">學號: {{student_obj.student_id | default:"未註冊"}}</h1>
+      <h1 class="info">目前集點: {{student_obj.get_points}} 點</h1>
+      <h1 class="info">已兌換: {{student_obj.get_redeemed}} 點</h1>
     </div>
   </div>
 </div>
-
 {% endblock %}
 

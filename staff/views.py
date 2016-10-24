@@ -8,7 +8,7 @@ def StaffCreation(request):
 		form = staff.forms.StaffCreationForm(request.POST,request.FILES)
 		if form.is_valid():
 			user=form.save()
-			return redirect('/admin/')
+			return render(request,'success.html')
 		else:
 			print(form.errors)
 			#messages.error(request, ("The user could not be created due to errors.") )
