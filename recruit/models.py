@@ -67,7 +67,7 @@ class RecruitSignup(models.Model):
         (u'night', u'晚上場'),
         (u'company_day', u'專屬企業日'),
     )
-    cid = models.CharField(u'公司統一編號',max_length=8)
+    cid = models.CharField(u'公司統一編號', max_length=8, unique=True)
     seminar = models.CharField(u'說明會場次', choices=SEMINAR_CHOICES, max_length=15, default='')
     jobfair = models.IntegerField(u'徵才展示會攤位數量', default=0)
     career_tutor = models.BooleanField(u'企業職場導師')
@@ -125,19 +125,23 @@ class SeminarSlot(models.Model):
         verbose_name_plural = u'說明會場次'
         
 class SponsorItem(models.Model):
-    name = models.CharField(u'贊助品名稱', max_length=20)
+    name = models.CharField(u'贊助品名稱', max_length=20, unique=True)
     description = models.CharField(u'贊助品說明', max_length=100)
     spec = models.CharField(u'規格', blank=True, null=True, max_length=100)
     ps = models.CharField(u'備註', blank=True, null=True, max_length=100)
     price = models.IntegerField(u'價格')
     number_limit = models.IntegerField(u'數量限制')
     pic = models.ImageField(u'贊助品預覽圖', upload_to='recruit_sponsor_item', null=True)
-    company = models.ManyToManyField(Company)
+    #company = models.ManyToManyField(Company)
+    def __str__(self):
+        return self.name
     class Meta:
         verbose_name = u'贊助品'
         verbose_name_plural = u'贊助品'
 
 class SponsorShip(models.Model):
-    company = models.ForeignKey()
-
+    company = models.ForeignKey(RecruitSignup, to_field='cid', on_delete=models.CASCADE)
+    sponsor_item = models.ForeignKey(SponsorItem, to_field='name', on_delete=models.CASCADE)
     class Meta:
+        verbose_name = u'贊助情況'
+        verbose_name_plural = u'贊助情況'
