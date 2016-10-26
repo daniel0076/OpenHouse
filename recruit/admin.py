@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem
+from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip
 from company.models import Company
 
 
@@ -25,5 +25,8 @@ admin.site.register(JobfairInfo, JobfairInfoAdmin)
 class SponsorItemAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
-admin.site.register(SponsorItem,SponsorItemAdmin)
+admin.site.register(SponsorItem, SponsorItemAdmin)
 
+class SponsorShipAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(SponsorShip, SponsorShipAdmin)

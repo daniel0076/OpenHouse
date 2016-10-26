@@ -12,3 +12,4 @@ class JobfairInfoForm(ModelForm):
         model = JobfairInfo
         fields = '__all__'
         exclude = ['company']
+
