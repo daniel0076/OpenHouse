@@ -15,6 +15,7 @@ a{
 <div class="ui inverted teal segment" id="navtop_outer">
   <div class="ui inverted teal stackable secondary menu" id="navtop">
     <h3 class="header item">OpenHouse 交通大學 企業校園徵才</h3>
+    <!--公司部份!-->
     {% if user.is_authenticated and user.is_company %}
     <a class="item" href="/">
       首頁
@@ -28,6 +29,9 @@ a{
     <a class="item" id="navtop_rdss_btn" data-content="每年3~5月，敬請期待">
       校園徵才
     </a>
+    <a class="item" id="navtop_rdss_btn" data-content="籌備中，11月初與大家相見">
+      企業職場導師
+    </a>
     <a class="item" href="{%url 'info' %}">
       公司資料
     </a>
@@ -35,6 +39,7 @@ a{
       登出 {{request.user.username}}
     </a>
 
+    <!--一般使用者(學生)!-->
     {% else %}
     <a class="item" href="/">
       首頁
@@ -60,14 +65,18 @@ a{
         </a>
       </div>
     </div>
-    <a class="item" id="navtop_rdss_btn" data-content="每年3~5月，敬請期待">
+    <a class="item navtop_rdss_popup" data-content="每年3~5月，敬請期待">
       校園徵才
+    </a>
+    <a class="item navtop_rdss_popup" data-content="籌備中，11月初與大家相見">
+      企業職場導師
     </a>
     <a class="item" href="https://ejob.nctu.edu.tw/">
       交大哈職網
     </a>
 
     {% if user.is_authenticated and user.is_staff %}
+    <!--工作人員!-->
     <a class="item" href="/admin">
       工作人員後端
     </a>

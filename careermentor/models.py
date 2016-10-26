@@ -3,9 +3,8 @@ from company import models as company
 
 class CareerMentor(models.Model):
     id = models.AutoField(primary_key=True)
-    company = models.ForeignKey(company.Company, to_field='cid',
-                            verbose_name=u'公司',
-                            on_delete=models.CASCADE)
+    company = models.CharField(u'廠商', max_length=100)
+    cid = models.CharField(u'公司統一編號', unique=True, max_length=8, default='', blank=True)
     title = models.CharField(u'標題', max_length=100)
     abstract = models.TextField(u'大鋼')
     date = models.DateField(u'日期')
@@ -29,8 +28,8 @@ class CareerMentor(models.Model):
 class CareerMentorSignup(models.Model):
     id = models.AutoField(primary_key=True)
     career_mentor = models.ForeignKey(CareerMentor, to_field='id',
-                            verbose_name=u'場次',
-                            on_delete=models.CASCADE)
+                                      verbose_name=u'場次',
+                                      on_delete=models.CASCADE)
     name = models.CharField(u'姓名', max_length=64, blank=True)
     student_id = models.CharField(u'學號', max_length=7, blank=True)
     dep = models.CharField(u'系級', max_length=16, blank=True)

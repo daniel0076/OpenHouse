@@ -4,5 +4,5 @@ $( document ).ready(function() {
 		.dropdown({
 			on: 'hover'
 		}) ;
-	$('#navtop_rdss_btn') .popup() ;
+	$('.navtop_rdss_popup') .popup() ;
 });
