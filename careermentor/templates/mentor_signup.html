@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block 'custom_head' %}
+<title>Open House 企業職場導師</title>
+<link href={% static "css/mentor/signup_form.css" %} rel="stylesheet">
+<script src={% static "js/mentor/signup_form.js" %}></script>
+
+{% endblock %}
+
+{% block 'content' %}
+<div class="ui message" id="agreement">
+  <h2>個人資料使用同意書</h2>
+  <ol>
+    <li>國立交通大學就業與升學輔導組（以下簡稱就輔組）為提供企業徵才各項活動報名相關服務，並確保報名學生之共同利益，將遵循 個人資料保護法及相關法令之規定，蒐集、處理及利用註冊學生所提供之個人資料，包括學生E-MAIL、姓名、出生年月日、就讀科系、行動電話、所上傳之個人資訊檔案等資訊。</li>
+
+    <li>二、報名學生就其個人資料得依個人資料保護法第三條之規定，行使下列權利：</li>
+    <ol>
+      <li>查詢或請求閱覽。</li>
+      <li>請求製給複製本。</li>
+      <li>請求補充或更正。</li>
+      <li>請求停止蒐集、處理或利用。</li>
+      <li>請求刪除。</li>
+    </ol>
+    <li>報名學生得自由選擇是否提供個人資料或行使個人資料保護法第三條所定之權利，但報名學生提供資料不足或有其他冒用、盜用、不實之情形，可能將不能參加相關活動及影響各項相關服務或權益。</li>
+    <li>在學生就其個人資料依個人資料保護法第三條之規定，請求停止蒐集、處理或利用或請求刪除前，就輔組得依循個人資料保護法及相關法令之規定，於個人資料提供之範圍與目的內使用該等個人資料。</li>
+    <li>當您送出本報名表時，視同同意就輔組個人資料使用規定及此同意書中之權利義務</li>
+  </ol>
+</div>
+<form class="ui form" method="POST">
+  <p>有*的欄位為必填</p>
+  {%csrf_token%}
+  {{form.as_p}}
+  <div class="ui error message"></div>
+  <button class="ui teal button" type="submit">送出</button>
+</form>
+{% endblock %}

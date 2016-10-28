@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>Open House 企業職場導師</title>
+<link href={% static "css/mentor/mentor_index.css" %} rel="stylesheet">
+<script src={% static "js/mentor/mentor_index.js" %}></script>
+
+{% endblock %}
+
+{% block 'content' %}
+<section id="mentor_seg">
+  <div class="ui header">企業職場導師</div>
+  <table class="ui celled table" id="mentor_table">
+    <thead>
+      <tr>
+        <th>標題(Title)</th>
+        <th>企業(Company)</th>
+        <th>導師(Mentor)</th>
+        <th>日期(Date)</th>
+        <th>進行方式(Mode)</th>
+        <th>人數限制(Limits)</th>
+        <th>動作(Actions)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in mentor_events %}
+      <tr>
+        <td>{{event.title}}</td>
+        <td>{{event.company}}</td>
+        <td>{{event.mentor}} {{event.mentor_title}}</td>
+        <td>{{event.date}} {{event.start_time}} - {{event.end_time}}</td>
+        <td>{{event.mode}}</td>
+        <td>
+          {% if event.limit == 0 %}
+          無上限(Unlimited)
+          {% else %}
+          {{ event.limit}}
+          {% endif%}
+        </td>
+        <td><a href={% url 'mentor_signup' event.id %}>報名</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="ui header">職涯教練</div>
+  <table class="ui celled table" id="mentor_table">
+    <thead>
+      <tr>
+        <th>標題(Title)</th>
+        <th>企業(Company)</th>
+        <th>導師(Mentor)</th>
+        <th>日期(Date)</th>
+        <th>進行方式(Mode)</th>
+        <th>人數限制(Limits)</th>
+        <th>動作(Actions)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in career_events %}
+      <tr>
+        <td>{{event.title}}</td>
+        <td>{{event.company}}</td>
+        <td>{{event.mentor}} {{event.mentor_title}}</td>
+        <td>{{event.date}} {{event.start_time}} - {{event.end_time}}</td>
+        <td>{{event.mode}}</td>
+        <td>
+          {% if event.limit == 0 %}
+          無上限(Unlimited)
+          {% else %}
+          {{ event.limit}}
+          {% endif%}
+        </td>
+        <td>
+          <a href={% url 'mentor_signup' event.id %}>報名</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

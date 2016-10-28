@@ -3,6 +3,8 @@ import rdss.models
 from django.utils import timezone
 
 class SignupCreationForm(forms.ModelForm):
+    required_css_class = 'required field'
+
     def __init__(self, *args, **kwargs):
             super(SignupCreationForm, self).__init__(*args, **kwargs)
             self.fields['seminar'].widget.attrs.update({
