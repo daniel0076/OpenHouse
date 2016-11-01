@@ -7,6 +7,7 @@
 {% block 'body' %}
     <link href={% static "css/recruit/submenu.css" %} rel="stylesheet">
     <div class="ui inverted blue secondary main menu">
+<<<<<<< HEAD
         <a href="#" class="item">活動首頁</a>
         <div class="ui dropdown item" id="recruit_signup_menu">
             活動報名相關 
@@ -15,6 +16,13 @@
                 <a href="#">填寫報名資料</a>
             </div> 
         </div>
+=======
+      <a href="{% url 'recruit_company_index' %}" class="item">活動首頁</a>
+        <a href="{% url 'recruit_signup' %}" class="item">填寫報名資料</a>
+        <a href="{% url 'recruit_survey' %}" class="item">填寫企業問卷</a>
+
+
+>>>>>>> b38ce2aefadbdf5b3c11a3070a8c66c3088f21ab
     </div>
     <div class="ui grid">
         <div class="two wide column"></div>

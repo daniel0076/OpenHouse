@@ -1,9 +1,22 @@
 from django.shortcuts import render,redirect
 from .forms import RecruitSignupForm, JobfairInfoForm
-from .models import RecruitConfigs, SponsorItem
-from .models import RecruitSignup, SponsorShip
+from .models import RecruitConfigs, SponsorItem, Files
+from .models import RecruitSignup, SponsorShip, CompanySurvey
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
+=======
+from django.utils import timezone
+from . import forms
+
+@login_required(login_url='/company/login/')
+def recruit_company_index(request):
+    sidebar_ui = {'index': 'active'}
+    configs=RecruitConfigs.objects.all()[0]
+    plan_file = Files.objects.filter(category = "企畫書").first()
+    return render(request,'recruit/company/index.html',locals())
+
+>>>>>>> b38ce2aefadbdf5b3c11a3070a8c66c3088f21ab
 @login_required(login_url='/company/login/')
 def recruit_signup(request):
         signup_info_exist_exist = False
@@ -26,8 +39,13 @@ def recruit_signup(request):
 
         else:
             form = RecruitSignupForm(instance=signup_info)
+<<<<<<< HEAD
         return render(request, 'signup.html', locals())
 @login_required(login_url='/company/login/')
+=======
+        return render(request, 'recruit/company/signup.html', locals())
+
+>>>>>>> b38ce2aefadbdf5b3c11a3070a8c66c3088f21ab
 def jobfair_info(request):
     if request.POST:
         form = JobfairInfoForm(data=request.POST)
@@ -37,8 +55,13 @@ def jobfair_info(request):
             new_info.company = company
             new_info.save()
     form = JobfairInfoForm()
+<<<<<<< HEAD
     return render(request, 'jobfair_info.html', locals())
 @login_required(login_url='/company/login/')
+=======
+    return render(request, 'recruit/company/jobfair_info.html', locals())
+
+>>>>>>> b38ce2aefadbdf5b3c11a3070a8c66c3088f21ab
 def recruit_sponsor(request):
     try:
         cid = RecruitSignup.objects.get(cid=request.user.cid)
@@ -47,6 +70,7 @@ def recruit_sponsor(request):
     if request.POST:
         add_sponsorship(request.POST, cid)
     sponsor_items = SponsorItem.objects.all()
+<<<<<<< HEAD
     old_sponsorship = SponsorShip.objects.filter(company=cid)
     old_sponsor_items = []
     for item in old_sponsorship:
@@ -54,6 +78,11 @@ def recruit_sponsor(request):
     print(old_sponsor_items)
     return render(request, 'recruit_sponsor.html', locals())
     
+=======
+
+    return render(request, 'recruit/company/sponsor.html', locals())
+
+>>>>>>> b38ce2aefadbdf5b3c11a3070a8c66c3088f21ab
 
 def add_sponsorship(items, cid):
     for item in items:
@@ -63,5 +92,37 @@ def add_sponsorship(items, cid):
             sponsor_ship.save()
         except ObjectDoesNotExist:
             continue
+
+@login_required(login_url='/company/login/')
+def company_servey(request):
+    #semantic ui
+    sidebar_ui = {'survey':"active"}
+    configs = RecruitConfigs.objects.all()[0]
+
+    if timezone.now() > configs.survey_end or timezone.now() < configs.survey_start :
+        error_msg="問卷填答已結束。期間為 {} 至 {}".format(
+                timezone.localtime(configs.survey_start).strftime("%Y/%m/%d %H:%M:%S"),
+                timezone.localtime(configs.survey_end).strftime("%Y/%m/%d %H:%M:%S"))
+        return render(request,'recruit/error.html',locals())
+
+    try:
+        my_survey = CompanySurvey.objects.get(cid=request.user.cid)
+    except ObjectDoesNotExist:
+        my_survey = None
+    if request.POST:
+        data = request.POST.copy()
+        # decide cid in the form
+        data['cid']=request.user.cid
+        form = forms.SurveyForm(data=data, instance = my_survey)
+        if form.is_valid():
+            form.save()
+            (msg_display,msg_type,msg_content) = (True,"green","問卷填寫完成，感謝您")
+        else:
+            (msg_display,msg_type,msg_content) = (True,"error","儲存失敗，有未完成欄位")
+            print(form.errors)
+    else:
+        form = forms.SurveyForm(instance=my_survey)
+
+    return render(request,'recruit/company/survey_form.html',locals())
 
 

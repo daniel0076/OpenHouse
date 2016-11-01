@@ -13,11 +13,11 @@ class UrlsTest(TestCase):
 
     def setUp(self):
         data = {"register_start": "2016-07-05T15:17:00Z",
-             "register_end": "2016-07-23T15:17:00Z",
+             "register_end": "2019-07-23T15:17:00Z",
              "rdss_signup_start": "2016-06-20T16:09:00Z",
-             "rdss_signup_end": "2016-10-18T16:09:00Z",
+             "rdss_signup_end": "2019-10-18T16:09:00Z",
              "survey_start": "2016-08-18T10:00:00Z",
-             "survey_end": "2016-10-18T10:08:00Z",
+             "survey_end": "2019-10-18T10:08:00Z",
              "seminar_start_date": "2016-09-27",
              "seminar_end_date": "2016-10-18",
              "session1_start": "12:20:00", "session1_end": "13:10:00",

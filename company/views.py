@@ -11,6 +11,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.forms import SetPasswordForm
 from company.forms import CompanyCreationForm,CompanyEditForm
 import rdss.models
+import recruit.models
 import company.models
 # Create your views here.
 
@@ -22,6 +23,7 @@ def CompanyIndex(request):
 
     # rdss files
     rdss_file_list = rdss.models.Files.objects.all().order_by('-updated')
+    recruit_file_list = recruit.models.Files.objects.all().order_by('-updated')
     return render(request,'company_index.html',locals())
 
 @login_required(login_url='/company/login/')

@@ -1,0 +1,74 @@
+{% extends 'recruit_base.html' %}
+
+{% block 'content' %}
+<div class="ui segment">
+	<h2 id="intro" class="ui dividing header">簡介</h2>
+  <p>
+  企業發展最需要好人才，為了讓貴公司順利深入交通大學徵聘優秀人才，提昇企業知名度、建立良好形象，本屆活動小組發揮靈活的創意及思維，為企業校園徵才活動帶來嶄新的面貌；以服務企業、幫助同學的理念，將徵才活動結合電子與平面媒體、網路宣傳行銷等方式，創造企業校園徵才活動最大的附加價值及經濟效益，以期達到適才適用、產學雙贏之效果。
+	</p>
+	<h2 id="intro" class="ui dividing header">活動企畫書</h2>
+	<p style="color:red">活動詳細內容及規範皆載於企畫書，請務必詳細閱讀</p>
+	<a class="ui blue button" href={{plan_file.upload_file.url}} target="_blank">{{plan_file.title}}</a>
+
+	<h2 id="register" class="ui dividing header">活動時間及地點</h2>
+	<ol class="ui list">
+    <li> 公司說明會日期：{{configs.seminar_start_date|date:"Y年m月d日(D)"}} ~ {{configs.seminar_start_date|date:"Y年m月d日(D)"}}
+			<p>舉辦地點: 國立交通大學浩然圖書館國際會議廳、交映樓國際會議廳、資訊館國際會議廳、工程四館合勤講堂等</p>
+		</li>
+		<li>就業博覽會及面談會時間：
+      {{configs.jobfair_date|date:"Y年m月d日(D)"}}  {{configs.jobfair_start}} ~ {{configs.jobfair_end}}
+			<p>舉辦地點: 國立交通大學浩然圖書館國際會議廳與前廳</p>
+		</li>
+		<li>企業參訪：2017年3月至5月
+			<p>活動網頁依日期場次進行報名</p>
+		</li>
+		<li>企業職場導師/職涯教練：2016年11月至2017年5月
+			<p>活動網頁依日期場次進行報名</p>
+		</li>
+		<li>就業力講座：2017年3月至2017年5月
+			<p>活動網頁依日期場次進行報名</p>
+		</li>
+	</ol>
+
+	<h2 id="register" class="ui dividing header">活動對象</h2>
+	<ol>
+    <li>本校研究所、大學部應屆畢業生及校友，約3,600餘人。</li>
+    <li>本校研究所、大學部在校生，約15,000餘人。</li>
+    <li>新竹地區各大專院校學生及校友。</li>
+	</ol>
+
+	<h2 id="register" class="ui dividing header">參加方式及日程</h2>
+	<ol>
+    <li>報名時間: 即日起 至 {{configs.recruit_signup_end|date:"Y年m月d日(D) H:i"}}止
+		<li>公告時間: 2016 年 11 月 24(四)公布報名錄取廠商於活動網站。</li>
+		<li>評選機制: 彙整所有廠商資料後,主辦單位將依評選積分(詳見企畫書第六點)(Page 10)決定錄取及選位順序。</li>
+    <li>公司說明會選位時間：2016年12月1日(四)開放錄取廠商依選位順序選位，詳細選位事宜將另行通知，並將結果公告於活動網站。</li>
+    <li>展示會(就業博覽會)選位時間：2016年12月15日(四)~12月16日(五) 開放錄取廠商依選位順序選位(依評選積分)，詳細選位事宜將另行通知，並將結果公告於活動網站。</li>
+		<li>選位方式: 依評選積分決定選位順序,至本活動網站選填時段。</li>
+
+	</ol>
+
+	<h2 id="register" class="ui dividing header">評選積分</h2>
+	<ol>
+		<li><strong>贊助效益(70%)</strong>: 廠商贊助本次徵才系列活動之總金額,包括贊助商品與場地費等。</li>
+		<li><strong>企業職場導師(5%)</strong>: 邀請各領域資深主管蒞校擔任企業職場導師,為本校同學進行履歷寫作 指導、面試技巧及個人生涯發展規劃,幫助交大同學建立更多競爭優勢。</p>
+      <li><strong>3、 企業參訪(5%)</strong>：
+        提升交大同學對企業的實際瞭解，對籌劃未來生涯與職涯藍圖有所助益。</li>
+
+		<li><strong>企業滿意度問卷(15%)</strong>: 可於左方填寫,為建立校友就業相關資料,以期瞭解業界對本校畢業生的評價,做為本校改善教
+			學以及推展研究的重要參考依據。</li>
+
+		<li><strong>其他(5%)</strong>: 此項評分為廠商歷年參展之互動紀錄,如有延遲繳費、中途退出活動、遲到並影響活動形象等狀況,將斟酌減分。</li>
+
+
+	</ol>
+
+	<h2 id="register" class="ui dividing header">廠商報名</h2>
+
+  <p>本活動統一採網路報名的方式，請填寫報名資料(左方導覽列或下方按鈕)。</p><p style="color:red">報名時間為 即日起 到 {{configs.recruit_signup_end|date:"Y年m月d日(D) H:i"}}</p>
+	<p style="color:red">活動詳細內容及規範皆載於企畫書，報名前請務必詳細閱讀</p>
+	<a class="ui blue button" href={{plan_file.upload_file.url}} target="_blank">{{plan_file.title}}</a>
+	<a class="ui teal button" href={%url 'recruit_signup'%}>填寫報名資料</a>
+
+</div>
+{% endblock %}

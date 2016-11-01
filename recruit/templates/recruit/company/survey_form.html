@@ -1,0 +1,412 @@
+{% extends 'recruit_base.html' %}
+
+{% block 'custom_head' %}
+<title>企業滿意度問卷 | OpenHouse 企業校園徵才</title>
+{% endblock %}
+
+
+{% block 'content' %}
+<style>
+.ui.checkbox{
+	margin-right:2em;
+}
+</style>
+<script>
+$(document).ready(function(){
+	$('.ui.checkbox').checkbox();
+})
+</script>
+<h1 class="ui dividing header">國立交通大學畢業生企業滿意度問卷</h1>
+<div class="ui segment">
+	感謝貴公司長久以來對交大的支持與愛護，本校就業與升學輔導組為了建立校友就業相關資料，以期瞭解業界對本校畢業生的指教，做為本校改善教學以及推展研究的重要參考。
+
+	若有任何問題，請致電(03)5131365或03-5712121分機31365、50659（吳文鈴），謝謝您的協助！
+
+</div>
+
+{% if msg_display %}
+<div class="ui {{msg_type}} message">
+	{{msg_content}}
+</div>
+{% endif %}
+
+<form class="ui form" method="POST" action="">
+
+	{% csrf_token %}
+	<div class="ui segment">
+		<h3 class="ui dividing header">(1) 下列內容請你針對相關敘述，填寫人數，並選擇適當的選項</h3>
+		<div class="ui message">
+			若貴企業目前並無交大畢業生，人數請填0，滿意度則留空
+		</div>
+		<table class="ui celled striped table">
+			<thead>
+				<th>交大學畢業生最高學歷</th>
+				<th>大學(人)</th>
+				<th>碩士(人)</th>
+				<th>博士(人)</th>
+				<th>平均滿意度</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="width:22em">電機學院-電工.電控.電信.光電</td>
+					<td>{{form.ee_bachelor}}</td>
+					<td>{{form.ee_master}}</td>
+					<td>{{form.ee_phd}}</td>
+					<td style="width:10em">{{form.ee_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>資訊學院-資工.資科.網路.多媒體.生醫影像 </td>
+					<td>{{form.cs_bachelor}}</td>
+					<td>{{form.cs_master}}</td>
+					<td>{{form.cs_phd}}</td>
+					<td>{{form.cs_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>管理學院-管科.運管.工工.科管.資管.財金</td>
+					<td>{{form.manage_bachelor}}</td>
+					<td>{{form.manage_master}}</td>
+					<td>{{form.manage_phd}}</td>
+					<td>{{form.manage_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>生科學院-生科.生化.生資.生醫</td>
+					<td>{{form.bio_bachelor}}</td>
+					<td>{{form.bio_master}}</td>
+					<td>{{form.bio_phd}}</td>
+					<td>{{form.bio_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>理學院-電物.應數.應化.統計.分子.物理</td>
+					<td>{{form.sci_bachelor}}</td>
+					<td>{{form.sci_master}}</td>
+					<td>{{form.sci_phd}}</td>
+					<td>{{form.sci_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>工學院-機械.環工.土木.材料.奈米</td>
+					<td>{{form.eng_bachelor}}</td>
+					<td>{{form.eng_master}}</td>
+					<td>{{form.eng_phd}}</td>
+					<td>{{form.eng_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>人社學院-外文.傳播.應藝.社文.建築.英教</td>
+					<td>{{form.hs_bachelor}}</td>
+					<td>{{form.hs_master}}</td>
+					<td>{{form.hs_phd}}</td>
+					<td>{{form.hs_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td>客家學院-人社.傳科</td>
+					<td>{{form.haka_bachelor}}</td>
+					<td>{{form.haka_master}}</td>
+					<td>{{form.haka_phd}}</td>
+					<td>{{form.haka_satisfaction}}</td>
+				</tr>
+				<tr>
+					<td> {{form.overall_satisfaction.label}}</td>
+					<td colspan=4> {{form.overall_satisfaction}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="ui segment">
+		<h3 class="ui dividing header">(2) 針對交大畢業生的薪資問題，請協助選擇現況</h3>
+		<div class="ui message">
+			若貴企業目前並無交大畢業生，請填寫對交大畢業生之期望
+		</div>
+		<table class="ui celled striped table">
+			<thead>
+				<th>交大畢業生學歷</th>
+				<th>貴公司進用時月薪起薪平均(約)</th>
+				<th>交大學生目前(或預期)年薪薪資平均(約)</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>大學</td>
+					<td>{{form.salary_avg_bachelor}}{{form.salary_avg_bachelor.errors}}</td>
+					<td>{{form.nctu_salary_avg_bachelor}}{{form.nctu_salary_avg_bachelor.errors}}</td>
+				</tr>
+				<tr>
+					<td>碩士</td>
+					<td>{{form.salary_avg_master}}{{form.salary_avg_master.errors}}</td>
+					<td>{{form.nctu_salary_avg_master}}{{form.nctu_salary_avg_master.errors}}</td>
+				</tr>
+				<tr>
+					<td>博士</td>
+					<td>{{form.salary_avg_phd}}{{form.salary_avg_phd.errors}}</td>
+					<td>{{form.nctu_salary_avg_phd}}{{form.nctu_salary_avg_phd.errors}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="ui segment">
+		<h3 class="ui dividing header">(3) 針對交大畢業生在職場上的表現問題，請協助評估後進行勾選</h3>
+		<div class="ui message">
+			<p>若貴企業目前並無交通大學畢業生，請勾選下方空格，題目則留空不填</p>
+			<div class="ui checkbox">
+				{{form.no_nctu_employee}}
+				<label>{{form.no_nctu_employee.label}}
+			</div>
+		</div>
+		<table class="ui celled striped table">
+			<thead>
+				<th>對交大畢業生之整體滿意度評估</th>
+				<th>平均滿意度</td>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1.專業知能（具符合所服務部門必須的專業技能、終身學習、新知學習等）</td>
+					<td>{{form.professional_skill_rate}}{{form.professional_skill_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>2.外語能力（包含英日文等語言之溝通與聽說讀寫能力等）</td>
+					<td>{{form.foreign_lang_rate}}{{form.foreign_lang_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>3.中文文書處理能力（如文件、企劃書之撰寫）
+					</td>
+					<td>{{form.document_process_rate}}{{form.document_process_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>4.資訊素養(如電腦及網路的使用能力、解決資訊問題、資訊倫理、篩選資訊的能力、媒體素養等)</td>
+					<td>{{form.info_literacy_rate}}{{form.info_literacy_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>5.發現及解決問題之能力（如觀察力、邏輯分析、批判思考、決策思考、時間管理等）</td>
+					<td>{{form.problem_solving_rate}}{{form.problem_solving_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>6.工作態度（具備敬業熱誠、配合度高、能達成工作期待等）</td>
+					<td>{{form.attitude_rate}}{{form.attitude_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>7.公民責任(如民主素養、對公共事務及權利義務的參與與認知）</td>
+					<td>{{form.civic_duty_rate}}{{form.civic_duty_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>8.專業倫理與品德涵養（如情緒管理、尊重他人、尊重生命、社會服務、道德思辨、倫理實踐等）</td>
+					<td>{{form.pro_moral_rate}}{{form.pro_moral_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>9.人文及在地關懷(如服務精神、社會關懷等)</td>
+					<td>{{form.humanities_rate}}{{form.humanities_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>10.人文藝術陶冶(如多元文化認知、美感品味等)</td>
+					<td>{{form.cultural_rate}}{{form.cultural_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>11.國際視野（如世界公民意識、國際活動參與和文化交流等）</td>
+					<td>{{form.international_view_rate}}{{form.international_view_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>12.跨界多元思考(如創意思考、跨領域整合、卓越領導等)</td>
+					<td>{{form.diverse_thinking_rate}}{{form.diverse_thinking_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td>13.群己平衡認知（如身心平衡、團隊合作、表達溝通、人際關係、自我認知等）</td>
+					<td>{{form.group_cognitive_rate}}{{form.group_cognitive_rate.errors}}</td>
+				</tr>
+				<tr>
+					<td colspan=2>您認為前述交大畢業生能力，哪幾項對貴公司發展的具有重要性（請協助選出三項以上之能力）</td>
+				</tr>
+				<tr>
+					<td colspan=2>
+						<div class="ui checkbox">
+							{{form.professional_skill}}
+							<label>{{form.professional_skill.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.foreign_lang}}
+							<label>{{form.foreign_lang.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.document_process}}
+							<label>{{form.document_process.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.info_literacy}}
+							<label>{{form.info_literacy.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.problem_solving}}
+							<label>{{form.problem_solving.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.attitude}}
+							<label>{{form.attitude.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.civic_duty}}
+							<label>{{form.civic_duty.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.pro_moral}}
+							<label>{{form.pro_moral.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.humanities}}
+							<label>{{form.humanities.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.cultural}}
+							<label>{{form.cultural.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.international_view}}
+							<label>{{form.international_view.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.diverse_thinking}}
+							<label>{{form.diverse_thinking.label}}
+						</div>
+						<div class="ui checkbox">
+							{{form.group_cognitive}}
+							<label>{{form.group_cognitive.label}}
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="ui segment">
+		<h3 class="ui dividing header">(4) 交大畢業生具備哪些經歷有助於職場求職，請協助提供相關意見</h3>
+		<table class="ui celled striped table">
+			<thead>
+				<th>您覺得下列學經歷對就業力增加的幫助程度如何?</th>
+				<th>幫助程度</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{form.major.label}}</td>
+					<td>{{form.major}}{{form.major.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.graduation_school.label}}</td>
+					<td>{{form.graduation_school}}{{form.graduation_school.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.second_major.label}}</td>
+					<td>{{form.second_major}}{{form.second_major.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.club.label}}</td>
+					<td>{{form.club}}{{form.club.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.common_class.label}}</td>
+					<td>{{form.common_class}}{{form.common_class.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.national_exam.label}}</td>
+					<td>{{form.national_exam}}{{form.national_exam.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.cert.label}}</td>
+					<td>{{form.cert}}{{form.cert.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.work_exp.label}}</td>
+					<td>{{form.work_exp}}{{form.work_exp.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.travel_study.label}}</td>
+					<td>{{form.travel_study}}{{form.travel_study.errors}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="ui segment">
+		<h3 class="ui dividing header">(5) 其它</h3>
+		<table class="ui celled striped table">
+			<tr>
+				<td>請問貴公司多半透過哪些管道徵才？</td>
+				<td>
+					<div class="ui checkbox">
+						{{form.hr_bank}}
+						<label>{{form.hr_bank.label}}
+					</div>
+					<div class="ui checkbox">
+						{{form.newspaper_ad}}
+						<label>{{form.newspaper_ad.label}}
+					</div>
+					<div class="ui checkbox">
+						{{form.website}}
+						<label>{{form.website.label}}
+					</div>
+					<div class="ui checkbox">
+						{{form.school}}
+						<label>{{form.school.label}}
+					</div>
+					<div class="ui checkbox">
+						{{form.teacher_recommend}}
+						<label>{{form.teacher_recommend.label}}
+					</div>
+					<div class="ui checkbox">
+						{{form.campus_jobfair}}
+						<label>{{form.campus_jobfair.label}}
+					</div>
+					<div class="ui checkbox">
+						{{form.contest}}
+						<label>{{form.contest.label}}
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>請問貴公司未來是否願意與本校建立更積極的互動關係，定期接受各項徵才活動的相關資訊？</td>
+				<td>
+					<div class="ui checkbox">
+						{{form.receive_info}}
+						<label>{{form.receive_info.label}}
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>請您提供建議及指教(針對協助學生就業及提升學生就業能力…等建議)</td>
+				<td>
+					{{form.suggestions}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="ui segment">
+		<h3 class="ui dividing header">(6) 基本資料</h3>
+		<table class='ui celled striped table'>
+			<tbody>
+				<tr>
+					<td>{{form.company.label}}</td>
+					<td>{{form.company}}{{form.company.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.submiter_name.label}}</td>
+					<td>{{form.submiter_name}}{{form.submiter_name.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.submiter_phone.label}}</td>
+					<td>{{form.submiter_phone}}{{form.submiter_phone.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.submiter_email.label}}</td>
+					<td>{{form.submiter_email}}{{form.submiter_email.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.company_size.label}}</td>
+					<td>{{form.company_size}}{{form.company_size.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.nctu_employees.label}}</td>
+					<td>{{form.nctu_employees}}{{form.nctu_employees.errors}}</td>
+				</tr>
+				<tr>
+					<td>{{form.category.label}}</td>
+					<td>{{form.category}}{{form.category.errors}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<button class="ui blue button">送出問卷</button>
+</form>
+{% endblock %}
