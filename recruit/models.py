@@ -62,13 +62,13 @@ class RecruitConfigs(models.Model):
 
 class RecruitSignup(models.Model):
     SEMINAR_CHOICES = (
-        (u'', u'不參加說明會'),
+        (u'none', u'不參加說明會'),
         (u'noon', u'中午場'),
         (u'night', u'晚上場'),
         (u'company_day', u'專屬企業日'),
     )
     cid = models.CharField(u'公司統一編號', max_length=8, unique=True)
-    seminar = models.CharField(u'說明會場次', choices=SEMINAR_CHOICES, max_length=15, default='')
+    seminar = models.CharField(u'說明會場次', choices=SEMINAR_CHOICES, max_length=15, default='none')
     jobfair = models.IntegerField(u'徵才展示會攤位數量', default=0)
     career_tutor = models.BooleanField(u'企業職場導師')
     company_visit = models.BooleanField(u'企業參訪')
