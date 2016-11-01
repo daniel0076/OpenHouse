@@ -151,7 +151,7 @@ class SponsorItem(models.Model):
     price = models.IntegerField(u'價格')
     number_limit = models.IntegerField(u'數量限制')
     pic = models.ImageField(u'贊助品預覽圖', upload_to='recruit_sponsor_item', null=True)
-    #company = models.ManyToManyField(Company)
+    sponsors = models.ManyToManyField(RecruitSignup, through='Sponsorship')
     def __str__(self):
         return self.name
     class Meta:
@@ -161,6 +161,7 @@ class SponsorItem(models.Model):
 class SponsorShip(models.Model):
     company = models.ForeignKey(RecruitSignup, to_field='cid', on_delete=models.CASCADE)
     sponsor_item = models.ForeignKey(SponsorItem, to_field='name', on_delete=models.CASCADE)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
     class Meta:
         verbose_name = u'贊助情況'
         verbose_name_plural = u'贊助情況'
