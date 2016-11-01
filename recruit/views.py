@@ -16,6 +16,8 @@ def recruit_company_index(request):
 
 @login_required(login_url='/company/login/')
 def recruit_signup(request):
+        #configs = RecruitConfigs.object.all()[0]
+        #if configs.re
         signup_info_exist_exist = False
         recruit_configs = RecruitConfigs.objects.all()[0]
         try:
@@ -25,8 +27,6 @@ def recruit_signup(request):
             signup_info = None
 
         if request.method == 'POST':
-            #for i in request.POST:
-            #    print(i)
             form = RecruitSignupForm(data=request.POST, instance=signup_info)
             if form.is_valid():
                 new_form = form.save(commit=False)
@@ -56,17 +56,18 @@ def recruit_sponsor(request):
         cid = RecruitSignup.objects.get(cid=request.user.cid)
     except ObjectDoesNotExist:
         return redirect('signup')
+    old_sponsorships = SponsorShip.objects.filter(company=cid)
     if request.POST:
-        add_sponsorship(request.POST, cid)
+        add_sponsorship(request.POST, cid,old_sponsorships)
     sponsor_items = SponsorItem.objects.all()
-    old_sponsorship = SponsorShip.objects.filter(company=cid)
+    old_sponsorships = SponsorShip.objects.filter(company=cid)
     old_sponsor_items = []
-    for item in old_sponsorship:
-        old_sponsor_items.append(item.sponsor_item.name)
-    print(old_sponsor_items)
+    for sponsorship in old_sponsorships:
+        old_sponsor_items.append(sponsorship.sponsor_item.name)
     return render(request, 'recruit/company/sponsor.html', locals())
 
-def add_sponsorship(items, cid):
+def add_sponsorship(items, cid, old_sponsorships):
+    old_sponsorships.delete()
     for item in items:
         try:
             sponsor_item = SponsorItem.objects.get(name=item)
@@ -98,9 +99,9 @@ def company_servey(request):
         form = forms.SurveyForm(data=data, instance = my_survey)
         if form.is_valid():
             form.save()
-            (msg_display,msg_type,msg_content) = (True,"green","問卷填寫完成，感謝您")
+            (msg_display,msg_type,msg_content) = (True, "green", "問卷填寫完成，感謝您")
         else:
-            (msg_display,msg_type,msg_content) = (True,"error","儲存失敗，有未完成欄位")
+            (msg_display,msg_type,msg_content) = (True, "error", "儲存失敗，有未完成欄位")
             print(form.errors)
     else:
         form = forms.SurveyForm(instance=my_survey)
