@@ -25,9 +25,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^company/', include('company.urls')),  # add '' on the include path!!!
     url(r'^company/rdss/', include('rdss.internal_urls')),  # add '' on the include path!!!
+    url(r'^company/recruit/', include('recruit.internal_urls')),  # add '' on the include path!!!
     url(r'^staff/', include('staff.urls')),  # add '' on the include path!!!
     url(r'^rdss/', include('rdss.public_urls')),  # add '' on the include path!!!
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
-    url(r'^recruit/', include('recruit.urls')),
     url(r'^mentor/', include('careermentor.urls')),
 ]
