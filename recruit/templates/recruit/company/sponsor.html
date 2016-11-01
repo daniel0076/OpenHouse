@@ -1,6 +1,11 @@
 {% extends 'recruit_base.html' %}
 {% load staticfiles %}
 {% block 'content' %}
+    {% if old_sponsor_items %}
+        <div class="ui green message">
+            已填寫完畢，您也可以修改，再次送出
+        </div>
+    {% endif %}
     <h2>OpenHouse研發替代役-贊助品</h2>
 
     <form method="post" action="." class="ui form">
