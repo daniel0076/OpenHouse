@@ -38,6 +38,7 @@ def recruit_signup(request):
             form = RecruitSignupForm(instance=signup_info)
         return render(request, 'recruit/company/signup.html', locals())
 
+@login_required(login_url='/company/login/')
 def jobfair_info(request):
     if request.POST:
         form = JobfairInfoForm(data=request.POST)
@@ -64,7 +65,6 @@ def recruit_sponsor(request):
         old_sponsor_items.append(item.sponsor_item.name)
     print(old_sponsor_items)
     return render(request, 'recruit/company/sponsor.html', locals())
-
 
 def add_sponsorship(items, cid):
     for item in items:
