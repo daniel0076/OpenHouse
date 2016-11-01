@@ -145,3 +145,4 @@ class SponsorShip(models.Model):
     class Meta:
         verbose_name = u'贊助情況'
         verbose_name_plural = u'贊助情況'
+        unique_together = ('company', 'sponsor_item')
