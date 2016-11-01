@@ -161,6 +161,7 @@ class SponsorItem(models.Model):
 class SponsorShip(models.Model):
     company = models.ForeignKey(RecruitSignup, to_field='cid', on_delete=models.CASCADE)
     sponsor_item = models.ForeignKey(SponsorItem, to_field='name', on_delete=models.CASCADE)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
     class Meta:
         verbose_name = u'贊助情況'
         verbose_name_plural = u'贊助情況'
