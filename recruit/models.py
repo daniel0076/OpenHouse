@@ -80,6 +80,11 @@ class RecruitSignup(models.Model):
     def __str__(self):
         company = Company.objects.get(cid=self.cid)
         return company.name
+
+    def get_company_name(self):
+        com = Company.objects.filter(cid=self.cid).first()
+        return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
+
     class Meta:
         managed = True
         verbose_name = u'活動報名情況'
