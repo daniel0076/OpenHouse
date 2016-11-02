@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^rdss/', include('rdss.public_urls')),  # add '' on the include path!!!
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^mentor/', include('careermentor.urls')),
+    url(r'^admin/recruit/', include('recruit.admin_urls')),
 ]

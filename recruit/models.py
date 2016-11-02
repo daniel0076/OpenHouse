@@ -26,8 +26,8 @@ CATEGORYS = (
 class RecruitConfigs(models.Model):
     register_start = models.DateTimeField(u'廠商註冊開始時間')
     register_end = models.DateTimeField(u'廠商註冊結束時間')
-    recruit_signup_start = models.DateTimeField(u'研替報名開始時間')
-    recruit_signup_end = models.DateTimeField(u'研替報名結束時間')
+    recruit_signup_start = models.DateTimeField(u'校徵報名開始時間')
+    recruit_signup_end = models.DateTimeField(u'校徵報名結束時間')
 
     survey_start = models.DateTimeField(u'滿意度問卷開始填答')
     survey_end = models.DateTimeField(u'滿意度問卷結束填答')
@@ -151,7 +151,7 @@ class SponsorItem(models.Model):
     price = models.IntegerField(u'價格')
     number_limit = models.IntegerField(u'數量限制')
     pic = models.ImageField(u'贊助品預覽圖', upload_to='recruit_sponsor_item', null=True)
-    sponsors = models.ManyToManyField(RecruitSignup, through='Sponsorship')
+    sponsors = models.ManyToManyField(RecruitSignup, through='SponsorShip')
     def __str__(self):
         return self.name
     class Meta:

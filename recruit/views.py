@@ -4,6 +4,7 @@ from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from . import forms
 
@@ -16,8 +17,12 @@ def recruit_company_index(request):
 
 @login_required(login_url='/company/login/')
 def recruit_signup(request):
-        #configs = RecruitConfigs.object.all()[0]
-        #if configs.re
+        configs = RecruitConfigs.objects.all()[0]
+        if timezone.now() < configs.recruit_signup_start or timezone.now() > configs.recruit_signup_end:
+            error_msg = "非報名時間。期間為 {} 至 {}".format(
+            timezone.localtime(configs.recruit_signup_start).strftime("%Y/%m/%d %H:%M:%S"),
+            timezone.localtime(configs.recruit_signup_end).strftime("%Y/%m/%d %H:%M:%S"))
+            return render(request, 'recruit/error.html', locals())
         signup_info_exist_exist = False
         recruit_configs = RecruitConfigs.objects.all()[0]
         try:
@@ -71,8 +76,8 @@ def add_sponsorship(items, cid, old_sponsorships):
     for item in items:
         try:
             sponsor_item = SponsorItem.objects.get(name=item)
-            sponsor_ship = SponsorShip(sponsor_item=sponsor_item, company=cid)
-            sponsor_ship.save()
+            sponsorship = SponsorShip(sponsor_item=sponsor_item, company=cid)
+            sponsorship.save()
         except ObjectDoesNotExist:
             continue
 
@@ -106,6 +111,12 @@ def company_servey(request):
     else:
         form = forms.SurveyForm(instance=my_survey)
 
-    return render(request,'recruit/company/survey_form.html',locals())
+    return render(request, 'recruit/company/survey_form.html', locals())
 
 
+@staff_member_required
+def sponsorship_admin(request):
+    items = SponsorItem.objects.all()
+    sponsorships = SponsorShip.objects.all()
+    companys = SponsorShip.objects.all()
+    return render(request, 'recruit/admin/sponsorship.html', locals())
