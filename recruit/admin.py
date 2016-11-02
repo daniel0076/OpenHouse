@@ -30,3 +30,16 @@ admin.site.register(SponsorItem, SponsorItemAdmin)
 class SponsorShipAdmin(admin.ModelAdmin):
     pass
 admin.site.register(SponsorShip, SponsorShipAdmin)
+
+@admin.register(models.RdssConfigs)
+class RdssConfigsAdmin(admin.ModelAdmin):
+    list_display = ("configs",)
+
+    def configs(self,obj):
+        return "活動設定"
+
+@admin.register(models.CompanySurvey)
+class SurveyAdmin(admin.ModelAdmin):
+    list_display = ("company",)
+
+    #define export URLs eg:...admin/rdss/signup/export
