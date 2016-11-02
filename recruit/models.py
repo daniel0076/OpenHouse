@@ -64,8 +64,7 @@ class RecruitSignup(models.Model):
     SEMINAR_CHOICES = (
         (u'none', u'不參加說明會'),
         (u'noon', u'中午場'),
-        (u'night', u'晚上場'),
-        (u'company_day', u'專屬企業日'),
+        (u'night', u'下午/傍晚場'),
     )
     cid = models.CharField(u'公司統一編號', max_length=8, unique=True)
     seminar = models.CharField(u'說明會場次', choices=SEMINAR_CHOICES, max_length=15, default='none')
