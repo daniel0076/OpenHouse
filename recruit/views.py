@@ -56,37 +56,6 @@ def jobfair_info(request):
     form = JobfairInfoForm()
     return render(request, 'recruit/company/jobfair_info.html', locals())
 
-#@login_required(login_url='/company/login/')
-#def recruit_sponsor(request):
-#    try:
-#        cid = RecruitSignup.objects.get(cid=request.user.cid)
-#    except ObjectDoesNotExist:
-#        error_msg = "貴公司尚未報名本次「校園徵才」活動，請於上方點選「填寫報名資料」"
-#        return render(request, 'recruit/error.html', locals())
-#        #return redirect('signup')
-#    old_sponsorships = SponsorShip.objects.filter(company=cid)
-#    if request.POST:
-#        add_sponsorship(request.POST, cid, old_sponsorships)
-#    sponsor_items = SponsorItem.objects.all().annotate(num_sponsor=Count('sponsors'))
-#    #for i in sponsor_items:
-#     #   print(i.num_sponsor)
-#    old_sponsorships = SponsorShip.objects.filter(company=cid)
-#    old_sponsor_items = []
-#    for sponsorship in old_sponsorships:
-#        old_sponsor_items.append(sponsorship.sponsor_item.name)
-#        #print(sponsorship.sponsor_item.sponsors)
-#    return render(request, 'recruit/company/sponsor.html', locals())
-#
-#def add_sponsorship(items, cid, old_sponsorships):
-#    old_sponsorships.delete()
-#    for item in items:
-#        try:
-#            sponsor_item = SponsorItem.objects.get(name=item)
-#            sponsorship = SponsorShip(sponsor_item=sponsor_item, company=cid)
-#            sponsorship.save()
-#        except ObjectDoesNotExist:
-#            continue
-
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
     #clear sponsor ships objects
     old_sponsorships = SponsorShip.objects.filter(company=sponsor)
