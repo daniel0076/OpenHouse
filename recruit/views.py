@@ -61,7 +61,9 @@ def recruit_sponsor(request):
     try:
         cid = RecruitSignup.objects.get(cid=request.user.cid)
     except ObjectDoesNotExist:
-        return redirect('signup')
+        error_msg = "貴公司尚未報名本次「校園徵才」活動，請於上方點選「填寫報名資料」"
+        return render(request, 'recruit/error.html', locals())
+        #return redirect('signup')
     old_sponsorships = SponsorShip.objects.filter(company=cid)
     if request.POST:
         add_sponsorship(request.POST, cid, old_sponsorships)
