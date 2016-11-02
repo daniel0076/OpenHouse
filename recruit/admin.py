@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip
+from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip,\
+    Files,RecruitConfigs,CompanySurvey
 from company.models import Company
 
 
@@ -30,3 +31,13 @@ admin.site.register(SponsorItem, SponsorItemAdmin)
 class SponsorShipAdmin(admin.ModelAdmin):
     pass
 admin.site.register(SponsorShip, SponsorShipAdmin)
+
+@admin.register(CompanySurvey)
+class SurveyAdmin(admin.ModelAdmin):
+    list_display = ("company",)
+
+    #define export URLs eg:...admin/rdss/signup/export
+
+@admin.register(Files)
+class RecruitFilesAdmin(admin.ModelAdmin):
+    list_display=('title','category','upload_file','updated')
