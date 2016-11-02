@@ -56,36 +56,75 @@ def jobfair_info(request):
     form = JobfairInfoForm()
     return render(request, 'recruit/company/jobfair_info.html', locals())
 
-@login_required(login_url='/company/login/')
-def recruit_sponsor(request):
-    try:
-        cid = RecruitSignup.objects.get(cid=request.user.cid)
-    except ObjectDoesNotExist:
-        error_msg = "貴公司尚未報名本次「校園徵才」活動，請於上方點選「填寫報名資料」"
-        return render(request, 'recruit/error.html', locals())
-        #return redirect('signup')
-    old_sponsorships = SponsorShip.objects.filter(company=cid)
-    if request.POST:
-        add_sponsorship(request.POST, cid, old_sponsorships)
-    sponsor_items = SponsorItem.objects.all().annotate(num_sponsor=Count('sponsors'))
-    #for i in sponsor_items:
-     #   print(i.num_sponsor)
-    old_sponsorships = SponsorShip.objects.filter(company=cid)
-    old_sponsor_items = []
-    for sponsorship in old_sponsorships:
-        old_sponsor_items.append(sponsorship.sponsor_item.name)
-        #print(sponsorship.sponsor_item.sponsors)
-    return render(request, 'recruit/company/sponsor.html', locals())
+#@login_required(login_url='/company/login/')
+#def recruit_sponsor(request):
+#    try:
+#        cid = RecruitSignup.objects.get(cid=request.user.cid)
+#    except ObjectDoesNotExist:
+#        error_msg = "貴公司尚未報名本次「校園徵才」活動，請於上方點選「填寫報名資料」"
+#        return render(request, 'recruit/error.html', locals())
+#        #return redirect('signup')
+#    old_sponsorships = SponsorShip.objects.filter(company=cid)
+#    if request.POST:
+#        add_sponsorship(request.POST, cid, old_sponsorships)
+#    sponsor_items = SponsorItem.objects.all().annotate(num_sponsor=Count('sponsors'))
+#    #for i in sponsor_items:
+#     #   print(i.num_sponsor)
+#    old_sponsorships = SponsorShip.objects.filter(company=cid)
+#    old_sponsor_items = []
+#    for sponsorship in old_sponsorships:
+#        old_sponsor_items.append(sponsorship.sponsor_item.name)
+#        #print(sponsorship.sponsor_item.sponsors)
+#    return render(request, 'recruit/company/sponsor.html', locals())
+#
+#def add_sponsorship(items, cid, old_sponsorships):
+#    old_sponsorships.delete()
+#    for item in items:
+#        try:
+#            sponsor_item = SponsorItem.objects.get(name=item)
+#            sponsorship = SponsorShip(sponsor_item=sponsor_item, company=cid)
+#            sponsorship.save()
+#        except ObjectDoesNotExist:
+#            continue
 
-def add_sponsorship(items, cid, old_sponsorships):
-    old_sponsorships.delete()
-    for item in items:
-        try:
-            sponsor_item = SponsorItem.objects.get(name=item)
-            sponsorship = SponsorShip(sponsor_item=sponsor_item, company=cid)
-            sponsorship.save()
-        except ObjectDoesNotExist:
-            continue
+def Add_SponsorShip(sponsor_items,post_data,sponsor):
+    #clear sponsor ships objects
+    old_sponsorships = SponsorShip.objects.filter(company=sponsor)
+    for i in old_sponsorships:
+        i.delete()
+    for item in sponsor_items:
+        if item.name in post_data and\
+            SponsorShip.objects.filter(sponsor_item=item).count() < item.number_limit:
+                SponsorShip.objects.create(company=sponsor,sponsor_item=item)
+
+
+@login_required(login_url='/company/login/')
+def Sponsor(request):
+    #semantic ui
+    sidebar_ui = {'sponsor':"active"}
+
+    # get form post
+    try:
+        sponsor = RecruitSignup.objects.get(cid=request.user.cid)
+    except Exception as e:
+        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+        return render(request,'error.html',locals())
+
+    if request.POST:
+        sponsor_items = SponsorItem.objects.all()
+        Add_SponsorShip(sponsor_items,request.POST,sponsor)
+        msg = {"display":True,"content":"儲存成功!"}
+
+
+    #活動專刊的部份是變動不大，且版面特殊，採客製寫法
+    monograph_main = SponsorItem.objects.filter(name="活動專刊").first()
+    monograph_items =SponsorItem.objects.filter(name__contains="活動專刊(" )\
+            .annotate(num_sponsor = Count('sponsors'))
+    other_items = SponsorItem.objects.all().exclude(name__contains="活動專刊")\
+            .annotate(num_sponsor = Count('sponsors'))
+    sponsorship = SponsorShip.objects.filter(company=sponsor)
+    my_sponsor_items = [s.sponsor_item for s in sponsorship ]
+    return render(request,'recruit/company/sponsor.html',locals())
 
 @login_required(login_url='/company/login/')
 def company_servey(request):

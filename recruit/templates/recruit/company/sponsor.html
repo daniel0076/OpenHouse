@@ -1,65 +1,106 @@
 {% extends 'recruit_base.html' %}
 {% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>贊助 - OpenHouse</title>
+<script src={% static "js/recruit/sponsor.js" %}></script>
+{% endblock %}
+
 {% block 'content' %}
-    {% if old_sponsor_items %}
-        <div class="ui green message">
-            已填寫完畢，您也可以修改，再次送出
-        </div>
-    {% endif %}
-    <h2>OpenHouse研發替代役-贊助品</h2>
 
-    <form method="post" action="." class="ui form">
-        {% csrf_token %}
-        {% for sponsor_item in sponsor_items %}
-
-                <table class="ui celled structured table">
-                    <tbody>
-                        <tr>
-                            <td colspan="1">贊助品</td>
-                            <td colspan="5">{{sponsor_item.name}}</td>
-                            <td colspan="5" rowspan="3" style="width:25%">
-                                <img class="ui small image" src="{{sponsor_item.pic.url}}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="1">說明</td>
-                            <td colspan="5">
-                                <p>{{sponsor_item.description}}</p>
-                                <p></p>
-                                <p>
-                                    規格：{{sponsor_item.spec}}
-                                </p>
-                                <p>
-                                    備註：{{sponsor_item.ps}}
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{{sponsor_item.name}}</td>
-                            <td>
-                                <div class="ui checked checkbox">
-                                    {% if sponsor_item.name in old_sponsor_items %}
-                                        <input type="checkbox" name="{{sponsor_item.name}}" checked="">
-
-                                    {% elif  sponsor_item.num_sponsor >= sponsor_item.number_limit %}
-                                        <input type="checkbox" disabled="disabled">
-
-                                    {% else %}
-                                        <input type="checkbox" name="{{sponsor_item.name}}">
-                                    {% endif %}
-                                    <label>贊助</label>
-                                </div>
-                            </td>
-                            <td class="center aligned">金額</td>
-                            <td class="center aligned">{{ sponsor_item.price }}</td>
-                            <td class="center aligned">數量限制</td>
-                            <td class="center aligned">{{sponsor_item.num_sponsor}}/{{ sponsor_item.number_limit }}</td>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-        {% endfor %}
-        <button class="ui teal button" type="submit">送出</button>
-    </form>
+<h2 class="ui header">OpenHouse 校園徵才- 贊助品 </h2>
+	{% if msg.display %}
+	<div class="ui compact green message">
+		{{msg.content}}
+	</div>
+	{% endif %}
+<form class="ui form" method="POST" action="{% url 'recruit_sponsor' %}">
+	<!--專刊贊助品群客製區--!>
+	<table class="ui celled table">
+			<tbody>
+				<tr>
+					<!--專刊欄--!>
+					<td><strong>贊助品</strong></td>
+					<td colspan=5>活動專刊</td>
+					<td rowspan={{monograph_items.count|add:2}} style="width:25%">
+					<a href='{{monograph_main.pic.url}}' target="_blank"><img class="ui small image" src="{{monograph_main.pic.url}}"></a>
+					<p>點擊示意圖可以看大圖</p>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>說明</strong></td>
+					<td colspan=5>
+						<p>{{monograph_main.description}}</p>
+						<p>規格：{{monograph_main.spec}}</p>
+						<p>備註：{{monograph_main.ps}}</p>
+					</td>
+				</tr>
+				<!--專刊相關內容(封面、封底等)--!>
+				{% for i in monograph_items %}
+				<tr>
+				<td><strong>{{i.name}}</strong></td>
+					<td>
+						<div class="ui checkbox">
+							{% if i in my_sponsor_items %}
+								<input name="{{i.name}}" type="checkbox" value="1" checked="checked" >
+							{% elif i.num_sponsor >= i.number_limit %}
+								<input name="{{i.name}}" type="checkbox" value="1" disabled="disabled" >
+							{% else %}
+								<input name="{{i.name}}" type="checkbox" value="1" >
+							{%endif%}
+							<label>贊助</label>
+						</div>
+					</td>
+					<td><strong>金額</strong></td>
+					<td>{{i.price}}</td>
+					<td><strong>數量限制</strong></td>
+					<td>{{i.num_sponsor}}/{{i.number_limit}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+	</table>
+<!--其它單項贊助品--!>
+	{% for i in other_items %}
+	<table class="ui celled table">
+			<tbody>
+				<tr>
+					<td><strong>贊助品</strong></td>
+					<td colspan=5>{{i.name}}</td>
+					<td rowspan="3" style="width:25%">
+					<a href='{{i.pic.url}}' target="_blank"><img class="ui small image" src="{{i.pic.url}}"></a>
+					<p>點擊示意圖可以看大圖</p>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>說明</strong></td>
+					<td colspan=5>
+						<p>{{i.description}}</p>
+						<p>規格：{{i.spec}}</p>
+						<p>備註：{{i.ps}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>{{i.name}}</strong></td>
+					<td>
+						<div class="ui checkbox">
+						{% if i in my_sponsor_items %}
+							<input name="{{i.name}}" type="checkbox" value="1" checked="checked" >
+						{% elif i.num_sponsor >= i.number_limit %}
+							<input name="{{i.name}}" type="checkbox" value="1" disabled="disabled" >
+						{% else %}
+							<input name="{{i.name}}" type="checkbox" value="1" >
+						{%endif%}
+							<label>贊助</label>
+						</div> </td>
+					<td><strong>金額</strong></td>
+					<td>{{i.price}}</td>
+					<td><strong>數量限制</strong></td>
+					<td>{{i.num_sponsor}}/{{i.number_limit}}</td>
+				</tr>
+			</tbody>
+	</table>
+	{% endfor %}
+	{% csrf_token %}
+	<button class="ui blue button" type="submit">送出</button>
+</form>
 {% endblock %}
