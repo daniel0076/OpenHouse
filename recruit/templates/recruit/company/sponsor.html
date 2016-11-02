@@ -38,7 +38,9 @@
                             <td>{{sponsor_item.name}}</td>
                             <td>
                                 <div class="ui checked checkbox">
-                                    {% if sponsor_item.name in old_sponsor_items %}
+                                    {% if  sponsor_item.num_sponsor > sponsor_item.number_limit %}
+                                        <input type="checkbox" disabled="disabled">
+                                    {% elif sponsor_item.name in old_sponsor_items %}
                                         <input type="checkbox" name="{{sponsor_item.name}}" checked="">
                                     {% else %}
                                         <input type="checkbox" name="{{sponsor_item.name}}">
@@ -49,7 +51,7 @@
                             <td class="center aligned">金額</td>
                             <td class="center aligned">{{ sponsor_item.price }}</td>
                             <td class="center aligned">數量限制</td>
-                            <td class="center aligned">/{{ sponsor_item.number_limit }}</td>
+                            <td class="center aligned">{{sponsor_item.num_sponsor}}/{{ sponsor_item.number_limit }}</td>
                         </tr>
                     </tbody>
 

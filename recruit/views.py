@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from . import forms
+from django.db.models import Count
 
 @login_required(login_url='/company/login/')
 def recruit_company_index(request):
@@ -63,12 +64,15 @@ def recruit_sponsor(request):
         return redirect('signup')
     old_sponsorships = SponsorShip.objects.filter(company=cid)
     if request.POST:
-        add_sponsorship(request.POST, cid,old_sponsorships)
-    sponsor_items = SponsorItem.objects.all()
+        add_sponsorship(request.POST, cid, old_sponsorships)
+    sponsor_items = SponsorItem.objects.all().annotate(num_sponsor=Count('sponsors'))
+    #for i in sponsor_items:
+     #   print(i.num_sponsor)
     old_sponsorships = SponsorShip.objects.filter(company=cid)
     old_sponsor_items = []
     for sponsorship in old_sponsorships:
         old_sponsor_items.append(sponsorship.sponsor_item.name)
+        #print(sponsorship.sponsor_item.sponsors)
     return render(request, 'recruit/company/sponsor.html', locals())
 
 def add_sponsorship(items, cid, old_sponsorships):
