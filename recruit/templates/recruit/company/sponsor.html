@@ -38,10 +38,12 @@
                             <td>{{sponsor_item.name}}</td>
                             <td>
                                 <div class="ui checked checkbox">
-                                    {% if  sponsor_item.num_sponsor > sponsor_item.number_limit %}
-                                        <input type="checkbox" disabled="disabled">
-                                    {% elif sponsor_item.name in old_sponsor_items %}
+                                    {% if sponsor_item.name in old_sponsor_items %}
                                         <input type="checkbox" name="{{sponsor_item.name}}" checked="">
+
+                                    {% elif  sponsor_item.num_sponsor >= sponsor_item.number_limit %}
+                                        <input type="checkbox" disabled="disabled">
+
                                     {% else %}
                                         <input type="checkbox" name="{{sponsor_item.name}}">
                                     {% endif %}
