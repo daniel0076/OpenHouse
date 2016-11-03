@@ -39,7 +39,7 @@ class SponsorItemsAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'price', 'limit', 'current_amount')
 
     def current_amount(self, obj):
-        return models.Sponsorship.objects.filter(item=obj).count()
+        return rdss.models.Sponsorship.objects.filter(item=obj).count()
     current_amount.short_description = '目前贊助數'
 
 

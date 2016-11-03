@@ -22,6 +22,7 @@ urlpatterns = [
 	#custom sponsorship admin url and view
     url(r'', include('general.urls')),  # add '' on the include path!!!
     url(r'^admin/rdss/', include('rdss.admin_urls')),
+    url(r'^admin/recruit/', include('recruit.admin_urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^company/', include('company.urls')),  # add '' on the include path!!!
     url(r'^company/rdss/', include('rdss.internal_urls')),  # add '' on the include path!!!
@@ -30,5 +31,4 @@ urlpatterns = [
     url(r'^rdss/', include('rdss.public_urls')),  # add '' on the include path!!!
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^mentor/', include('careermentor.urls')),
-    url(r'^admin/recruit/', include('recruit.admin_urls')),
 ]

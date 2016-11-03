@@ -33,7 +33,12 @@ class JobfairInfoAdmin(admin.ModelAdmin):
 admin.site.register(JobfairInfo, JobfairInfoAdmin)
 
 class SponsorItemAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    inlines = (SponsorshipInline,)
+    list_display = ('name', 'description', 'price', 'number_limit', 'current_amount')
+
+    def current_amount(self, obj):
+        return SponsorShip.objects.filter(sponsor_item=obj).count()
+    current_amount.short_description = '目前贊助數'
 
 admin.site.register(SponsorItem, SponsorItemAdmin)
 
