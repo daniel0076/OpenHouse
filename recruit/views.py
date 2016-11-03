@@ -1,3 +1,4 @@
+from django.core import urlresolvers
 from django.shortcuts import render,redirect
 from .forms import RecruitSignupForm, JobfairInfoForm
 from .models import RecruitConfigs, SponsorItem, Files
@@ -94,6 +95,34 @@ def Sponsor(request):
     sponsorship = SponsorShip.objects.filter(company=sponsor)
     my_sponsor_items = [s.sponsor_item for s in sponsorship ]
     return render(request,'recruit/company/sponsor.html',locals())
+
+@staff_member_required
+def SponsorAdmin(request):
+    site_header="OpenHouse 管理後台"
+    site_title="OpenHouse"
+    sponsor_items = SponsorItem.objects.all()\
+                .annotate(num_sponsor = Count('sponsorship'))
+    companies = RecruitSignup.objects.all()
+    sponsorships_list = list()
+    for c in companies:
+        shortname = c.get_company_name()
+        sponsorships = SponsorShip.objects.filter(company=c)
+        counts = [SponsorShip.objects.filter(company= c,sponsor_item=item).count() for item in sponsor_items]
+        amount = 0
+        for s in sponsorships:
+            amount += s.sponsor_item.price
+        sponsorships_list.append({
+            "cid":c.cid,
+            "counts":counts,
+            "amount":amount,
+            "shortname":shortname,
+            "id":c.id,
+            "change_url": urlresolvers.reverse('admin:recruit_recruitsignup_change',
+                                                args=(c.id,))
+                        })
+
+    return render(request,'recruit/admin/sponsor_admin.html',locals())
+
 
 @login_required(login_url='/company/login/')
 def company_servey(request):

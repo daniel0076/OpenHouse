@@ -1,0 +1,38 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<div id="content-main">
+	<table class="ui celled table">
+		<thead>
+			<th> CID </th>
+			<th> Company Name </th>
+			{% for item in sponsor_items %}
+			<th> {{ item.name }} </th>
+			{% endfor %}
+			<th>Amount </th>
+		</thead>
+		<tbody>
+
+      <tr>
+			<td colspan=2> 目前贊助/贊助上限 </td>
+			{% for item in sponsor_items %}
+			<td> {{ item.num_sponsor}} / {{ item.number_limit}}</td>
+			{% endfor %}
+			<td></td>
+      </tr>
+
+			{% for company in sponsorships_list %}
+			<tr>
+        <td><a href="{{company.change_url}}#sponsorship_set-group">{{company.cid}}</a></td>
+				<td>{{company.shortname}}</td>
+				{% for item_num in company.counts%}
+					<td>{{item_num}}</td>
+				{% endfor %}
+				<td>{{company.amount}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}
+
