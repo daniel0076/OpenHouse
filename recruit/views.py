@@ -40,6 +40,7 @@ def recruit_signup(request):
                 new_form.cid = request.user.cid
                 new_form.save()
                 signup_info_exist = True
+                return render(request, 'recruit/company/signup_success.html', locals())
 
         else:
             form = RecruitSignupForm(instance=signup_info)

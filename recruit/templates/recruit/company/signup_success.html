@@ -1,0 +1,22 @@
+{% extends 'recruit_base.html' %}
+{% load staticfiles %}
+
+{% block 'content' %}
+<div class="ui one column centered grid" id="success_info">
+  <div class="column">
+    <div class="ui header">報名成功</div>
+    <div class="ui segment">
+      <table class="ui celled striped table">
+        <tbody>
+          {% for item in form %}
+          <tr>
+            <td>{{item.label}}</td>
+            <td>{{item.value}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
