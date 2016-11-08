@@ -36,11 +36,11 @@ class Mentor(models.Model):
 class Signup(models.Model):
     id = models.AutoField(primary_key=True)
     mentor = models.ForeignKey(Mentor, to_field='id',
-                                      verbose_name=u'場次',
+                                      verbose_name=u'場次/編號',
                                       on_delete=models.CASCADE)
     name = models.CharField(u'姓名(Name)', max_length=64)
     student_id = models.CharField(u'學號(Student ID)', max_length=7)
-    dep = models.CharField(u'系級(Department and Grade)', max_length=16)
+    dep = models.CharField(u'系所/年級(Department and Grade)', max_length=16)
     phone = models.CharField(u'手機(Cellphone)', max_length=20,
                              help_text='格式：0987654321')
     email = models.EmailField(u'Email', max_length=64)
