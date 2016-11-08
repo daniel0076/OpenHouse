@@ -17,6 +17,8 @@ def CareerMentorSignup(request, event_id):
         if form.is_valid():
             form.save()
             ui_message = {"type":"green", "msg":"報名成功"}
+            return render(request,'mentor_signup_success.html',locals())
+
         else:
             print(form.errors)
             ui_message = {"type":"error", "msg":"報名失敗"}

@@ -4,6 +4,12 @@
   margin-top:2em;
 }
 
+#success_info{
+  width:60%;
+  margin:auto;
+  margin-top:2em;
+}
+
 
 
 @media only screen and (max-device-width: 480px) {
@@ -12,4 +18,9 @@
     margin-top:5em;
     margin:auto;
   }
+#success_info{
+  width:100%;
+  margin:auto;
+  margin-top:2em;
+}
 }
