@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django.conf.urls import url
 from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip,\
-    Files,RecruitConfigs,CompanySurvey
+    Files,RecruitConfigs,CompanySurvey, Company
 from company.models import Company
+from recruit import export
 
 class SponsorshipInline(admin.TabularInline):
     model = SponsorShip
@@ -50,7 +52,13 @@ admin.site.register(SponsorShip, SponsorShipAdmin)
 class SurveyAdmin(admin.ModelAdmin):
     list_display = ("company",)
 
-    #define export URLs eg:...admin/rdss/signup/export
+    #define export URLs eg:...admin/recruit/signup/export
+    def get_urls(self):
+        urls = super(SurveyAdmin, self).get_urls()
+        my_urls = [
+                url(r'^export/$', export.ExportSurvey, name="recruit_survey_export"),
+                ]
+        return my_urls + urls
 
 @admin.register(Files)
 class RecruitFilesAdmin(admin.ModelAdmin):
