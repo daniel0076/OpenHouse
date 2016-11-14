@@ -323,6 +323,7 @@ class CompanySurvey(models.Model):
             (u'30000人以上', u'30000人以上'),
             )
     company_size        = models.CharField(u'貴企業規模', max_length=20, choices=SIZE)
+    plan_to_recruit     = models.IntegerField(u'今年預計招募職缺數')
     nctu_employees      = models.IntegerField(u'交大校友人數')
     CATEGORYS = (
             (u'半導體',  u'半導體'),
