@@ -18,5 +18,5 @@ class CareerMentorAdmin(admin.ModelAdmin):
 @admin.register(models.Signup)
 class CareerSignupAdmin(admin.ModelAdmin):
     list_display=('mentor', 'name', 'student_id','dep','phone',
-                  'email', 'time_available','question', 'updated' )
+                  'email', 'time_available','question','cv_en','cv_zh','other', 'updated' )
 
