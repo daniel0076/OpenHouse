@@ -13,7 +13,7 @@ def CareerMentorSignup(request, event_id):
     form = forms.SignupForm(initial=init_data)
     if request.method =="POST":
         data = request.POST.copy()
-        form = forms.SignupForm(data=data)
+        form = forms.SignupForm(data,request.FILES)
         if form.is_valid():
             form.save()
             ui_message = {"type":"green", "msg":"報名成功"}

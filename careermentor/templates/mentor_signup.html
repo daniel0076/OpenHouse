@@ -26,7 +26,7 @@
     <li>當您送出本報名表時，視同同意就輔組個人資料使用規定及此同意書中之權利義務</li>
   </ol>
 </div>
-<form class="ui form" method="POST">
+<form class="ui form" method="POST" enctype="multipart/form-data">
   <p>有*的欄位為必填</p>
   {%csrf_token%}
   {{form.as_p}}
