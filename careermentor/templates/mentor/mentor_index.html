@@ -20,6 +20,16 @@
       <li>如該場次名額已滿將排入候補排序。</li>
     </ol>
   </div>
+  <div class="ui message">
+    <div class="ui header">Descriptions：</div>
+    <ol class="ui list">
+      <li>Please register online. We will contact you as soon as possible, and the registeration is not valid if you do not receive any phone call.</li>
+      <li>The meeting lasts about 30 mins.</li>
+      <li>There are about 4 career mentor meetings per month.</li>
+      <li>No show or being late will have negtive effect to your later registeration.</li>
+      <li>If the meeting is full, you will be listed on the wait list.</li>
+    </ol>
+  </div>
   <div class="ui header">企業職場導師</div>
   <table class="ui celled table" id="mentor_table">
     <thead>
@@ -29,6 +39,7 @@
         <th>導師(Mentor)</th>
         <th>日期(Date)</th>
         <th>進行方式(Mode)</th>
+        <th>狀態(Status)</th>
         <th>人數限制(Limits)</th>
         <th>動作(Actions)</th>
       </tr>
@@ -41,6 +52,7 @@
         <td>{{event.mentor}} {{event.mentor_title}}</td>
         <td>{{event.date}} {{event.start_time}} - {{event.end_time}}</td>
         <td>{{event.mode}}</td>
+        <td> {{event.status}} </td>
         <td>
           {% if event.limit == 0 %}
           無上限(Unlimited)
@@ -48,7 +60,13 @@
           {{ event.limit}}
           {% endif%}
         </td>
-        <td><a href={% url 'mentor_signup' event.id %}>報名</a></td>
+        <td>
+          {% if event.full %}
+          已額滿
+          {% else %}
+          <a href={% url 'mentor_signup' event.id %}>報名(Resiger)</a>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>
@@ -63,6 +81,7 @@
         <th>導師(Mentor)</th>
         <th>日期(Date)</th>
         <th>進行方式(Mode)</th>
+        <th>狀態(Status)</th>
         <th>人數限制(Limits)</th>
         <th>動作(Actions)</th>
       </tr>
@@ -75,6 +94,7 @@
         <td>{{event.mentor}} {{event.mentor_title}}</td>
         <td>{{event.date}} {{event.start_time}} - {{event.end_time}}</td>
         <td>{{event.mode}}</td>
+        <td> {{event.status}} </td>
         <td>
           {% if event.limit == 0 %}
           無上限(Unlimited)
@@ -83,7 +103,11 @@
           {% endif%}
         </td>
         <td>
-          <a href={% url 'mentor_signup' event.id %}>報名</a>
+          {% if event.full %}
+          已額滿
+          {% else %}
+          <a href={% url 'mentor_signup' event.id %}>報名(Resiger)</a>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}

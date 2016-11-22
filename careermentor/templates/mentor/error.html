@@ -1,0 +1,24 @@
+{% extends 'general_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>Open House 企業職場導師</title>
+<link href={% static "css/mentor/mentor_index.css" %} rel="stylesheet">
+<script src={% static "js/mentor/mentor_index.js" %}></script>
+
+{% endblock %}
+
+{% block 'body' %}
+<div class="ui one column centered grid" id="success_info">
+  <div class="column">
+    <div class="ui negative message">
+      <i class="close icon"></i>
+      <div class="header">
+        Oops...系統無法完成您的要求
+      </div>
+      <p>
+      場次編號錯誤 或 場次已滿
+      </p></div>
+  </div>
+</div>
+{% endblock %}

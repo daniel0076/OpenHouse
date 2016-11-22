@@ -8,7 +8,7 @@ class SignupForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
         self.fields['mentor'].widget.attrs.update({
-            'class': 'ui dropdown',
+            'class': 'ui disabled dropdown',
         })
 
     class Meta:
