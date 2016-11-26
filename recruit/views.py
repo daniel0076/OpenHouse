@@ -3,14 +3,19 @@ from django.shortcuts import render,redirect
 from .forms import RecruitSignupForm, JobfairInfoForm
 from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
-from .models import SlotColor, SeminarOrder
+from .models import SeminarSlot, SlotColor, SeminarOrder
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
+from django.http import  HttpResponseRedirect, JsonResponse,Http404,HttpResponse
 from . import forms
 from django.db.models import Count
 import datetime
+import json
+import logging
+
+logger = logging.getLogger('recruit')
 
 @login_required(login_url='/company/login/')
 def recruit_company_index(request):
@@ -97,6 +102,113 @@ def seminar_select_form_gen(request):
         {"name":"night3", "start_time":configs.session_4_start, "end_time":configs.session_4_end},
     ]
     return render(request,'recruit/company/seminar_select.html',locals())
+
+@login_required(login_url='/company/login/')
+def seminar_select_control(request):
+    if request.method =="POST":
+        post_data=json.loads(request.body.decode())
+        action = post_data.get("action")
+    else:
+        raise Http404("What are u looking for?")
+
+    #action query
+    if action == "query":
+        slots = SeminarSlot.objects.all()
+        return_data={}
+        for s in slots:
+            # make index first night1_20160707
+            index= "{}_{}".format(s.session,s.date.strftime("%Y%m%d"))
+            # dict for return data
+            return_data[index] = {}
+
+            return_data[index]['place_color'] = None if not s.place else\
+                s.place.css_color
+            return_data[index]["cid"] = "None" if not s.company else\
+                s.company.get_company_name()
+
+            my_seminar_session = RecruitSignup.objects.filter(cid=request.user.cid).first().seminar
+            #session wrong (signup noon but choose night)
+            #and noon is not full yet
+            if (my_seminar_session not in s.session) and\
+                (SeminarSlot.objects.filter(session__contains=my_seminar_session, company=None).exists()):
+            # 選別人的時段，而且自己的時段還沒滿
+                return_data[index]['valid'] = False
+            else:
+                print("ok?",my_seminar_session, s.session)
+                print("findit",SeminarSlot.objects.filter(session=my_seminar_session))
+                return_data[index]['valid'] = True
+
+        my_slot = SeminarSlot.objects.filter(company__cid=request.user.cid).first()
+        if my_slot:
+            return_data['my_slot'] = True
+        else:
+            return_data['my_slot'] = False
+
+        try:
+            my_select_time = SeminarOrder.objects.filter(company=request.user.cid).first().time
+        except AttributeError:
+            my_select_time = None
+
+        if not my_select_time or timezone.now() < my_select_time:
+            select_ctrl = dict()
+            select_ctrl['display'] = True
+            select_ctrl['msg'] = '目前非貴公司選位時間，可先參考說明會時間表，並待選位時間內選位'
+            select_ctrl['select_btn'] = False
+        else:
+            select_ctrl = dict()
+            select_ctrl['display'] = False
+            select_ctrl['select_btn'] = True
+
+        return JsonResponse({"success":True,"data":return_data,"select_ctrl":select_ctrl})
+
+    #action select
+    elif action == "select":
+        mycid = request.user.cid
+        my_select_time = SeminarOrder.objects.filter(company=mycid).first().time
+        if not my_select_time or timezone.now() <my_select_time:
+            return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
+
+        slot_session , slot_date_str = post_data.get("slot").split('_')
+        slot_date = datetime.datetime.strptime(slot_date_str,"%Y%m%d")
+        try:
+            slot = SeminarSlot.objects.get(date=slot_date,session=slot_session)
+            my_signup = RecruitSignup.objects.get(cid=request.user.cid)
+        except:
+            return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
+
+        if slot.company != None:
+            return JsonResponse({"success":False,'msg':'選位失敗，該時段已被選定'})
+
+        if slot and my_signup:
+            #不在公司時段，且該時段未滿
+            if my_signup.seminar not in slot.session and\
+            SeminarSlot.objects.filter(session=my_signup.seminar, company=None):
+                return JsonResponse({"success":False,"msg":"選位失敗，時段錯誤"})
+
+            slot.company = my_signup
+            slot.save()
+            logger.info('{} select seminar slot {} {}'.format(my_signup.get_company_name(),slot.date,slot.session))
+            return JsonResponse({"success":True})
+        else:
+            return JsonResponse({"success":False,'msg':'選位失敗，時段錯誤或貴公司未勾選參加說明會'})
+
+    # end of action select
+    elif action == "cancel":
+
+        my_slot = SeminarSlot.objects.filter(company__cid=request.user.cid).first()
+        if my_slot:
+            logger.info('{} cancel seminar slot {} {}'.format(
+                my_slot.company.get_company_name(),my_slot.date,my_slot.session))
+            my_slot.company = None
+            my_slot.save()
+            return JsonResponse({"success":True})
+        else:
+            return JsonResponse({"success":False,"msg":"刪除說明會選位失敗"})
+
+    else:
+        pass
+    raise Http404("What are u looking for?")
+
 
 @login_required(login_url='/company/login/')
 def jobfair_info(request):
