@@ -134,8 +134,6 @@ def seminar_select_control(request):
             # 選別人的時段，而且自己的時段還沒滿
                 return_data[index]['valid'] = False
             else:
-                print("ok?",my_seminar_session, s.session)
-                print("findit",SeminarSlot.objects.filter(session=my_seminar_session))
                 return_data[index]['valid'] = True
 
         my_slot = SeminarSlot.objects.filter(company__cid=request.user.cid).first()
