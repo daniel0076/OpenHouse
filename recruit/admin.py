@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import url
 from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip,\
-    Files,RecruitConfigs,CompanySurvey, Company
+    Files,RecruitConfigs,CompanySurvey, Company, SeminarSlot, SlotColor
 from company.models import Company
 from recruit import export
 
@@ -22,9 +22,16 @@ class RecruitSignupAdmin(admin.ModelAdmin):
     inlines = (SponsorshipInline,)
 
     def company_name(self,obj):
-        # com = company.models.Company.objects.filter(cid=obj.cid).first()
         return obj.get_company_name()
 admin.site.register(RecruitSignup, RecruitSignupAdmin)
+
+@admin.register(SeminarSlot)
+class SeminarSlotAdmin(admin.ModelAdmin):
+    list_display = ('date', 'session', 'company', 'place')
+
+@admin.register(SlotColor)
+class SlotColorAdmin(admin.ModelAdmin):
+    list_display=('place','css_color', 'place_info')
 
 class JobfairSlotAdmin(admin.ModelAdmin):
     list_display = ('serial_number',)
