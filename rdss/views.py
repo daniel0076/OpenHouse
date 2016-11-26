@@ -279,8 +279,9 @@ def SeminarSelectControl(request):
             my_seminar_session = rdss.models.Signup.objects.filter(cid=request.user.cid).first().seminar
             #session wrong (signup noon but choose night)
             #and noon is not full yet
+            #my_seminar_session = night, noon only
             if (my_seminar_session not in s.session) and\
-                (rdss.models.SeminarSlot.objects.filter(session=my_seminar_session, company=None)):
+                (rdss.models.SeminarSlot.objects.filter(session__contains=my_seminar_session, company=None).exists()):
             # 選別人的時段，而且自己的時段還沒滿
                 return_data[index]['valid'] = False
             else:
