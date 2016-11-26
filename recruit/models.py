@@ -1,5 +1,8 @@
 from django.db import models
 from company.models import Company
+from django.db.models import Q
+from django.db.models import Count, Sum
+
 CATEGORYS = (
             (u'半導體',  u'半導體'),
             (u'消費電子',  u'消費電子'),
@@ -119,6 +122,51 @@ class JobfairSlot(models.Model):
         verbose_name = u'就博會攤位'
         verbose_name_plural = u'就博會攤位'
 
+class SeminarSlot(models.Model):
+    # (value in db,display name)
+    SESSIONS = (
+            ("noon", "中午場"),
+            ("night1", "下午/傍晚場1"),
+            ("night2", "下午/傍晚場2"),
+            ("night3", "下午/傍晚場3"),
+            ("extra", "加(補)場"),
+            ("jobfair", "就博會"), # 因為集點需要，公司留空
+            )
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(u'日期')
+    session = models.CharField(u'時段', max_length=10, choices=SESSIONS)
+    company = models.OneToOneField('RecruitSignup', to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE, null=True, blank=True)
+    place = models.ForeignKey('SlotColor', null=True, blank=True,
+                              verbose_name=u'場地',
+                              )
+    points = models.SmallIntegerField(u'集點點數', default=1)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        managed = True
+        verbose_name = u"說明會場次"
+        verbose_name_plural = u"說明會場次"
+
+    def __str__(self):
+        return '{} {}'.format(self.date, self.session)
+
+class SeminarOrder(models.Model):
+    id = models.AutoField(primary_key=True)
+    time = models.DateTimeField(u'選位開始時間')
+    company = models.OneToOneField('RecruitSignup', to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE,
+                               limit_choices_to=~Q(seminar='')
+                               )
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        managed = True
+        verbose_name = u"說明會選位順序"
+        verbose_name_plural = u"說明會選位順序"
+
 class JobfairInfo(models.Model):
     id = models.AutoField(primary_key=True)
     company = models.OneToOneField(RecruitSignup, verbose_name=u'公司')
@@ -140,12 +188,6 @@ class SeminarInfo(models.Model):
     speaker = models.CharField(max_length=5)
     speaker_title = models.CharField(max_length=10)
     speaker_email = models.EmailField()
-
-class SeminarSlot(models.Model):
-
-    class Meta:
-        verbose_name = u'說明會場次'
-        verbose_name_plural = u'說明會場次'
 
 class SponsorItem(models.Model):
     name = models.CharField(u'贊助品名稱', max_length=20, unique=True)
@@ -352,3 +394,19 @@ class CompanySurvey(models.Model):
         managed = True
         verbose_name = u"企業滿意度問卷"
         verbose_name_plural =u"企業滿意度問卷"
+
+class SlotColor(models.Model):
+    id = models.AutoField(primary_key=True)
+    place = models.CharField(u'場地', max_length=20, unique=True)
+    css_color = models.CharField(u'文字顏色(css)', max_length=20, help_text=
+                                 '''請輸入顏色英文，比如: red, green, blue, purple, black等'''
+                                 )
+    place_info = models.URLField(u'場地介紹網頁', max_length=256, default="http://")
+
+    class Meta:
+        managed = True
+        verbose_name = u"場地顏色及資訊"
+        verbose_name_plural = u"場地顏色及資訊"
+
+    def __str__(self):
+        return self.place
