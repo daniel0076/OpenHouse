@@ -3,12 +3,14 @@ from django.shortcuts import render,redirect
 from .forms import RecruitSignupForm, JobfairInfoForm
 from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
+from .models import SlotColor, SeminarOrder
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from . import forms
 from django.db.models import Count
+import datetime
 
 @login_required(login_url='/company/login/')
 def recruit_company_index(request):
@@ -45,6 +47,56 @@ def recruit_signup(request):
         else:
             form = RecruitSignupForm(instance=signup_info)
         return render(request, 'recruit/company/signup.html', locals())
+
+@login_required(login_url='/company/login/')
+def seminar_select_form_gen(request):
+    #semanti ui control
+    sidebar_ui = {'seminar_select':"active"}
+
+    mycid = request.user.cid
+    # check the company have signup rdss
+    try:
+        my_signup = RecruitSignup.objects.get(cid=request.user.cid)
+        # check the company have signup seminar
+        if my_signup.seminar == "":
+            error_msg="貴公司已報名本次研替活動，但並末勾選參加說明會選項。"
+            return render(request,'error.html',locals())
+    except Exception as e:
+        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+        return render(request,'error.html',locals())
+
+    #check the company have been assigned a slot select order and time
+    try:
+        seminar_select_time = SeminarOrder.objects.filter(company=mycid).first().time
+    except Exception as e:
+        seminar_select_time = "選位時間及順序尚未排定，您可以先參考下方說明會時間表"
+
+    seminar_session = my_signup.get_seminar_display()
+
+    configs=RecruitConfigs.objects.all()[0]
+    seminar_start_date = configs.seminar_start_date
+    seminar_end_date = configs.seminar_end_date
+    seminar_days = (seminar_end_date - seminar_start_date).days
+    table_start_date = seminar_start_date
+    # find the nearest Monday
+    while(table_start_date.weekday() != 0 ):
+        table_start_date -= datetime.timedelta(days=1)
+    # make the length to 5 multiples
+    table_days = seminar_days + (seminar_days % 7) + 7
+    dates_in_week = list()
+    for week in range(0, int(table_days/7)):
+        # separate into 5 in each list (there are 5 days in a week)
+        dates_in_week.append( [(table_start_date + datetime.timedelta(days=day+week*7))\
+                for day in range(0,5)])
+
+    slot_colors = SlotColor.objects.all()
+    session_list = [
+        {"name":"noon", "start_time":configs.session_1_start, "end_time":configs.session_1_end},
+        {"name":"night1", "start_time":configs.session_2_start, "end_time":configs.session_2_end},
+        {"name":"night2", "start_time":configs.session_3_start, "end_time":configs.session_3_end},
+        {"name":"night3", "start_time":configs.session_4_start, "end_time":configs.session_4_end},
+    ]
+    return render(request,'recruit/company/seminar_select.html',locals())
 
 @login_required(login_url='/company/login/')
 def jobfair_info(request):

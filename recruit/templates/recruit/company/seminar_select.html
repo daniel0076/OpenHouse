@@ -1,0 +1,112 @@
+{% extends 'recruit_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<title>說明會選位-OpenHouse</title>
+<script src={% static "js/rdss/Controller.js" %}></script>
+{% endblock %}
+
+{% block 'content' %}
+<h2 class="ui dividing header">選位注意事項</h2>
+<div class="ui message">
+  <div class="ui bulleted list">
+    <div class="item">
+      於貴公司選位時間開始後，至所有廠商選位截止前，皆可自由更動位置。唯改變位置前，<strong>需先放棄已選的位置，才能重新選擇。</strong>
+    </div>
+    <div class="item">若中午或晚上場次已滿，系統將開放另一時段的場次給貴公司選擇。</div>
+    <div class="item">
+      由於部分時段有多廠商同時選位之情況，若出現多廠商選取同場次的情況，系統將分發給最早送出之廠商。
+    </div>
+    <div class="item">
+      本頁面選位資訊每10秒自動更新一次，您也可以按「F5」或「重新整理」，手動更新
+    </div>
+    <div class="item" style="color:red">
+      從表格選擇場次後，請務必按下最下方「送出」按鈕，並於送出後看到該場次顯示貴公司名稱才算選位成功。
+    </div>
+    <div class="item">
+      如有任何問題，請立刻撥打活動專線：(03)5131365 或 (03)5712121分機31365、50659
+    </div>
+  </div>
+</div>
+
+<div ng-app="oh" ng-controller="seminar_select as ctrl">
+
+  <div ng-if="ctrl.select_ctrl.display" class="ui compact warning message">{$ ctrl.select_ctrl.msg$}</div>
+  <div class="ui list">
+    <div class="item">
+      <i class="users icon"></i>
+      <div class="content">
+        貴公司選位開始時間為：{{seminar_select_time}}
+      </div>
+    </div>
+    <div class="item">
+      <i class="marker icon"></i>
+      <div class="content">
+        貴公司說明會時段為：{{seminar_session}}
+      </div>
+    </div>
+  </div>
+
+  <h2 class="ui dividing header">說明會時間表</h2>
+  <h3 class="ui dividing header">時段場地及顏色</h3>
+  <p>可選時段會以顏色標記場地，請自行參考以下對照表</p>
+  <ul class="ui list">
+    {% for slot_color in slot_colors %}
+    <li style="color:{{slot_color.css_color}}">
+      <p>{{slot_color.place}} <a href={{slot_color.place_info}} target="_blank">場地資訊</a></p>
+    </li>
+    {% endfor %}
+  </ul>
+  <table class="ui celled striped table" style="text-align:center">
+
+    {% for week in dates_in_week %}  <!--一週一單位-->
+    <thead>
+      <tr>
+        <th>時間</th>
+        {% for day in week %} <!--一週中的日期-->
+        <th>{{day|date:"m/d (D)" }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for session in session_list %} <!--一週中的場次-->
+      <tr>
+        <td>{{session.start_time}}~{{session.end_time}}</td>
+        {% for day in week %}
+        <td>
+
+          <!--有空位且公司可以選-->
+          <div class="ui radio checkbox" ng-if="ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.cid == 'None' &&
+          ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.valid">
+            <input ng-model="ctrl.selected" value="{{session.name}}_{{day|date:"Ymd"}}" type="radio">
+            <label style="color:{$ ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.place_color$}">可選時段</label>
+          </div>
+
+          <!--有空位但公司不能選-->
+          <p ng-if="ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.cid == 'None' &&
+          !ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.valid">非貴公司時段</p>
+
+          <!--有公司選了，顯示他的名字-->
+          <p ng-if="ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.cid != 'None'"
+             style="color:{$ ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.place_color$}">
+          {$ ctrl.slot.{{session.name}}_{{day|date:"Ymd"}}.cid $}
+          </p>
+
+          <p ng-if="ctrl.slot.{{session.name}}_{{day|date:"Ymd"}} == undefined">無活動安排</p>
+
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+
+    </tbody>
+    {% endfor %}
+  </table>
+  <div ng-if="ctrl.select_ctrl.select_btn">
+    <div class="ui teal button" ng-if="!ctrl.slot.my_slot" ng-click="ctrl.submit()">送出選位</div>
+    <div class="ui red button" ng-if="ctrl.slot.my_slot" ng-click="ctrl.cancel()">刪除已選位置</div>
+  </div>
+  <p ng-if="!ctrl.select_ctrl.select_btn" style="color:red">目前並非貴公司時段，「選位」按鍵將在貴公司時段內出現</p>
+</div>
+{% endblock %}
