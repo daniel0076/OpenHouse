@@ -1,5 +1,5 @@
 from django import forms
-from .models import RecruitSignup,JobfairInfo, CompanySurvey
+from .models import RecruitSignup,JobfairInfo, CompanySurvey, SeminarInfo
 from django.forms import ModelForm
 
 class RecruitSignupForm(ModelForm):
@@ -7,6 +7,25 @@ class RecruitSignupForm(ModelForm):
         model = RecruitSignup
         fields = '__all__'
         exclude = ['payment', 'receipt_no', 'ps', 'cid']
+
+class SeminarInfoCreationForm(forms.ModelForm):
+
+    class Meta:
+        model=SeminarInfo
+        fields='__all__'
+        exclude=['cid']
+
+    def __init__(self, *args, **kwargs):
+            super(SeminarInfoCreationForm, self).__init__(*args, **kwargs)
+            self.fields['contact_mobile'].widget.attrs.update({
+                'placeholder': '格式：0912-345678',
+                })
+
+    def save(self,commit=True):
+        record = super(SeminarInfoCreationForm, self).save(commit=False)
+        if commit:
+            record.save()
+        return record
 
 class JobfairInfoForm(ModelForm):
     class Meta:

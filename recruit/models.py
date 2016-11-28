@@ -183,11 +183,34 @@ class JobfairInfo(models.Model):
         verbose_name_plural = u'就博會資訊'
 
 class SeminarInfo(models.Model):
-    company = models.OneToOneField(RecruitSignup)
-    topic = models.CharField(max_length=40)
-    speaker = models.CharField(max_length=5)
-    speaker_title = models.CharField(max_length=10)
-    speaker_email = models.EmailField()
+    id = models.AutoField(primary_key=True)
+    company = models.OneToOneField(RecruitSignup, to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE)
+    topic = models.CharField(u'說明會主題', max_length=30)
+    speaker = models.CharField(u'主講人', max_length=30)
+    speaker_title = models.CharField(u'主講人稱謂', max_length=30)
+    speaker_email = models.EmailField(u'主講人Email', max_length=254)
+    attendees = models.SmallIntegerField(u'廠商到場人數')
+    raffle_prize = models.CharField(u'抽獎獎品', max_length=254,
+                                    null=True, blank=True)
+    raffle_prize_amount = models.SmallIntegerField(u'抽獎獎品數量', default=0)
+    qa_prize = models.CharField(u'QA獎獎品', max_length=254, null=True, blank=True)
+    qa_prize_amount = models.SmallIntegerField(u'QA獎獎品數量', default=0)
+    attend_prize = models.CharField(u'參加獎獎品', max_length=254,
+                                    null=True, blank=True)
+    attend_prize_amount = models.SmallIntegerField(u'參加獎獎品數量', default=0)
+    snack_box = models.SmallIntegerField(u'加碼餐盒數量', default=0)
+    contact = models.CharField(u'聯絡人', max_length=30)
+    contact_mobile = models.CharField(u'聯絡人手機', max_length=16)
+    contact_email = models.EmailField(u'聯絡人Email', max_length=254)
+    ps = models.TextField(u'其它需求', null=True, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        managed = True
+        verbose_name = u"說明會資訊"
+        verbose_name_plural = u"說明會資訊"
 
 class SponsorItem(models.Model):
     name = models.CharField(u'贊助品名稱', max_length=20, unique=True)

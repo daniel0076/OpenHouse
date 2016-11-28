@@ -1,0 +1,132 @@
+{% extends 'recruit_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+		<title>說明會資訊-OpenHouse</title>
+        <link href={% static "css/recruit/info.css" %} rel="stylesheet">
+{% endblock %}
+
+
+{% block 'content' %}
+<form class="ui info form" method="POST" action="{% url 'recruit_seminar_info' %}" >
+	<h1 class="ui dividing header">說明會資訊</h1>
+	{% csrf_token %}
+	{% if seminar_info %}
+        <div class="ui teal compact message">
+            說明會資訊填寫已完成，您也可以修改資訊，再次送出。
+        </div>
+    {% endif %}
+    <h4 class="ui dividing header">主題資訊</h4>
+	<div class="field">
+		<label>{{form.topic.label}}{{form.topic.errors}} </label>
+			<div class="field">
+				{{form.topic}}
+			</div>
+	</div>
+	<div class="fields">
+		<div class="four wide field">
+			<label>{{form.speaker.label}}{{form.speaker.errors}}</label>
+				<div class="field">
+					{{form.speaker}}
+				</div>
+		</div>
+		<div class="four wide field">
+			<label>{{form.speaker_title.label}}{{form.speaker_title.errors}}</label>
+				<div class="field">
+					{{form.speaker_title}}
+				</div>
+		</div>
+		<div class="eight wide field">
+			<label>{{form.speaker_email.label}}{{form.speaker_email.errors}}</label>
+				<div class="field">
+					{{form.speaker_email}}
+				</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="four wide field">
+			<label>{{form.contact.label}}{{form.contact.errors}}</label>
+				<div class="field">
+					{{form.contact}}
+				</div>
+		</div>
+		<div class="four wide field">
+			<label>{{form.contact_mobile.label}}{{form.contact_mobile.errors}}</label>
+				<div class="field">
+					{{form.contact_mobile}}
+				</div>
+		</div>
+		<div class="eight wide field">
+			<label>{{form.contact_email.label}}{{form.contact_email.errors}}</label>
+				<div class="field">
+					{{form.contact_email}}
+				</div>
+		</div>
+	</div>
+	<div class="two fields">
+		<div class="field">
+			<label>{{form.attendees.label}}{{form.attendees.errors}}</label>
+				<div class="field">
+					{{form.attendees}}
+				</div>
+		</div>
+		<div class="field">
+			<label>{{form.snack_box.label}}{{form.snack_box.errors}}</label>
+      <p>基本提供40份餐點給參與同學(費用已含在活動費用中)，企業可加碼付費增加數量</p>
+				<div class="field">
+					{{form.snack_box}}
+				</div>
+		</div>
+	</div>
+	<div class="field">
+		<label>{{form.ps.label}}{{form.ps.errors}}</label>
+			<div class="field">
+				{{form.ps}}
+			</div>
+	</div>
+	<h4 class="ui dividing header">抽獎獎品</h4>
+	<div class="fields">
+		<div class="ten wide field">
+			<label>{{form.qa_prize.label}}{{form.qa_prize.errors}}</label>
+				<div class="field">
+					{{form.qa_prize}}
+				</div>
+		</div>
+		<div class="six wide field">
+			<label>{{form.qa_prize_amount.label}}{{form.qa_prize_amount.errors}}</label>
+				<div class="field">
+					{{form.qa_prize_amount}}
+				</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="ten wide field">
+			<label>{{form.raffle_prize.label}}{{form.raffle_prize.errors}}</label>
+				<div class="field">
+					{{form.raffle_prize}}
+				</div>
+		</div>
+		<div class="six wide field">
+			<label>{{form.raffle_prize_amount.label}}{{form.raffle_prize_amount.errors}}</label>
+				<div class="field">
+					{{form.raffle_prize_amount}}
+				</div>
+		</div>
+	</div>
+	<div class="fields">
+		<div class="ten wide field">
+			<label>{{form.attend_prize.label}}{{form.attend_prize.errors}}</label>
+				<div class="field">
+					{{form.attend_prize}}
+				</div>
+		</div>
+		<div class="six wide field">
+			<label>{{form.attend_prize_amount.label}}{{form.attend_prize_amount.errors}}</label>
+				<div class="field">
+					{{form.attend_prize_amount}}
+				</div>
+		</div>
+	</div>
+	<button class="ui blue button" type="submit">送出</button>
+</form>
+{% endblock %}

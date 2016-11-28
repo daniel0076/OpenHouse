@@ -1,9 +1,9 @@
 from django.core import urlresolvers
 from django.shortcuts import render,redirect
-from .forms import RecruitSignupForm, JobfairInfoForm
+from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm
 from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
-from .models import SeminarSlot, SlotColor, SeminarOrder
+from .models import SeminarSlot, SlotColor, SeminarOrder, SeminarInfo
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -59,7 +59,6 @@ def seminar_select_form_gen(request):
     sidebar_ui = {'seminar_select':"active"}
 
     mycid = request.user.cid
-    # check the company have signup rdss
     try:
         my_signup = RecruitSignup.objects.get(cid=request.user.cid)
         # check the company have signup seminar
@@ -207,6 +206,34 @@ def seminar_select_control(request):
         pass
     raise Http404("What are u looking for?")
 
+
+@login_required(login_url='/company/login/')
+def seminar_info(request):
+    try:
+        company = RecruitSignup.objects.get(cid=request.user.cid)
+    except Exception as e:
+        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+        return render(request,'error.html',locals())
+
+    try:
+        seminar_info = SeminarInfo.objects.get(company=company)
+    except ObjectDoesNotExist:
+        seminar_info = None
+    if request.POST:
+        data = request.POST.copy()
+        data['company'] = company.cid
+        form = SeminarInfoCreationForm(data=data ,instance=seminar_info)
+        if form.is_valid():
+            form.save()
+            return render(request, 'recruit/company/success.html', locals())
+        else:
+            print(form.errors)
+    else:
+        form = SeminarInfoCreationForm(instance=seminar_info)
+
+    #semantic ui
+    sidebar_ui = {'seminar_info':"active"}
+    return render(request,'recruit/company/seminar_info_form.html',locals())
 
 @login_required(login_url='/company/login/')
 def jobfair_info(request):
