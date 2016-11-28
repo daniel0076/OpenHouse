@@ -191,7 +191,6 @@ class SeminarInfo(models.Model):
     speaker = models.CharField(u'主講人', max_length=30)
     speaker_title = models.CharField(u'主講人稱謂', max_length=30)
     speaker_email = models.EmailField(u'主講人Email', max_length=254)
-    attendees = models.SmallIntegerField(u'廠商到場人數')
     raffle_prize = models.CharField(u'抽獎獎品', max_length=254,
                                     null=True, blank=True)
     raffle_prize_amount = models.SmallIntegerField(u'抽獎獎品數量', default=0)
@@ -204,6 +203,9 @@ class SeminarInfo(models.Model):
     contact = models.CharField(u'聯絡人', max_length=30)
     contact_mobile = models.CharField(u'聯絡人手機', max_length=16)
     contact_email = models.EmailField(u'聯絡人Email', max_length=254)
+    parking_cards = models.SmallIntegerField(u'汽車停車卡數量', default=0)
+    hr_food = models.CharField(u'人資餐點', max_length=30,null=True, blank=True,
+                help_text=" 提供免費2份餐點與飲水給企業人資或講者，如需素食或特殊飲食請於本欄備註說明")
     ps = models.TextField(u'其它需求', null=True, blank=True)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 

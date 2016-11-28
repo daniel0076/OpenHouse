@@ -63,18 +63,26 @@
 				</div>
 		</div>
 	</div>
-	<div class="two fields">
+	<div class="three fields">
 		<div class="field">
-			<label>{{form.attendees.label}}{{form.attendees.errors}}</label>
+			<label>{{form.snack_box.label}}{{form.snack_box.errors}}</label>
+      <p>基本提供50份餐點給參與同學(費用已含在活動費用中)，企業可加碼付費增加數量</p>
 				<div class="field">
-					{{form.attendees}}
+					{{form.snack_box}}
 				</div>
 		</div>
 		<div class="field">
-			<label>{{form.snack_box.label}}{{form.snack_box.errors}}</label>
-      <p>基本提供40份餐點給參與同學(費用已含在活動費用中)，企業可加碼付費增加數量</p>
+			<label>{{form.hr_food.label}}{{form.hr_food.errors}}</label>
+      <p>{{form.hr_food.help_text}}</p>
 				<div class="field">
-					{{form.snack_box}}
+					{{form.hr_food}}
+				</div>
+		</div>
+		<div class="field">
+			<label>{{form.parking_cards.label}}{{form.parking_cards.errors}}</label>
+      <p>{{form.parking_cards.help_text}}</p>
+				<div class="field">
+					{{form.parking_cards}}
 				</div>
 		</div>
 	</div>
