@@ -32,6 +32,8 @@ class SeminarSlotAdmin(admin.ModelAdmin):
 @admin.register(SeminarOrder)
 class SeminarOrderAdmin(admin.ModelAdmin):
     list_display = ("company","time","updated")
+    raw_id_fields = ("company",)
+
 
 @admin.register(SlotColor)
 class SlotColorAdmin(admin.ModelAdmin):
