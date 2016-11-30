@@ -81,7 +81,10 @@ class RecruitSignup(models.Model):
     added = models.TimeField(u'報名時間', auto_now_add=True)
     updated = models.TimeField(u'更新時間',auto_now=True)
     def __str__(self):
-        company = Company.objects.get(cid=self.cid)
+        try:
+            company = Company.objects.get(cid=self.cid)
+        except:
+            return "資料庫不同步，請連絡資訊組"
         return company.name
 
     def get_company_name(self):
