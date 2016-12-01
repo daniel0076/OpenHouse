@@ -28,6 +28,7 @@ admin.site.register(RecruitSignup, RecruitSignupAdmin)
 @admin.register(SeminarSlot)
 class SeminarSlotAdmin(admin.ModelAdmin):
     list_display = ('date', 'session', 'company', 'place')
+    raw_id_fields = ("company",)
 
 @admin.register(SeminarOrder)
 class SeminarOrderAdmin(admin.ModelAdmin):
