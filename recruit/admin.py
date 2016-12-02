@@ -21,6 +21,15 @@ class RecruitSignupAdmin(admin.ModelAdmin):
     list_filter = ('seminar','career_tutor','company_visit','lecture','payment',)
     inlines = (SponsorshipInline,)
 
+    # custom search the company name field in other db
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super(RecruitSignupAdmin, self).get_search_results(request, queryset, search_term)
+
+        company_list = Company.objects.filter(name=search_term).filter(shortname=search_term)
+        for company in company_list:
+            queryset |= self.model.objects.filter(cid = company.cid)
+        return queryset, use_distinct
+
     def company_name(self,obj):
         return obj.get_company_name()
 admin.site.register(RecruitSignup, RecruitSignupAdmin)

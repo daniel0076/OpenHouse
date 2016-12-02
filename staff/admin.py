@@ -93,7 +93,7 @@ class StaffAdmin(UserAdmin):
 				}
 				),
 			)
-	search_fields = ['username']
+	search_fields = ['username', 'name', ]
 	ordering = ('role',)
 	filter_horizontal = ()
 
