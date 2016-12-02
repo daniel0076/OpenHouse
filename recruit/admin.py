@@ -25,8 +25,8 @@ class RecruitSignupAdmin(admin.ModelAdmin):
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super(RecruitSignupAdmin, self).get_search_results(request, queryset, search_term)
 
-        company_list = Company.objects.filter(name__icontains=search_term)\
-            .filter(shortname__icontains=search_term)
+        company_list = Company.objects.filter(name__icontains=search_term)
+        company_list |= Company.objects.filter(shortname__icontains=search_term)
         for company in company_list:
             queryset |= self.model.objects.filter(cid = company.cid)
         return queryset, use_distinct
