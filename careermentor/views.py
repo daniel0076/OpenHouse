@@ -53,3 +53,11 @@ def CareerMentorSignup(request, event_id):
             print(form.errors)
 
     return render(request,'mentor/mentor_signup.html',locals())
+
+def event_info(request, event_id):
+    try:
+        event = models.Mentor.objects.get(id=event_id)
+    except:
+        return render(request,'mentor/error.html')
+
+    return render(request,'mentor/mentor_info.html',locals())

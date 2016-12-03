@@ -8,5 +8,6 @@ urlpatterns = [
 
     url(r'^$',views.CareerMentorIndex,name="mentor_index"),
     url(r'^signup/(?P<event_id>[0-9].*)/$', views.CareerMentorSignup, name="mentor_signup"),
+    url(r'^info/(?P<event_id>[0-9].*)/$', views.event_info, name="event_info"),
 
 ]

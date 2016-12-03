@@ -47,7 +47,7 @@
     <tbody>
       {% for event in mentor_events %}
       <tr>
-        <td>{{event.title}}</td>
+        <td><a href={% url 'event_info' event.id %}>{{event.title}}</a></td>
         <td>{{event.company}}</td>
         <td>{{event.mentor}} {{event.mentor_title}}</td>
         <td>{{event.date}} {{event.start_time}} - {{event.end_time}}</td>
@@ -61,11 +61,10 @@
           {% endif%}
         </td>
         <td>
-          {% if event.full %}
-          已額滿
-          {% else %}
-          <a href={% url 'mentor_signup' event.id %}>報名(Resiger)</a>
+          {% if not event.full %}
+          <a href={% url 'mentor_signup' event.id %}>報名(Register)</a>
           {% endif %}
+         <a href={% url 'event_info' event.id %}>詳細資訊 (Details)</a>
         </td>
       </tr>
       {% endfor %}
@@ -103,11 +102,10 @@
           {% endif%}
         </td>
         <td>
-          {% if event.full %}
-          已額滿
-          {% else %}
-          <a href={% url 'mentor_signup' event.id %}>報名(Resiger)</a>
+          {% if not event.full %}
+          <a href={% url 'mentor_signup' event.id %}>報名(Register)</a>
           {% endif %}
+         <a href={% url 'event_info' event.id %}>詳細資訊 (Details)</a>
         </td>
       </tr>
       {% endfor %}
