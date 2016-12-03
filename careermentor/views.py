@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Count, Sum
+from datetime import datetime
 from . import forms
 from . import models
 
@@ -16,9 +17,11 @@ def get_event_status(events):
 
 # Create your views here.
 def CareerMentorIndex(request):
-    mentor_events = models.Mentor.objects.filter(category="職場導師").order_by('-date')\
+    mentor_events = models.Mentor.objects.filter(category="職場導師")\
+        .exclude(date__lt=datetime.now()).order_by('-date')\
         .annotate(signup_num = Count('signup'))
     career_events = models.Mentor.objects.filter(category="職涯教練").order_by('-date')\
+        .exclude(date__lt=datetime.now()).order_by('-date')\
         .annotate(signup_num = Count('signup'))
 
     get_event_status(mentor_events)
