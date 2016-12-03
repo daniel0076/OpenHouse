@@ -21,6 +21,8 @@ import general.views
 urlpatterns = [
 	#custom sponsorship admin url and view
     url(r'', include('general.urls')),  # add '' on the include path!!!
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URL
     url(r'^admin/rdss/', include('rdss.admin_urls')),
     url(r'^admin/recruit/', include('recruit.admin_urls')),
     url(r'^admin/', admin.site.urls),
@@ -31,4 +33,5 @@ urlpatterns = [
     url(r'^rdss/', include('rdss.public_urls')),  # add '' on the include path!!!
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^mentor/', include('careermentor.urls')),
+
 ]

@@ -1,10 +1,6 @@
 from django.contrib import admin
 from . import models
 
-admin.AdminSite.site_header="OpenHouse 管理後台"
-admin.AdminSite.site_title="OpenHouse"
-admin.AdminSite.index_template="admin/admin_index.html"
-
 class SignupInline(admin.TabularInline):
     model = models.Signup
     extra = 0
