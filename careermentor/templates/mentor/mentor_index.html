@@ -64,7 +64,6 @@
           {% if not event.full %}
           <a href={% url 'mentor_signup' event.id %}>報名(Register)</a>
           {% endif %}
-         <a href={% url 'event_info' event.id %}>詳細資訊 (Details)</a>
         </td>
       </tr>
       {% endfor %}
@@ -105,7 +104,6 @@
           {% if not event.full %}
           <a href={% url 'mentor_signup' event.id %}>報名(Register)</a>
           {% endif %}
-         <a href={% url 'event_info' event.id %}>詳細資訊 (Details)</a>
         </td>
       </tr>
       {% endfor %}
