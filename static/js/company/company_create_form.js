@@ -50,15 +50,6 @@ $( document ).ready(function() {
 		  }
 		  ]
 		},
-		phone: {
-		  identifier: 'phone',
-		  rules: [
-		  {
-			type   : 'regExp[/^0[0-9]-[0-9]*(#[0-9]+)?$/]',
-			prompt : '公司電話格式錯誤'
-		  }
-		  ]
-		},
 		category: {
 		  identifier: 'category',
 		  rules: [
