@@ -49,7 +49,9 @@ def Status(request):
     seminar_session_display = {
             "noon":"{}~{}".format(configs.session1_start,configs.session1_end),
             "night1":"{}~{}".format(configs.session2_start,configs.session2_end),
-            "night2":"{}~{}".format(configs.session3_start,configs.session3_end)
+            "night2":"{}~{}".format(configs.session3_start,configs.session3_end),
+            "extra":"補場",
+            "jobfair":"就博會",
             }
     # 問卷狀況
     try:
