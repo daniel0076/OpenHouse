@@ -4,6 +4,7 @@ from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm
 from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
 from .models import SeminarSlot, SlotColor, SeminarOrder, SeminarInfo
+from .models import JobfairSlot, JobfairOrder, JobfairInfo
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -234,6 +235,151 @@ def seminar_info(request):
     #semantic ui
     sidebar_ui = {'seminar_info':"active"}
     return render(request,'recruit/company/seminar_info_form.html',locals())
+
+@login_required(login_url='/company/login/')
+def jobfair_select_form_gen(request):
+    #semanti ui control
+    sidebar_ui = {'jobfair_select':"active"}
+
+    mycid = request.user.cid
+    # check the company have signup recruit
+    try:
+        my_signup = RecruitSignup.objects.get(cid=request.user.cid)
+        # check the company have signup seminar
+        if my_signup.jobfair== 0:
+            error_msg="貴公司已報名本次研替活動，但並末填寫就博會攤位。"
+            return render(request,'error.html',locals())
+    except Exception as e:
+        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
+        return render(request,'error.html',locals())
+    #check the company have been assigned a slot select order and time
+    try:
+        jobfair_select_time = JobfairOrder.objects.filter(company=mycid).first().time
+    except Exception as e:
+        jobfair_select_time = "選位時間及順序尚未排定，您可以先參考攤位圖"
+
+    place_maps = Files.objects.filter(category='就博會攤位圖')
+
+    return render(request,'recruit/company/jobfair_select.html',locals())
+
+@login_required(login_url='/company/login/')
+def jobfair_select_control(request):
+    if request.method =="POST":
+        mycid = request.user.cid
+        post_data=json.loads(request.body.decode())
+        action = post_data.get("action")
+    else:
+        raise Http404("What are u looking for?")
+
+    slot_group = [
+        {"name":"半導體","category":["半導體"], "slot_list":list(),
+         "is_mygroup":False, "color":"pink"},
+
+        {"name":"資訊軟體","category":["資訊軟體"], "slot_list":list(),
+         "is_mygroup":False, "color":"blue"},
+
+        {"name":"消費電子","category":["消費電子"], "slot_list":list(),
+         "is_mygroup":False, "color":"yellow"},
+
+        {"name":"網路通訊","category":["網路通訊"], "slot_list":list(),
+         "is_mygroup":False, "color":"teal"},
+
+        {"name":"光電光學","category":["光電光學"], "slot_list":list(),
+         "is_mygroup":False, "color":"grey"},
+
+        {"name":"綜合","category":["綜合","集團","機構","人力銀行"],
+         "slot_list":list(), "is_mygroup":False, "color":"purple"},
+    ]
+    try:
+        my_signup = RecruitSignup.objects.get(cid=request.user.cid)
+    except:
+        ret = dict()
+        ret['success'] = False
+        ret['msg'] = "選位失敗，攤位錯誤或貴公司未勾選參加就博會"
+        return JsonResponse(ret)
+    # 把自己的group enable並放到最前面顯示
+    my_slot_group = next(group for group in slot_group\
+                         if my_signup.get_company().category in group['category'] )
+    slot_group.remove(my_slot_group)
+    my_slot_group['is_mygroup'] = True
+    slot_group.insert(0,my_slot_group)
+
+    if action == "query":
+        for group in slot_group:
+            slot_list = JobfairSlot.objects.filter(category=group['name'])
+            for slot in slot_list:
+                slot_info = dict()
+                slot_info["serial_no"] = slot.serial_no
+                slot_info["company"] = None if not slot.company else\
+                    slot.company.get_company_name()
+                group['slot_list'].append(slot_info)
+
+        my_slot_list = [slot.serial_no for slot in JobfairSlot.objects.filter(company__cid=request.user.cid)]
+
+        try:
+            my_select_time = JobfairOrder.objects.filter(company=request.user.cid).first().time
+        except AttributeError:
+            my_select_time = None
+        if not my_select_time or timezone.now() < my_select_time:
+            select_ctrl = dict()
+            select_ctrl['display'] = True
+            select_ctrl['msg'] = '目前非貴公司選位時間，可先參考攤位圖，並待選位時間內選位'
+            select_ctrl['select_enable'] = False
+        else:
+            select_ctrl = dict()
+            select_ctrl['display'] = False
+            select_ctrl['select_enable'] = True
+
+        return JsonResponse({"success":True,
+                             "slot_group":slot_group,
+                             "my_slot_list":my_slot_list,
+                             "select_ctrl":select_ctrl})
+
+    elif action == "select":
+        try:
+            slot = JobfairSlot.objects.get(serial_no = post_data.get('slot'))
+        except:
+            ret = dict()
+            ret['success'] = False
+            ret['msg'] = "選位失敗，攤位錯誤"
+            return JsonResponse(ret)
+        if slot.company!= None:
+            return JsonResponse({"success":False,'msg':'選位失敗，該攤位已被選定'})
+
+        my_select_time = JobfairOrder.objects.filter(company=request.user.cid).first().time
+        if timezone.now() < my_select_time:
+            return JsonResponse({"success":False,'msg':'選位失敗，目前非貴公司選位時間'})
+
+        my_slot_list = JobfairSlot.objects.filter(company__cid = request.user.cid)
+        if my_slot_list.count() >= my_signup.jobfair:
+            return JsonResponse({"success":False,'msg':'選位失敗，貴公司攤位數已達上限'})
+
+        my_slot_group = next(group for group in slot_group\
+                            if my_signup.get_company().category in group['category'] )
+        if my_slot_group['name'] != slot.category:
+            return JsonResponse({"success":False,'msg':'選位失敗，該攤位非貴公司類別'})
+
+
+        slot.company = my_signup
+        slot.save()
+        logger.info('{} select jobfair slot {}'.format(my_signup.get_company_name(),slot.serial_no))
+        return JsonResponse({"success":True})
+
+    elif action == "cancel":
+        cancel_slot_no = post_data.get('slot')
+        cancel_slot = JobfairSlot.objects.filter(
+            company__cid=request.user.cid,
+            serial_no=cancel_slot_no
+        ).first()
+        if cancel_slot:
+            logger.info('{} cancel jobfair slot {}'.format(cancel_slot.company.get_company_name(),cancel_slot.serial_no))
+            cancel_slot.company = None
+            cancel_slot.save()
+            return JsonResponse({"success":True})
+        else:
+            return JsonResponse({"success":False,"msg":"刪除就博會攤位失敗"})
+    else:
+        raise Http404("Invalid")
 
 @login_required(login_url='/company/login/')
 def jobfair_info(request):

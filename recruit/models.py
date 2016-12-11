@@ -4,24 +4,15 @@ from django.db.models import Q
 from django.db.models import Count, Sum
 
 CATEGORYS = (
-            (u'半導體',  u'半導體'),
-            (u'消費電子',  u'消費電子'),
-            (u'網路通訊',  u'網路通訊'),
-            (u'光電光學',  u'光電光學'),
-            (u'資訊軟體',  u'資訊軟體'),
-            (u'集團',  u'集團'),
-            (u'綜合',  u'綜合'),
-            (u'人力銀行',  u'人力銀行'),
-            (u'機構',  u'機構'),
-            (u'化工/化學',  u'化工/化學'),
-            (u'傳產/製造',  u'傳產/製造'),
-            (u'工商/服務',  u'工商/服務'),
-            (u'教育、政府及團體',  u'教育、政府及團體'),
-            (u'醫藥/農牧',  u'醫藥/農牧'),
-            (u'民生消費',  u'民生消費'),
-            (u'媒體/出版',  u'媒體/出版'),
-            (u'貿易/流通',  u'貿易/流通'),
-            (u'不動產相關',  u'不動產相關'),
+    (u'半導體', u'半導體'),
+    (u'消費電子', u'消費電子'),
+    (u'網路通訊', u'網路通訊'),
+    (u'光電光學', u'光電光學'),
+    (u'資訊軟體', u'資訊軟體'),
+    (u'集團', u'集團'),
+    (u'綜合', u'綜合'),
+    (u'人力銀行', u'人力銀行'),
+    (u'機構', u'機構')
 )
 
 
@@ -91,6 +82,10 @@ class RecruitSignup(models.Model):
         com = Company.objects.filter(cid=self.cid).first()
         return "資料庫不同步，請連絡資訊組" if com is None else com.shortname
 
+    def get_company(self):
+        com = Company.objects.filter(cid=self.cid).first()
+        return "資料庫不同步，請連絡資訊組" if com is None else com
+
     class Meta:
         managed = True
         verbose_name = u'活動報名情況'
@@ -116,14 +111,22 @@ class Files(models.Model):
         verbose_name_plural = u"活動檔案"
 
 class JobfairSlot(models.Model):
+
     id = models.AutoField(primary_key=True)
-    serial_number = models.CharField(u'攤位編號', max_length=8)
-    cid = models.ForeignKey(RecruitSignup, on_delete=models.CASCADE, verbose_name=u'公司')
+    serial_no = models.CharField(u'攤位編號', max_length=10)
+    category = models.CharField(u'類別', max_length=37, choices=CATEGORYS)
+    company = models.ForeignKey(RecruitSignup, to_field='cid',
+                            verbose_name=u'公司',
+                            on_delete=models.CASCADE, blank=True, null=True)
     category = models.CharField(u'類別', max_length=15, choices=CATEGORYS)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
     class Meta:
         managed = True
         verbose_name = u'就博會攤位'
         verbose_name_plural = u'就博會攤位'
+
+    def __str__(self):
+        return self.serial_no
 
 class SeminarSlot(models.Model):
     # (value in db,display name)
@@ -169,6 +172,21 @@ class SeminarOrder(models.Model):
         managed = True
         verbose_name = u"說明會選位順序"
         verbose_name_plural = u"說明會選位順序"
+
+class JobfairOrder(models.Model):
+    id = models.AutoField(primary_key=True)
+    time = models.DateTimeField(u'選位開始時間')
+    company = models.OneToOneField(RecruitSignup, to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE,
+                               limit_choices_to=~Q(jobfair=0)
+                               )
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+
+    class Meta:
+        managed = True
+        verbose_name = u"就博會選位順序"
+        verbose_name_plural = u"就博會選位順序"
 
 class JobfairInfo(models.Model):
     id = models.AutoField(primary_key=True)
@@ -395,26 +413,6 @@ class CompanySurvey(models.Model):
     company_size        = models.CharField(u'貴企業規模', max_length=20, choices=SIZE)
     plan_to_recruit     = models.IntegerField(u'2017年預計招募職缺數', help_text="此數據不會對外公開，僅供主辦單位內部作業統計用途。")
     nctu_employees      = models.IntegerField(u'交大校友人數')
-    CATEGORYS = (
-            (u'半導體',  u'半導體'),
-            (u'消費電子',  u'消費電子'),
-            (u'網路通訊',  u'網路通訊'),
-            (u'光電光學',  u'光電光學'),
-            (u'資訊軟體',  u'資訊軟體'),
-            (u'集團',  u'集團'),
-            (u'綜合',  u'綜合'),
-            (u'人力銀行',  u'人力銀行'),
-            (u'機構',  u'機構'),
-            (u'化工/化學',  u'化工/化學'),
-            (u'傳產/製造',  u'傳產/製造'),
-            (u'工商/服務',  u'工商/服務'),
-            (u'教育、政府及團體',  u'教育、政府及團體'),
-            (u'醫藥/農牧',  u'醫藥/農牧'),
-            (u'民生消費',  u'民生消費'),
-            (u'媒體/出版',  u'媒體/出版'),
-            (u'貿易/流通',  u'貿易/流通'),
-            (u'不動產相關',  u'不動產相關'),
-            )
     category            = models.CharField(u'企業類別', max_length=10, choices=CATEGORYS)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
