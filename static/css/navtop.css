@@ -5,4 +5,12 @@
 
 #navtop_outer{
 	padding:0.5em;
+  margin-bottom:0;
+}
+
+a{
+  font-size:13pt;
+}
+.ui.segment{
+  margin-top:0;
 }

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block 'custom_head' %}
+{% block 'nav_head' %}
     <script src={% static "js/recruit/nav.js" %}></script>
     <script src={% static "js/recruit/signup.js" %}></script>
+    <link href={% static "css/recruit/submenu.css" %} rel="stylesheet">
 {% endblock %}
 {% block 'body' %}
-    <link href={% static "css/recruit/submenu.css" %} rel="stylesheet">
     <div class="ui inverted blue secondary main menu">
         <a href="{% url 'recruit_company_index' %}" class="item">活動首頁</a>
 	<a href="{% url 'recruit_signup' %}" class="item">填寫報名資料</a>
