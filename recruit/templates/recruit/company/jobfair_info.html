@@ -2,7 +2,48 @@
 {% block 'content' %}
     <form method="post" class="ui form" action=".">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="field">
+            <label>{{form.sign_name.label}}</label>
+            {{form.sign_name}}
+        </div>
+        <div class="fields">
+            <div class="four wide field">
+                <label>{{form.contact_person.label}}</lable>
+                {{form.contact_person}}
+            </div>
+            <div class="four wide field">
+                <label>{{form.contact_mobile.label}}</lable>
+                {{form.contact_mobile}}
+            </div>
+            <div class="eight wide field">
+                <label>{{form.contact_email.label}}</lable>
+                {{form.contact_email}}
+            </div>
+        </div>
+        <div class="fields">
+            <div class="four wide field">
+                <label>{{form.general_lunch_box.label}}</lable>
+                {{form.general_lunch_box}}
+            </div>
+            <div class="four wide field">
+                <label>{{form.veget_lunch_box.label}}</lable>
+                {{form.veget_lunch_box}}
+            </div>
+            <div class="four wide field">
+                <lable>{{form.packing_tickets.label}}</label>
+                {{form.packing_tickets}}
+            </div>
+        </div>
+        
+        <div class="field">
+            <label>{{form.power_req.label}}</label>
+            {{form.power_req}}
+        </div>
+        <div class="field">
+            <label>{{form.ps.label}}</label>
+            {{form.ps}}
+        </div>
+            
         <button class="ui teal button">送出</button>
     </form>
 {% endblock %}
