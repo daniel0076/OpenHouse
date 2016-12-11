@@ -64,11 +64,11 @@ def seminar_select_form_gen(request):
         my_signup = RecruitSignup.objects.get(cid=request.user.cid)
         # check the company have signup seminar
         if my_signup.seminar == "":
-            error_msg="貴公司已報名本次研替活動，但並末勾選參加說明會選項。"
-            return render(request,'error.html',locals())
+            error_msg="貴公司已報名本次活動，但並末勾選參加說明會選項。"
+            return render(request,'recruit/error.html',locals())
     except Exception as e:
-        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
-        return render(request,'error.html',locals())
+        error_msg="貴公司尚未報名本次活動，請於左方點選「填寫報名資料」"
+        return render(request,'recruit/error.html',locals())
 
     #check the company have been assigned a slot select order and time
     try:
@@ -213,8 +213,8 @@ def seminar_info(request):
     try:
         company = RecruitSignup.objects.get(cid=request.user.cid)
     except Exception as e:
-        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
-        return render(request,'error.html',locals())
+        error_msg="貴公司尚未報名本次活動，請於左方點選「填寫報名資料」"
+        return render(request,'recruit/error.html',locals())
 
     try:
         seminar_info = SeminarInfo.objects.get(company=company)
@@ -248,10 +248,10 @@ def jobfair_select_form_gen(request):
         # check the company have signup seminar
         if my_signup.jobfair== 0:
             error_msg="貴公司已報名本次研替活動，但並末填寫就博會攤位。"
-            return render(request,'error.html',locals())
+            return render(request,'recruit/error.html',locals())
     except Exception as e:
-        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
-        return render(request,'error.html',locals())
+        error_msg="貴公司尚未報名本次活動，請於左方點選「填寫報名資料」"
+        return render(request,'recruit/error.html',locals())
     #check the company have been assigned a slot select order and time
     try:
         jobfair_select_time = JobfairOrder.objects.filter(company=mycid).first().time
@@ -413,8 +413,8 @@ def Sponsor(request):
     try:
         sponsor = RecruitSignup.objects.get(cid=request.user.cid)
     except Exception as e:
-        error_msg="貴公司尚未報名本次「研發替代役」活動，請於左方點選「填寫報名資料」"
-        return render(request,'error.html',locals())
+        error_msg="貴公司尚未報名本次「校園徵才」活動，請於左方點選「填寫報名資料」"
+        return render(request,'recruit/error.html',locals())
 
     if request.POST:
         sponsor_items = SponsorItem.objects.all()
