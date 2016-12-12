@@ -73,7 +73,7 @@ class CompanyEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CompanyEditForm, self).__init__(*args, **kwargs)
         self.fields['category'].widget.attrs.update({
-                'class': 'ui dropdown',
+                'class': 'ui disabled dropdown',
                 })
 
         required_css_class = 'required'
