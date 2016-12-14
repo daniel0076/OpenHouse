@@ -58,7 +58,7 @@
     </div>
   </div>
   <div class="ui segment" ng-repeat="group in ctrl.slot_group">
-    <h3 class="ui dividing header">{$ group.name $}</h3>
+    <h3 class="ui dividing header">{$ group.display$}</h3>
     <p ng-if="!group.is_mygroup">非貴公司類別</p>
     <div class="ui six column padded grid" >
       <div ng-repeat="slot in group.slot_list" class="column" style="padding:0.5rem" >

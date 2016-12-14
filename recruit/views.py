@@ -272,22 +272,23 @@ def jobfair_select_control(request):
         raise Http404("What are u looking for?")
 
     slot_group = [
-        {"name":"半導體","category":["半導體"], "slot_list":list(),
+        {"slot_type":"半導體", "display":"半導體","category":["半導體"], "slot_list":list(),
          "is_mygroup":False, "color":"pink"},
 
-        {"name":"資訊軟體","category":["資訊軟體"], "slot_list":list(),
+        {"slot_type":"資訊軟體", "display":"資訊軟體","category":["資訊軟體"], "slot_list":list(),
          "is_mygroup":False, "color":"blue"},
 
-        {"name":"消費電子","category":["消費電子"], "slot_list":list(),
+        {"slot_type":"消費電子", "display":"消費電子","category":["消費電子"], "slot_list":list(),
          "is_mygroup":False, "color":"yellow"},
 
-        {"name":"網路通訊","category":["網路通訊"], "slot_list":list(),
+        {"slot_type":"網路通訊", "display":"網路通訊","category":["網路通訊"], "slot_list":list(),
          "is_mygroup":False, "color":"teal"},
 
-        {"name":"光電光學","category":["光電光學"], "slot_list":list(),
+        {"slot_type":"光電光學", "display":"光電光學","category":["光電光學"], "slot_list":list(),
          "is_mygroup":False, "color":"grey"},
 
-        {"name":"綜合(綜合、集團、機構、人力銀行)","category":["綜合","集團","機構","人力銀行"],
+        {"slot_type":"綜合", "display":"綜合(綜合、集團、機構、人力銀行)"
+         ,"category":["綜合","集團","機構","人力銀行"],
          "slot_list":list(), "is_mygroup":False, "color":"purple"},
     ]
     try:
@@ -306,7 +307,7 @@ def jobfair_select_control(request):
 
     if action == "query":
         for group in slot_group:
-            slot_list = JobfairSlot.objects.filter(category=group['name'])
+            slot_list = JobfairSlot.objects.filter(category=group['slot_type'])
             for slot in slot_list:
                 slot_info = dict()
                 slot_info["serial_no"] = slot.serial_no
@@ -356,7 +357,7 @@ def jobfair_select_control(request):
 
         my_slot_group = next(group for group in slot_group\
                             if my_signup.get_company().category in group['category'] )
-        if my_slot_group['name'] != slot.category:
+        if my_slot_group['slot_type'] != slot.category:
             return JsonResponse({"success":False,'msg':'選位失敗，該攤位非貴公司類別'})
 
 
