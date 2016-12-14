@@ -287,7 +287,7 @@ def jobfair_select_control(request):
         {"name":"光電光學","category":["光電光學"], "slot_list":list(),
          "is_mygroup":False, "color":"grey"},
 
-        {"name":"綜合","category":["綜合","集團","機構","人力銀行"],
+        {"name":"綜合(綜合、集團、機構、人力銀行)","category":["綜合","集團","機構","人力銀行"],
          "slot_list":list(), "is_mygroup":False, "color":"purple"},
     ]
     try:
