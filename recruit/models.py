@@ -195,9 +195,10 @@ class JobfairInfo(models.Model):
     contact_person = models.CharField(u'聯絡人', max_length=10)
     contact_mobile = models.CharField(u'聯絡人手機', max_length=10)
     contact_email = models.EmailField(u'聯絡人Email', max_length=20)
-    packing_tickets = models.IntegerField(u'停車證數量')
+    packing_tickets = models.IntegerField(u'汽車停車證數量')
     general_lunch_box = models.IntegerField(u'葷食便當')
     veget_lunch_box = models.IntegerField(u'素食便當')
+    send_obj = models.CharField(u'寄送內容物',max_length=50, blank=True,null=True)
     power_req = models.CharField(u'用電需求', max_length=30, blank=True, null=True)
     ps = models.CharField(u'備註', max_length=50, blank=True, null=True)
     class Meta:
