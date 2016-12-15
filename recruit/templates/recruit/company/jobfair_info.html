@@ -5,6 +5,7 @@
         <div class="field">
             <label>{{form.sign_name.label}}</label>
             {{form.sign_name}}
+            <p>建議為公司簡稱</p>
         </div>
         <div class="fields">
             <div class="four wide field">
@@ -24,6 +25,7 @@
             <div class="four wide field">
                 <label>{{form.general_lunch_box.label}}</lable>
                 {{form.general_lunch_box}}
+                <p>每攤位至多提供5份餐點</p>
             </div>
             <div class="four wide field">
                 <label>{{form.veget_lunch_box.label}}</lable>
@@ -34,10 +36,18 @@
                 {{form.packing_tickets}}
             </div>
         </div>
+        <div class="field">
+            <label>{{form.send_obj.label}}</label>
+            {{form.send_obj}}
+            <p>提早寄送展示物品與及DM刊物，請註記寄送品項與數量，並協調物流公司於活動前兩日送達交
+                大就輔組(勿過早或過晚)。大型、過重(無法以小型電梯運載者)及貴重物品請勿寄送。
+            </p>
+        </div>
         
         <div class="field">
             <label>{{form.power_req.label}}</label>
             {{form.power_req}}
+            <p>攤位用電建議500瓦以內，請填寫預計使用電器(如筆電、音響等)，如有模擬機、爆米花機、可樂機等耗電設備，請務必填寫並須由企業自行負擔小型發電機費用</p>
         </div>
         <div class="field">
             <label>{{form.ps.label}}</label>
