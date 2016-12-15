@@ -193,13 +193,13 @@ class JobfairInfo(models.Model):
     company = models.OneToOneField(RecruitSignup, verbose_name=u'公司')
     sign_name = models.CharField(u'攤位招牌名稱', max_length=20)
     contact_person = models.CharField(u'聯絡人', max_length=10)
-    contact_mobile = models.CharField(u'聯絡人手機', max_length=10)
-    contact_email = models.EmailField(u'聯絡人Email', max_length=20)
+    contact_mobile = models.CharField(u'聯絡人手機', max_length=32)
+    contact_email = models.EmailField(u'聯絡人Email', max_length=128)
     packing_tickets = models.IntegerField(u'停車證數量')
     general_lunch_box = models.IntegerField(u'葷食便當')
     veget_lunch_box = models.IntegerField(u'素食便當')
-    power_req = models.CharField(u'用電需求', max_length=30, blank=True, null=True)
-    ps = models.CharField(u'備註', max_length=50, blank=True, null=True)
+    power_req = models.CharField(u'用電需求', max_length=128, blank=True, null=True)
+    ps = models.CharField(u'備註', max_length=128, blank=True, null=True)
     class Meta:
         managed = True
         verbose_name = u'就博會資訊'
