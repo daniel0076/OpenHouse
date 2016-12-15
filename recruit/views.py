@@ -15,6 +15,7 @@ from django.db.models import Count
 import datetime
 import json
 import logging
+from ipware.ip import get_real_ip
 
 logger = logging.getLogger('recruit')
 
@@ -363,7 +364,11 @@ def jobfair_select_control(request):
 
         slot.company = my_signup
         slot.save()
-        logger.info('{} select jobfair slot {}'.format(my_signup.get_company_name(),slot.serial_no))
+
+        ip = get_real_ip(request)
+        if ip is None:
+            ip = "Unknown IP"
+        logger.info('{} select jobfair slot {} from {}'.format(my_signup.get_company_name(),slot.serial_no, ip))
         return JsonResponse({"success":True})
 
     elif action == "cancel":
@@ -373,9 +378,14 @@ def jobfair_select_control(request):
             serial_no=cancel_slot_no
         ).first()
         if cancel_slot:
-            logger.info('{} cancel jobfair slot {}'.format(cancel_slot.company.get_company_name(),cancel_slot.serial_no))
             cancel_slot.company = None
             cancel_slot.save()
+
+            ip = get_real_ip(request)
+            if ip is None:
+                ip = "Unknown IP"
+            logger.info('{} canceled jobfair slot {} from {}'.format(my_signup.get_company_name(),cancel_slot.serial_no, ip))
+
             return JsonResponse({"success":True})
         else:
             return JsonResponse({"success":False,"msg":"刪除就博會攤位失敗"})
