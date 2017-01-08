@@ -27,7 +27,8 @@ class Company(AbstractBaseUser):
 			(u'集團', u'集團'),
 			(u'綜合', u'綜合'),
 			(u'人力銀行', u'人力銀行'),
-			(u'機構', u'機構')
+			(u'機構', u'機構'),
+			(u'新創', u'新創')
 			)
 
 	id = models.AutoField(primary_key=True)
