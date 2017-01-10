@@ -191,13 +191,15 @@ class JobfairOrder(models.Model):
 
 class JobfairInfo(models.Model):
     id = models.AutoField(primary_key=True)
-    company = models.OneToOneField(RecruitSignup, verbose_name=u'公司')
+    company = models.OneToOneField(RecruitSignup, to_field='cid',
+                               verbose_name=u'公司',
+                               on_delete=models.CASCADE)
     sign_name = models.CharField(u'攤位招牌名稱', max_length=20)
     contact_person = models.CharField(u'聯絡人', max_length=10)
     contact_mobile = models.CharField(u'聯絡人手機', max_length=32)
     contact_email = models.EmailField(u'聯絡人Email', max_length=128)
     packing_tickets = models.IntegerField(u'停車證數量')
-    general_lunch_box = models.IntegerField(u'葷食便當')
+    general_lunch_box = models.SmallIntegerField(u'葷食便當數量', default=0)
     veget_lunch_box = models.IntegerField(u'素食便當')
     power_req = models.CharField(u'用電需求', max_length=128, blank=True, null=True)
     ps = models.CharField(u'備註', max_length=128, blank=True, null=True)

@@ -210,6 +210,31 @@ def seminar_select_control(request):
 
 
 @login_required(login_url='/company/login/')
+def jobfair_info(request):
+    try:
+        company = RecruitSignup.objects.get(cid=request.user.cid)
+    except Exception as e:
+        error_msg="貴公司尚未報名本次活動，請於上方點選「填寫報名資料」"
+        return render(request,'recruit/error.html',locals())
+    try:
+        jobfair_info = JobfairInfo.objects.get(company=company)
+    except ObjectDoesNotExist:
+        jobfair_info = None
+    if request.POST:
+        data = request.POST.copy()
+        form = JobfairInfoForm(data=data,instance=jobfair_info)
+        if form.is_valid():
+            new_info = form.save(commit=False)
+            company = RecruitSignup.objects.get(cid=request.user.cid)
+            new_info.company = company
+            new_info.save()
+            return render(request, 'recruit/company/success.html', locals())
+        else:
+            print(form.errors)
+    else:
+        form = JobfairInfoForm(instance=jobfair_info)
+    return render(request, 'recruit/company/jobfair_info.html', locals())
+@login_required(login_url='/company/login/')
 def seminar_info(request):
     try:
         company = RecruitSignup.objects.get(cid=request.user.cid)
@@ -392,17 +417,7 @@ def jobfair_select_control(request):
     else:
         raise Http404("Invalid")
 
-@login_required(login_url='/company/login/')
-def jobfair_info(request):
-    if request.POST:
-        form = JobfairInfoForm(data=request.POST)
-        if form.is_valid():
-            new_info = form.save(commit=False)
-            company = RecruitSignup.objects.get(cid=request.user.cid)
-            new_info.company = company
-            new_info.save()
-    form = JobfairInfoForm()
-    return render(request, 'recruit/company/jobfair_info.html', locals())
+
 
 def Add_SponsorShip(sponsor_items,post_data,sponsor):
     #clear sponsor ships objects
