@@ -192,8 +192,7 @@ class JobfairOrder(models.Model):
 class JobfairInfo(models.Model):
     id = models.AutoField(primary_key=True)
     company = models.OneToOneField(RecruitSignup, to_field='cid',
-                               verbose_name=u'公司',
-                               on_delete=models.CASCADE)
+                               verbose_name=u'公司')
     sign_name = models.CharField(u'攤位招牌名稱', max_length=20)
     contact_person = models.CharField(u'聯絡人', max_length=10)
     contact_mobile = models.CharField(u'聯絡人手機', max_length=32)
