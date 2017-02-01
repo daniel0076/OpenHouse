@@ -117,6 +117,7 @@ def ExportAll(request):
     workbook.close()
     return response
 
+@staff_member_required
 def export_seminar_info(request):
     filename =  "recruit_seminar_info.xlsx"
     response = HttpResponse(content_type='application/ms-excel')
@@ -138,6 +139,27 @@ def export_seminar_info(request):
     workbook.close()
     return response
 
+@staff_member_required
+def export_jobfair_info(request):
+    filename =  "recruit_jobfair_info.xlsx"
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    workbook = xlsxwriter.Workbook(response)     
+    worksheet = workbook.add_worksheet("就博會資訊")
+    fields = recruit.models.JobfairInfo._meta.get_fields()[1:-1]
+    for index, field in enumerate(fields):
+        worksheet.write(0,index,field.verbose_name)
+    company_list = recruit.models.JobfairInfo.objects.all()
+    for i,info in enumerate(company_list):
+        for j,field in enumerate(fields):
+            if(field.name != 'company' and  field.name != 'updated'):
+                worksheet.write(i+1,j,getattr(info,field.name))
+            elif(field.name == 'company'):
+                cid = getattr(getattr(info,field.name),'cid')
+                company_name = company.models.Company.objects.get(cid=cid).name 
+                worksheet.write(i+1,j,company_name)
+    workbook.close()
+    return response
 @staff_member_required
 def ExportSurvey(request):
     # Create the HttpResponse object with the appropriate Excel header.
