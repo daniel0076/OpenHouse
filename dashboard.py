@@ -33,6 +33,13 @@ class CustomDashboard(Dashboard):
                     'external': False,
                 },
                 {
+                    'title':_('匯出說明會資訊'),
+                    'url': '/admin/recruit/export_seminar_info/',
+                    'external': False,
+                },
+                
+                }
+                {
                     'title': _('廠商Logo和簡介(廣告用)'),
                     'url': '/admin/recruit/export_ad/',
                     'external': False,
