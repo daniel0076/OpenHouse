@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^export_activity_info/$', export.ExportActivityInfo, name="recruit_export_activity_info"),
     url(r'^export_all/$', export.ExportAll, name="recruit_export_all"),
     url(r'^export_ad/$', export.ExportAdFormat,name="recruit_export_ad"),
-
+    url(r'^export_seminar_info/$',export.export_seminar_info,name="recruit_export_seminar_info"),
 
 	#export urls are defined in admin.py
 ]

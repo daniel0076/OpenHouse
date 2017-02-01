@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^jobfair/select_ctrl/$', views.jobfair_select_control, name='recruit_jobfair_select_ctrl'),
     url(r'^sponsor/$', views.Sponsor, name='recruit_sponsor'),
     url(r'^survey/$', views.company_servey, name='recruit_survey'),
+    #url(r'^export/$', views.company_servey, name='recruit_survey'),
+
 ]
