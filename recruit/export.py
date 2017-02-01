@@ -146,7 +146,7 @@ def export_jobfair_info(request):
     response['Content-Disposition'] = 'attachment; filename=' + filename
     workbook = xlsxwriter.Workbook(response)     
     worksheet = workbook.add_worksheet("就博會資訊")
-    fields = recruit.models.JobfairInfo._meta.get_fields()[1:-1]
+    fields = recruit.models.JobfairInfo._meta.get_fields()[1:]
     for index, field in enumerate(fields):
         worksheet.write(0,index,field.verbose_name)
     company_list = recruit.models.JobfairInfo.objects.all()
