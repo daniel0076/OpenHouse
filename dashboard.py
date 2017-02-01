@@ -37,8 +37,12 @@ class CustomDashboard(Dashboard):
                     'url': '/admin/recruit/export_seminar_info/',
                     'external': False,
                 },
+                {
+                    'title':_('匯出就博會資訊'),
+                    'url': '/admin/recruit/export_jobfair_info/',
+                    'external': False,
+                },
                 
-                }
                 {
                     'title': _('廠商Logo和簡介(廣告用)'),
                     'url': '/admin/recruit/export_ad/',
