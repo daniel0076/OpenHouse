@@ -1,0 +1,25 @@
+{% extends 'recruit_public.html' %}
+{% block 'content' %}
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Logo</th>
+                    <th>企業名</th>
+                    <th>類別</th>
+                    <th>簡介</th>
+                    <th>職缺</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companys %}
+                    <tr> 
+                        <th> <img class="ui small image" src="{{company.logo.url}}"></th> 
+                        <th> {{company.name}}</th> 
+                        <th> {{company.category}} </th>
+                        <th> {{company.brief}} </th>
+                        <th> {{company.recruit_info}}</th> 
+                    </tr>    
+                {% endfor %} 
+            </tbody>
+        </table>    
+{% endblock %}
