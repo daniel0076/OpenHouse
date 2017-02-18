@@ -16,7 +16,7 @@ import datetime
 import json
 import logging
 from ipware.ip import get_real_ip
-
+from company.models import Company
 logger = logging.getLogger('recruit')
 
 @login_required(login_url='/company/login/')
@@ -525,3 +525,11 @@ def sponsorship_admin(request):
     sponsorships = SponsorShip.objects.all()
     companys = SponsorShip.objects.all()
     return render(request, 'recruit/admin/sponsorship.html', locals())
+    
+    
+def list_jobs(request):
+    recruit_companys = RecruitSignup.objects.all()
+    companys = []
+    for company in recruit_companys:
+        companys.append(Company.objects.get(cid=company.cid))  
+    return render(request,'recruit/public/list_jobs.html',locals())  

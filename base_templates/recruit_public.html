@@ -1,0 +1,15 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block 'body' %}
+    <div class="ui grid">
+        <div class="three wide column">
+            <div class="ui vertical menu">
+                <a class="item" href="{%url 'list_jobs' %}">職缺列表</a>
+            </div>    
+        </div>
+        <div class="eleven wide column">
+        {% block 'content' %}
+        {% endblock %}
+        </div>
+    </div> 
+{% endblock %}
