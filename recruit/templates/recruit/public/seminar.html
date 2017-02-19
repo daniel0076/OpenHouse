@@ -40,13 +40,33 @@
     {% endfor %}
 </ul>
 
-<table class="ui celled table">
-    <thead>
-        <th>
-            {% for slot in slot_info %}
-                <tr>{{slot}}</tr>
-            {% endfor %} 
-        </th>
-    </thead>
+<table class="ui celled table" style="text-align:center">
+    {% for week in week_info %}
+        <thead>
+            <tr>
+                <th>時間</th>
+                {% for weekday in week %}
+                <th> {{weekday.date.month }}/{{weekday.date.day}} </th>
+                {% endfor %} 
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{recruit_config.session_1_start}}~{{recruit_config.session_1_end}}</td>
+                {% for weekday in week %}
+                <td style="color:{{weekday.noon.place.place}}">{{weekday.noon.company}}</td>
+                {% endfor %} 
+            </tr>
+            <tr>    
+                <td>{{recruit_config.session_2_start}}~{{recruit_config.session_2_end}}</td>
+            </tr>
+            <tr>
+                <td>{{recruit_config.session_3_start}}~{{recruit_config.session_3_end}}</td>
+            </tr>
+            <tr>
+                <td>{{recruit_config.session_4_start}}~{{recruit_config.session_4_end}}</td>
+            </tr>
+        </tbody>
+    {% endfor %}
 </table>
 {% endblock %}

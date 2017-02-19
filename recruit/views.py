@@ -539,20 +539,24 @@ def seminar(request):
     recruit_config = RecruitConfigs.objects.all()[0]
     start_date = recruit_config.seminar_start_date
     end_date = recruit_config.seminar_end_date
-    week_num = end_date.isocalendar()[1] - start_date.isocalendar()[1] + 1
+    week_num = range(end_date.isocalendar()[1] - start_date.isocalendar()[1] + 1)
     week_info = []
-    for week in range(week_num):
+    for week in week_num:
         weekday_info = []
         for weekday in range(5):
             today = start_date + timedelta(days=week*7 + weekday - start_date.isocalendar()[2] + 1)  
-            noon = SeminarSlot.objects.filter(session='noon').first()
+            noon = SeminarSlot.objects.filter(date=today,session='noon').first()
             night1= SeminarSlot.objects.filter(date=today,session='night1').first()
+            night2= SeminarSlot.objects.filter(date=today,session='night2').first()
+            night3= SeminarSlot.objects.filter(date=today,session='night3').first()
             slot_info = { 
+                'date': today,
                 'noon': noon, 
                 'night1':night1,
+                'night2':night2,
+                'night3':night3,
             }
             weekday_info.append(slot_info)
         week_info.append(weekday_info)
-    print(week_info)
     locations = SlotColor.objects.all() 
     return render(request,'recruit/public/seminar.html',locals())  
