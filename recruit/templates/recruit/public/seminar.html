@@ -1,0 +1,52 @@
+{% extends 'recruit_public.html' %}
+{% block 'content' %}
+<h1 class="ui header">說明會</h1>
+<h2 class="ui dividing header">活動時間</h2>
+<ol class="ui list">
+    <li><p>日期：2017年3月2日(四) ~ 3月24日(五)</p>
+        <p>舉辦地點: 國立交通大學浩然圖書館國際會議廳、交映樓國際會議廳、工程四館合勤講堂等</p>
+    </li>
+    <li>
+        <p>時間：午間場次12：10~13：00與13:20~14:10，晚間場次17：40~18：30與18：50~19：40</p>
+    </li>
+</ol>
+<h2 class="ui dividing header">集點規則</h2>
+<ol class="ui list">
+    <li><p>集點活動自106年3月2日至106年3月24日止，參加對象為交通大學在學學生（105年下學期需完成註冊)</p></li>
+    <li><p>本集點卡登載之企業說明會方列入本次活動</p></li>
+    <li><p>本次集點卡活動採紙本集點或電子集點，每人每場次限集一點，兩者擇一；兌獎時恕不接受以合併方式兌換獎品</p></li>
+    <li><p>若採紙本集點，每場次結束後，可選擇任一方格處蓋章，達成指定數量之點數，即可兌換相應之獎品，但一張集點卡限兌換一項獎品</p></li>
+    <li><p>若採電子集點，每場次結束後，使用交大學生證進行靠卡動作，電腦螢幕顯示累積點數，即完成集點，達成指定數量之點數，即可兌換相應之獎品</p></li> 
+</ol>
+<p style="color:red">注意事項</p>
+<ol>
+    <li style="color:red">請依工作人員指示排隊集點，如點數有缺漏應立即於現場反應，若非當場次，恕不接受補登</li>
+    <li style="color:red">獎品兌換期限至106年3月30日16時止，逾時不候；各項獎品數量有限，請儘速兌換以免向隅</li>
+    <li style="color:red">兌換人請務必攜帶交大學生證，至就輔組（資訊技術中心三樓）進行兌換作業，須為本人，不接受代領</li>
+    <li style="color:red">Open House與就輔組保有變更所有活動規則與獎項內容之權利</li>
+</ol>
+<h2 class="ui dividing header">集點獎項</h2>
+<ul class="ui list">
+    <li>13點：CITY CAFE咖啡券乙張，共200份</li>
+    <li>26點：全家$100元商品卡乙張，共100份</li>
+    <li>38點：威秀影城電影票兩張，共50份</li>
+    <li>50點：西堤套餐禮券兩張或$1,000元郵政禮券乙張，共12份</li>
+</ul>
+<h1 class="ui dividing header">場次時間表</h1>
+<ul>
+    <p> 場地資訊</p>
+    {%for location in locations %}
+        <li style="color:{{location.css_color}}"> {{location.place}} </li>
+    {% endfor %}
+</ul>
+
+<table class="ui celled table">
+    <thead>
+        <th>
+            {% for slot in slot_info %}
+                <tr>{{slot}}</tr>
+            {% endfor %} 
+        </th>
+    </thead>
+</table>
+{% endblock %}
