@@ -17,6 +17,7 @@ import json
 import logging
 from ipware.ip import get_real_ip
 from company.models import Company
+from datetime import timedelta
 logger = logging.getLogger('recruit')
 
 @login_required(login_url='/company/login/')
@@ -533,3 +534,25 @@ def list_jobs(request):
     for company in recruit_companys:
         companys.append(Company.objects.get(cid=company.cid))  
     return render(request,'recruit/public/list_jobs.html',locals())  
+    
+def seminar(request):
+    recruit_config = RecruitConfigs.objects.all()[0]
+    start_date = recruit_config.seminar_start_date
+    end_date = recruit_config.seminar_end_date
+    week_num = end_date.isocalendar()[1] - start_date.isocalendar()[1] + 1
+    week_info = []
+    for week in range(week_num):
+        weekday_info = []
+        for weekday in range(5):
+            today = start_date + timedelta(days=week*7 + weekday - start_date.isocalendar()[2] + 1)  
+            noon = SeminarSlot.objects.filter(session='noon').first()
+            night1= SeminarSlot.objects.filter(date=today,session='night1').first()
+            slot_info = { 
+                'noon': noon, 
+                'night1':night1,
+            }
+            weekday_info.append(slot_info)
+        week_info.append(weekday_info)
+    print(week_info)
+    locations = SlotColor.objects.all() 
+    return render(request,'recruit/public/seminar.html',locals())  

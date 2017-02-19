@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     url(r'^jobs/$',views.list_jobs,name='list_jobs'),    
+    url(r'^seminar/$',views.seminar,name='seminar'),
 ]
