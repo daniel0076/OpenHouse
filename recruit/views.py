@@ -559,4 +559,10 @@ def seminar(request):
             weekday_info.append(slot_info)
         week_info.append(weekday_info)
     locations = SlotColor.objects.all() 
-    return render(request,'recruit/public/seminar.html',locals())  
+    return render(request,'recruit/public/seminar.html',locals()) 
+
+def jobfair(request):
+    return render(request,'recruit/public/jobfair.html',locals()) 
+    
+def public(request):
+    return render(request,'recruit/public/public.html',locals())    
