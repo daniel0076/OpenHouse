@@ -12,11 +12,12 @@ def company_visit_info(request,id):
     return render(request, "visit/visit_info.html", locals())
 
 def company_visit_apply(request,id):
-    event = get_object_or_404(CompanyVisit, id=id)
+    event = get_object_or_404(CompanyVisit,id=id)
+    init_data={'event': event}
+    form = StudentApplyForm(initial=init_data)
     if(request.method=='POST'):
-        form = StudentApplyForm(data=request.data)
+        data = request.POST.copy()
+        form = StudentApplyForm(data)
         if form.is_valid():
             form.save()
-    else:
-        form = StudentApplyForm()
     return render(request, "visit/company_visit_apply.html", locals())

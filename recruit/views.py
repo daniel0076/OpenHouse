@@ -1,6 +1,6 @@
 from django.core import urlresolvers
 from django.shortcuts import render,redirect
-from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm
+from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm,StudentForm
 from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
 from .models import SeminarSlot, SlotColor, SeminarOrder, SeminarInfo
@@ -565,4 +565,15 @@ def jobfair(request):
     return render(request,'recruit/public/jobfair.html',locals()) 
     
 def public(request):
-    return render(request,'recruit/public/public.html',locals())    
+    return render(request,'recruit/public/public.html',locals()) 
+ 
+def reg_card(request):
+    if(request.POST):
+        form = StudentForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors.as_data())
+    else:
+        form = StudentForm()
+    return render(request,'recruit/admin/reg_card.html',locals())   

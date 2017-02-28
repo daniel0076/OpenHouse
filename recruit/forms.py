@@ -1,5 +1,5 @@
 from django import forms
-from .models import RecruitSignup,JobfairInfo, CompanySurvey, SeminarInfo
+from .models import RecruitSignup,JobfairInfo, CompanySurvey, SeminarInfo,Student
 from django.forms import ModelForm
 
 class RecruitSignupForm(ModelForm):
@@ -51,3 +51,8 @@ class SurveyForm(forms.ModelForm):
         return survey
 
 
+class StudentForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        fields = fields = ['card_num','student_id','phone']

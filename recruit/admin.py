@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import url
 from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip,\
-    Files,RecruitConfigs,CompanySurvey, Company, SeminarSlot, SlotColor, SeminarOrder, SeminarInfo
+    Files,RecruitConfigs,CompanySurvey, Company, SeminarSlot, SlotColor, SeminarOrder, SeminarInfo,Student
 from .models import JobfairOrder
 from company.models import Company
 from recruit import export
@@ -16,6 +16,10 @@ class RecruitConfigAdmin(admin.ModelAdmin):
         return '活動設定'
 admin.site.register(RecruitConfigs, RecruitConfigAdmin)
 
+class StudentAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Student,StudentAdmin)
+        
 class RecruitSignupAdmin(admin.ModelAdmin):
     search_fields = ('cid','seminar',)
     list_display = ('cid','company_name','seminar','jobfair','career_tutor','company_visit','lecture','payment')
