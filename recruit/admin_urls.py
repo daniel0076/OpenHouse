@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'^export_ad/$', export.ExportAdFormat,name="recruit_export_ad"),
     url(r'^export_seminar_info/$',export.export_seminar_info,name="recruit_export_seminar_info"),
     url(r'^export_jobfair_info/$',export.export_jobfair_info,name="recruit_export_jobfair_info"),
-
+    url(r'^reg_card/$',views.reg_card,name='reg_card'),
 	#export urls are defined in admin.py
 ]

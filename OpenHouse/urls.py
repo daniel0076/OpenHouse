@@ -34,4 +34,5 @@ urlpatterns = [
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^mentor/', include('careermentor.urls')),
     url(r'^recruit/',include('recruit.public_urls')),
+    url(r'^visit/',include('company_visit.urls')),
 ]

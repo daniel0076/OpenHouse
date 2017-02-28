@@ -1,0 +1,58 @@
+{% extends 'general_base.html' %}
+{% load staticfiles %}
+{% block 'custom_head' %}
+    <link href={% static "css/visit/visit_form.css" %} rel="stylesheet">
+{% endblock %}
+{% block 'body' %}
+<form class="ui form" action="." method="post">
+    {%csrf_token%}
+    <div class="field">
+        <label>{{form.event.lable}}</label>
+        {{form.event}}
+    </div>
+    <div class="field">
+            <label>{{form.name.label}}</label>
+            {{form.name}}
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>{{form.date.label}}</label>
+            {{form.date}}
+        </div>
+        <div class="field">
+            <label>{{form.SSN.label}}</label>
+            {{form.SSN}}
+        </div>
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>{{form.mobile.label}}</label>
+            {{form.mobile}}
+        </div>
+        <div class="field">
+            <label>{{form.email.label}}</label>
+            {{form.email}}
+        </div>
+    </div>
+    <div class="fields">
+        <div class="six wide field">
+            <label>{{form.department.label}}</label>
+            {{form.department}}
+        </div>
+        <div class="six wide field">
+            <label>{{form.student_id.label}}</label>
+            {{form.student_id}}
+        </div>
+        <div class="two wide field">
+            <label>{{form.gender.label}}</label>
+            {{form.gender}}
+        </div>
+    </div>
+    <div class="field">
+        <label>{{form.country.label}}</label>
+        {{form.country}}
+    </div>
+    <button class="ui teal button" type="submit">送出</button>
+
+</form>
+{% endblock %}

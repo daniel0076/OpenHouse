@@ -1,0 +1,48 @@
+{% extends 'general_base.html' %} 
+{% load staticfiles %}
+{% block 'custom_head' %}
+<link href={% static "css/visit/visit_info.css" %} rel="stylesheet">
+{% endblock %}
+{% block 'body' %}
+<div class="ui segment" id="visit_info">
+    <h3 class="ui centered header">活動詳細資訊</h3>
+    <table class="ui celled table">
+        <tbody>
+            <tr>
+                <td>標題(Title)</td>
+                <td>{{event.title}}</td>
+            </tr>
+            <tr>
+                <td>企業(Company)</td>
+                <td>{{event.company}}</td>
+            </tr>
+            <tr>
+                <td>日期</td>
+                <td>{{event.date}}</td>
+            </tr>
+            <tr>
+                <td>時間</td>
+                <td>{{event.start_time}}~{{event.end_time}}</td>
+            </tr>
+            <tr>
+                <td>行程介紹</td>
+                <td>{{event.intro}}</td>
+            </tr>
+            <tr>
+                <td>建議科系</td>
+                <td>{{event.departments}}</td>
+            </tr>
+            <tr>
+                <td>參訪地點</td>
+                <td>{{event.place}}</td>
+            </tr>
+            <tr>
+                <td>人數限制</td>
+                <td>{{event.limit}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="ui button" href={% url 'company_visit_index' %}>回列表</a>
+
+</div>
+{% endblock %}
