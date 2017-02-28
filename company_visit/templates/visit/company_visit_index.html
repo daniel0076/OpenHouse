@@ -1,0 +1,55 @@
+{% extends 'general_base.html' %}
+{% load staticfiles %}
+
+{% block 'custom_head' %}
+<link href={% static "css/visit/visit.css" %} rel="stylesheet">
+{% endblock %}
+
+
+{% block 'body' %}
+<div id="visit_seg">
+    <h1 >企業參訪</h1>
+    <h3 >Open House及就輔組每年辦理企業參觀，藉由參訪以提升交大同學對企業的實際瞭解，對同學籌劃未來就業藍圖有所助益。</h3>
+    <ul class="ui list">
+        <li>報名說明：參加順序以應屆畢業碩博士研究生與大四學生、該場企業優先篩選科系優先；完成線上報名後(非為候補名單)，需至就輔組繳納保證金100元後才視為完成報名程序，未完成報名上述作業恕不保留名額</li>
+        <li>
+            取消退費說明：
+            <ol class="ui list">
+                <li><p>如因故臨時無法參加，請於活動前兩個工作日主動告知，可退還保證金。(例如4/20中午參訪，請最晚於4/18中午12點前以電話或email來信取消)</p></li>
+                <li><p>如逾時未告知則無法退費。 (已完成辦理保險與餐盒訂購作業，恕無法退費)</p></li>
+            </ol>
+        </li>
+        <li>
+            聯絡人：對企業參訪有任何問題，請洽就業輔導組 
+            03-5712121分機31365或50659(吳小姐/黃小姐) email： contact@openhouse.nctu.edu.tw
+        </li>
+    </ul>
+    <div class="ui header">企業參訪</div>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>標題</th>
+                <th>廠商</th>
+                <th>日期</th>
+                <th>時間</th>
+                <th>參訪地點</th>
+                <th>人數限制</th>
+                <th>報名</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td><a href="{{event.get_absolute_url}}">{{event.title}}</a></td>
+                    <td>{{event.company}}</td>
+                    <td>{{event.date}}</td>
+                    <td>{{event.start_time}}~{{event.end_time}}</td>
+                    <td>{{event.place}}</td>
+                    <td>{{event.limit}}</td>
+                    <td><a href={% url 'company_visit_apply' event.id %}>報名</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
