@@ -577,7 +577,7 @@ def reg_card(request):
             print(ui_message)
         else:
             ui_message = {"type": "error","msg": "註冊失敗"}
-            #print(form.errors.as_data())
+
     else:
         form = StudentForm()
     return render(request,'recruit/admin/reg_card.html',locals())

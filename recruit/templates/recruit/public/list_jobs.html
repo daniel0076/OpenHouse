@@ -13,11 +13,11 @@
             <tbody>
                 {% for company in companys %}
                     <tr> 
-                        <th> <img class="ui small image" src="{{company.logo.url}}"></th> 
-                        <th> {{company.name}}</th> 
-                        <th> {{company.category}} </th>
-                        <th rowspan="2"> {{company.brief}} </th>
-                        <th> {{company.recruit_info}}</th> 
+                        <td> <img class="ui small image" src="{{company.logo.url}}"></td> 
+                        <td> {{company.name}}</td> 
+                        <td> {{company.category}} </td>
+                        <td> {{company.brief}} </td>
+                        <td> {{company.recruit_info}}</td> 
                     </tr>    
                 {% endfor %} 
             </tbody>
