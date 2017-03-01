@@ -526,15 +526,15 @@ def sponsorship_admin(request):
     sponsorships = SponsorShip.objects.all()
     companys = SponsorShip.objects.all()
     return render(request, 'recruit/admin/sponsorship.html', locals())
-    
-    
+
+
 def list_jobs(request):
     recruit_companys = RecruitSignup.objects.all()
     companys = []
     for company in recruit_companys:
-        companys.append(Company.objects.get(cid=company.cid))  
-    return render(request,'recruit/public/list_jobs.html',locals())  
-    
+        companys.append(Company.objects.get(cid=company.cid))
+    return render(request,'recruit/public/list_jobs.html',locals())
+
 def seminar(request):
     recruit_config = RecruitConfigs.objects.all()[0]
     start_date = recruit_config.seminar_start_date
@@ -544,29 +544,29 @@ def seminar(request):
     for week in week_num:
         weekday_info = []
         for weekday in range(5):
-            today = start_date + timedelta(days=week*7 + weekday - start_date.isocalendar()[2] + 1)  
+            today = start_date + timedelta(days=week*7 + weekday - start_date.isocalendar()[2] + 1)
             noon = SeminarSlot.objects.filter(date=today,session='noon').first()
             night1= SeminarSlot.objects.filter(date=today,session='night1').first()
             night2= SeminarSlot.objects.filter(date=today,session='night2').first()
             night3= SeminarSlot.objects.filter(date=today,session='night3').first()
-            slot_info = { 
+            slot_info = {
                 'date': today,
-                'noon': noon, 
+                'noon': noon,
                 'night1':night1,
                 'night2':night2,
                 'night3':night3,
             }
             weekday_info.append(slot_info)
         week_info.append(weekday_info)
-    locations = SlotColor.objects.all() 
-    return render(request,'recruit/public/seminar.html',locals()) 
+    locations = SlotColor.objects.all()
+    return render(request,'recruit/public/seminar.html',locals())
 
 def jobfair(request):
-    jobfair_imgs = Files.objects.filter(FILE_CAT='就博會攤位圖-新')
-    return render(request,'recruit/public/jobfair.html',locals()) 
-    
+    jobfair_imgs = Files.objects.filter(category='就博會攤位圖-新')
+    return render(request,'recruit/public/jobfair.html',locals())
+
 def public(request):
-    return render(request,'recruit/public/public.html',locals()) 
+    return render(request,'recruit/public/public.html',locals())
 
 @staff_member_required
 def reg_card(request):
