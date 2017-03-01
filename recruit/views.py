@@ -562,6 +562,7 @@ def seminar(request):
     return render(request,'recruit/public/seminar.html',locals()) 
 
 def jobfair(request):
+    jobfair_imgs = Files.objects.filter(FILE_CAT='就博會攤位圖-新')
     return render(request,'recruit/public/jobfair.html',locals()) 
     
 def public(request):

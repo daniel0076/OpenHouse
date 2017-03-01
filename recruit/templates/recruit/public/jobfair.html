@@ -1,4 +1,5 @@
 {% extends 'recruit_public.html' %}
+{% load staticfiles %}
 {% block 'content' %}
 <h1 class="ui header">Open House企業校園徵才就業博覽會</h1>
 <h2 class="ui dividing header">時間與地點</h2>
@@ -15,5 +16,10 @@
 </ul>
 <h2 class="ui dividing header">抽獎活動</h2>
 <p>近期推出</p>
+
+<h2 class="ui dividing header">就博會攤位圖</h2>
+{% for img in jobfair_imgs %}
+    <img class="ui image" src="{{img.upload_file.url}}">
+{% endfor %}
 
 {% endblock %}
