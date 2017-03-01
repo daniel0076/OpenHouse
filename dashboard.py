@@ -61,6 +61,11 @@ class CustomDashboard(Dashboard):
             _('校徵集點'),
             children=[
                 {
+                    'title': _('校徵說明會集點'),
+                    'url': '/admin/recruit/collect_points/',
+                    'external': False,
+                },
+                {
                     'title': _('學生證註冊'),
                     'url': '/admin/recruit/reg_card/',
                     'external': False,

@@ -56,3 +56,4 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = fields = ['card_num','student_id','phone']
+

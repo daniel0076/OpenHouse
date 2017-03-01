@@ -566,7 +566,8 @@ def jobfair(request):
     
 def public(request):
     return render(request,'recruit/public/public.html',locals()) 
- 
+
+@staff_member_required
 def reg_card(request):
     if(request.POST):
         form = StudentForm(data=request.POST)
@@ -576,4 +577,9 @@ def reg_card(request):
             print(form.errors.as_data())
     else:
         form = StudentForm()
-    return render(request,'recruit/admin/reg_card.html',locals())   
+    return render(request,'recruit/admin/reg_card.html',locals())
+
+@staff_member_required
+def collect_points(request):
+    seminar_list = SeminarSlot.objects.all() 
+    return render(request,'recruit/admin/collect_points.html',locals())   
