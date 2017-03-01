@@ -572,7 +572,8 @@ def public(request):
 @staff_member_required
 def reg_card(request):
     if(request.POST):
-        form = StudentForm(data=request.POST)
+        student = Student.objects.get(card_num=request.POST['card_num']) 
+        form = StudentForm(data=request.POST,instance=student)
         if form.is_valid():
             form.save()
             ui_message = {"type": "green","msg": "註冊成功"}
@@ -611,3 +612,10 @@ def collect_points(request):
         seminar_list.remove(current_seminar)
         seminar_list.insert(0,current_seminar)
     return render(request,'recruit/admin/collect_points.html', locals())
+        
+def query_points(request):
+    student = None
+    if(request.POST):
+        student = Student.objects.filter(student_id = request.POST['student_id'],phone = request.POST['phone']).first()
+        attendances = student.attendance.all()  
+    return render(request,'recruit/public/query_points.html',locals())
