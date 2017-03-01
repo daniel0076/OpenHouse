@@ -5,14 +5,14 @@
 <link href={% static "node_modules/semantic-ui/dist/semantic.min.css" %} rel="stylesheet">
 <link href={% static "css/rdss/collect_points.css" %} rel="stylesheet">
 <script src={% static "node_modules/semantic-ui/dist/semantic.min.js" %}></script>
-<script src={% static "js/collect_points.js" %}></script>
+<script src={% static "js/recruit/collect_points.js" %}></script>
 {% endblock %}
 
 {% block content %}
     <div class="ui segment">
         <div class="ui two column very relaxed grid">
             <div class="column">
-                <form class="ui form" action="." method="post">
+                <form class="ui form" action="." method="post" id="collect_points">
                     {% csrf_token %}
                     <div class="ui field">
                         <label>校徵場次</label>
@@ -27,16 +27,16 @@
                         <input name="card_num" maxlength=10 autofocus>
 
                     </div>
-                     <button class="ui teal button" type="submit">集點</button>
+                     <button class="ui teal submit button" type="submit">集點</button>
                 </form>
             </div>
             <div class="ui vertical divider">
             </div>
             <div class="center aligned column">
-                <h1>卡號: </h1>
-                <h1>學號: </h1>
-                <h1>目前點數: </h1>
-
+                <h1>卡號: {{student_obj.card_num}}</h1>
+                <h1>學號: {{student_obj.student_id | default:"未註冊"}}</h1>
+                <h1>目前點數: {{student_obj.get_points}}</h1>
+                <h1>已兌換:{{student_obj.get_redeem_points}}</h1>
             </div>
     </div>
 
