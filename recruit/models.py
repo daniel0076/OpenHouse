@@ -441,6 +441,7 @@ class SlotColor(models.Model):
     def __str__(self):
         return self.place
         
+
 class Student(models.Model):
     card_num = models.CharField(u'學生證卡號',max_length=20,primary_key=True) 
     student_id = models.CharField(u'學號',max_length=10,blank=True,null=True)
@@ -472,3 +473,4 @@ class ExchangePrize(models.Model):
     student = models.ForeignKey(Student,to_field='card_num',verbose_name='u學生證卡號')
     points = models.IntegerField(u'所需點數')
     prize = models.CharField(u'獎品', max_length=100)
+
