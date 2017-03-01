@@ -21,5 +21,14 @@
 {% for img in jobfair_imgs %}
     <img class="ui image" src="{{img.upload_file.url}}">
 {% endfor %}
+<div class="ui six column padded grid">
+    {% for slot in jobfair_slots %}
+		<div class="column" style="padding:0.5rem" >
+            <div class='ui blue center aligned segment'>
+                <p>攤位{{slot.serial_no}}: {{ slot.company}}</p>
+			</div>
+		</div>
+    {% endfor %}
+</div>
 
 {% endblock %}
