@@ -451,8 +451,9 @@ class Student(models.Model):
         return redeem_points
 
     def get_points(self):
-        points = sum([i.points for i in self.attendance.objects.all()])
-        redeem_points = self.get_redeem_points()
+        points = sum([i.points for i in self.attendance.all()])
+        redeem_records = ExchangePrize.objects.filter(student=self)
+        redeem_points = sum([i.points for i in redeem_records])
         return points - redeem_points
     class Meta:
         verbose_name = u'說明會學生'

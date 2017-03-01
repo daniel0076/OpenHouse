@@ -588,4 +588,5 @@ def collect_points(request):
         student_obj,create = Student.objects.get_or_create(card_num=card_num)
         seminar_obj = SeminarSlot.objects.get(id=seminar_id)
         StuAttendance.objects.get_or_create(student=student_obj,seminar=seminar_obj)
+
     return render(request,'recruit/admin/collect_points.html', locals())
