@@ -617,5 +617,5 @@ def query_points(request):
     student = None
     if(request.POST):
         student = Student.objects.filter(student_id = request.POST['student_id'],phone = request.POST['phone']).first()
-        attendances = student.attendance.all()  
+        records = StuAttendance.objects.filter(student=student)
     return render(request,'recruit/public/query_points.html',locals())
