@@ -444,6 +444,7 @@ class Student(models.Model):
     card_num = models.CharField(u'學生證卡號',max_length=20,primary_key=True) 
     student_id = models.CharField(u'學號',max_length=10,blank=True,null=True)
     phone = models.CharField(u'手機',max_length=15,blank=True,null=True)
+    name = models.CharField(u'姓名',max_length=30,blank=True,null=True)
     attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
     def get_redeem_points(self):
         redeem_records = ExchangePrize.objects.filter(student=self)
@@ -464,6 +465,7 @@ class StuAttendance(models.Model):
     seminar = models.ForeignKey(SeminarSlot,to_field='id')
     class Meta:
         unique_together = ('student','seminar')
+
 
 class ExchangePrize(models.Model):
     student = models.ForeignKey(Student,to_field='card_num',verbose_name='u學生證卡號')
