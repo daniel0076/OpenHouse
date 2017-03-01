@@ -563,7 +563,7 @@ def seminar(request):
 
 def jobfair(request):
     jobfair_imgs = Files.objects.filter(category='就博會攤位圖-新')
-    jobfair_slots = JobfairSlot.objects.all()
+    jobfair_slots = JobfairSlot.objects.all().order_by('serial_no')
     return render(request,'recruit/public/jobfair.html',locals())
 
 def public(request):

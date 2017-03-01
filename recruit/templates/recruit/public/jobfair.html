@@ -12,7 +12,7 @@
     <li>09:00 開幕</li>
     <li>10:00-16:00 逛攤位集點遊戲、抽獎活動</li>
     <li>16:00 閉幕大抽獎</li>
-    
+
 </ul>
 <h2 class="ui dividing header">抽獎活動</h2>
 <p>近期推出</p>
@@ -23,11 +23,13 @@
 {% endfor %}
 <div class="ui six column padded grid">
     {% for slot in jobfair_slots %}
-		<div class="column" style="padding:0.5rem" >
-            <div class='ui blue center aligned segment'>
-                <p>攤位{{slot.serial_no}}: {{ slot.company}}</p>
-			</div>
-		</div>
+		{% if slot.company %}
+            <div class="column" style="padding:0.5rem" >
+                <div class='ui blue center aligned segment'>
+                    <p>攤位{{slot.serial_no}}: {{ slot.company}}</p>
+                </div>
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
 
