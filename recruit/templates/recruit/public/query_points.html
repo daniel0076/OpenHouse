@@ -1,0 +1,38 @@
+{% extends "recruit_public.html" %}
+{% block 'content' %}
+<h1>校園徵才說明會 集點查詢</h1>
+<p>需先在會場註冊學號及手機，才能使用線上查集點功能</p>
+<form class="ui form" action="." method="post">
+    {% csrf_token %}
+    <div class="two fields"> 
+        <div class="field">
+            <label>學號</label>
+            <input type="text" name="student_id"> 
+        </div>
+        <div class="field">
+            <label>手機</label>
+            <input type="text" name="phone"> 
+        </div>
+    </div> 
+    <button class="ui teal button" type="submit">查詢</button>
+</form>
+{% if  student %}
+<h1>結果</h1>
+<div class="ui segment">
+    <div class="ui two column middle aligned very relaxed grid">
+        <div class="column">
+            <h2>學號: {{student.student_id}}</h2>
+            <h2>手機: {{student.phone}}</h2>
+            <h2>學生證卡號: {{student.card_num}}</h2>
+            <h2>集點: {{student.get_points}}</h2>
+        </div>
+        <div class="column">
+            <h2>參加場次</h2>
+            {% for record in records %}
+                <h3>{{record.seminar.date}} {{record.seminar.company}} | {{record.seminar.points}}點</h3>
+            {% endfor %}         
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
