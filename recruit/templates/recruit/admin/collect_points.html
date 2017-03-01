@@ -10,20 +10,34 @@
 
 {% block content %}
     <div class="ui segment">
-        <form class="ui form">
-            <div class="ui field">
-                <label>校徵場次</label>
-                <select class="ui fluid dropdown">
-                    {% for seminar in seminar_list %}
-                         <option value="seminar.id">{{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.company}}</option>
-                    {% endfor %}
-                </select>
+        <div class="ui two column very relaxed grid">
+            <div class="column">
+                <form class="ui form" action="." method="post">
+                    {% csrf_token %}
+                    <div class="ui field">
+                        <label>校徵場次</label>
+                        <select class="ui dropdown" name="seminar_id">
+                            {% for seminar in seminar_list %}
+                                 <option value={{seminar.id}}>{{seminar.date|date:"m/d (D)"}}-{{seminar.session}}({{seminar.place}})-{{seminar.company}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="ui field">
+                        <label>學生證卡號</label>
+                        <input name="card_num" maxlength=10 autofocus>
+
+                    </div>
+                     <button class="ui teal button" type="submit">集點</button>
+                </form>
             </div>
-            <div class="ui field">
-                <label>學生證卡號</label>
-                <input name="card_num" maxlength=10 autofocus>
+            <div class="ui vertical divider">
             </div>
-        </form>
+            <div class="center aligned column">
+                <h1>卡號: </h1>
+                <h1>學號: </h1>
+                <h1>目前點數: </h1>
+
+            </div>
     </div>
 
 {% endblock %}

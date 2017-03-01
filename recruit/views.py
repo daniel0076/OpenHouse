@@ -4,7 +4,7 @@ from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm,S
 from .models import RecruitConfigs, SponsorItem, Files
 from .models import RecruitSignup, SponsorShip, CompanySurvey
 from .models import SeminarSlot, SlotColor, SeminarOrder, SeminarInfo
-from .models import JobfairSlot, JobfairOrder, JobfairInfo
+from .models import JobfairSlot, JobfairOrder, JobfairInfo,StuAttendance,Student
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -573,13 +573,19 @@ def reg_card(request):
         form = StudentForm(data=request.POST)
         if form.is_valid():
             form.save()
-        else:
-            print(form.errors.as_data())
+        #else:
+            #print(form.errors.as_data())
     else:
         form = StudentForm()
     return render(request,'recruit/admin/reg_card.html',locals())
 
 @staff_member_required
 def collect_points(request):
-    seminar_list = SeminarSlot.objects.all() 
-    return render(request,'recruit/admin/collect_points.html',locals())   
+    seminar_list = SeminarSlot.objects.all()
+    if(request.POST):
+        card_num = request.POST['card_num']
+        seminar_id = request.POST['seminar_id']
+        student_obj,create = Student.objects.get_or_create(card_num=card_num)
+        seminar_obj = SeminarSlot.objects.get(id=seminar_id)
+        StuAttendance.objects.get_or_create(student=student_obj,seminar=seminar_obj)
+    return render(request,'recruit/admin/collect_points.html', locals())
