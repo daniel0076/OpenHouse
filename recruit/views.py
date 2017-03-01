@@ -598,6 +598,7 @@ def collect_points(request):
     else:
         current_session = "night3"
     current_seminar = SeminarSlot.objects.filter(date=today,session=current_session).first()
+    print(current_seminar)
     seminars = SeminarSlot.objects.all()
     if(request.POST):
         card_num = request.POST['card_num']
@@ -606,6 +607,7 @@ def collect_points(request):
         seminar_obj = SeminarSlot.objects.get(id=seminar_id)
         StuAttendance.objects.get_or_create(student=student_obj,seminar=seminar_obj)
     seminar_list = list(seminars)
-    seminar_list.remove(current_seminar)
-    seminar_insert(0,current_seminar)
+    if(current_seminar):
+        seminar_list.remove(current_seminar)
+        seminar_list.insert(0,current_seminar)
     return render(request,'recruit/admin/collect_points.html', locals())
