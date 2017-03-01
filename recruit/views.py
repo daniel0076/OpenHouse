@@ -586,12 +586,26 @@ def reg_card(request):
 
 @staff_member_required
 def collect_points(request):
-    seminar_list = SeminarSlot.objects.all()
+    config = RecruitConfigs.objects.all()[0]
+    today = datetime.datetime.now().date()  
+    now = datetime.datetime.now().time()
+    if now <config.session_1_start:
+        current_session = "noon"
+    elif  now > config.session_1_start and now < config.session_2_start:
+        current_session = "night1"
+    elif now > config.session_2_start and now < config.session_3_start:
+        current_session = "night2"
+    else:
+        current_session = "night3"
+    current_seminar = SeminarSlot.objects.filter(date=today,session=current_session).first()
+    seminars = SeminarSlot.objects.all()
     if(request.POST):
         card_num = request.POST['card_num']
         seminar_id = request.POST['seminar_id']
         student_obj,create = Student.objects.get_or_create(card_num=card_num)
         seminar_obj = SeminarSlot.objects.get(id=seminar_id)
         StuAttendance.objects.get_or_create(student=student_obj,seminar=seminar_obj)
-
+    seminar_list = list(seminars)
+    seminar_list.remove(current_seminar)
+    seminar_insert(0,current_seminar)
     return render(request,'recruit/admin/collect_points.html', locals())
