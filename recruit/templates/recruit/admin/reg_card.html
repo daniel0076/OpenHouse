@@ -6,7 +6,11 @@
 <link href={% static "node_modules/semantic-ui/dist/semantic.min.css" %} rel="stylesheet">
 <script src={% static "node_modules/semantic-ui/dist/semantic.min.js" %}></script>
 {% endblock %}
+
 {% block content %}
+    {% if ui_message %}
+        <div class="ui {{ui_message.type}} message">{{ui_message.msg}}</div>
+    {% endif %}
     <div class="ui segment">
         <form action="." class="ui form" method="POST">
             {% csrf_token %}

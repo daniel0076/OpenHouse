@@ -573,7 +573,10 @@ def reg_card(request):
         form = StudentForm(data=request.POST)
         if form.is_valid():
             form.save()
-        #else:
+            ui_message = {"type": "green","msg": "註冊成功"}
+            print(ui_message)
+        else:
+            ui_message = {"type": "error","msg": "註冊失敗"}
             #print(form.errors.as_data())
     else:
         form = StudentForm()
