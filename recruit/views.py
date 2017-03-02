@@ -589,12 +589,12 @@ def reg_card(request):
 def collect_points(request):
     config = RecruitConfigs.objects.all()[0]
     today = datetime.datetime.now().date()  
-    now = datetime.datetime.now().time()
-    if now <config.session_1_start:
+    now = (datetime.datetime.now() - timedelta(minutes=35)).time() 
+    if now <config.session_1_end:
         current_session = "noon"
-    elif  now > config.session_1_start and now < config.session_2_start:
+    elif  now > config.session_2_start and now < config.session_2_end:
         current_session = "night1"
-    elif now > config.session_2_start and now < config.session_3_start:
+    elif now > config.session_2_end and now < config.session_3_end:
         current_session = "night2"
     else:
         current_session = "night3"
