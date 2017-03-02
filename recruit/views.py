@@ -593,7 +593,7 @@ def collect_points(request):
     seminar2 = SeminarSlot.objects.get(date=today,session="night1")
     for student in students:
         StuAttendance.objects.get_or_create(student=student,seminar=seminar1)
-        StuAttendance.objects.get_or_create(student=student,seminar=seminar1)
+        StuAttendance.objects.get_or_create(student=student,seminar=seminar2)
     config = RecruitConfigs.objects.all()[0]
     #today = datetime.datetime.now().date()  
     now = (datetime.datetime.now() - timedelta(minutes=35)).time() 
