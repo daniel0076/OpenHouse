@@ -21,7 +21,7 @@ class StuAttendanceInline(admin.TabularInline):
     extra = 0
 
 class StuAttendanceAdmin(admin.ModelAdmin):
-    pass
+    list_display=['seminar']
 admin.site.register(StuAttendance,StuAttendanceAdmin)
     
     
