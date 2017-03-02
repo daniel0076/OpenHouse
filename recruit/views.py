@@ -572,7 +572,7 @@ def public(request):
 @staff_member_required
 def reg_card(request):
     if(request.POST):
-        student = Student.objects.get(card_num=request.POST['card_num']) 
+        student = Student.objects.get(card_num=request.POST['card_num'])
         form = StudentForm(data=request.POST,instance=student)
         if form.is_valid():
             form.save()
@@ -597,9 +597,12 @@ def collect_points(request):
     config = RecruitConfigs.objects.all()[0]
     #today = datetime.datetime.now().date()  
     now = (datetime.datetime.now() - timedelta(minutes=35)).time() 
+    config = RecruitConfigs.objects.all()[0]
+    today = datetime.datetime.now().date()
+    now = (datetime.datetime.now() - timedelta(minutes=35)).time()
     if now <config.session_1_end:
         current_session = "noon"
-    elif  now > config.session_2_start and now < config.session_2_end:
+    elif  now > config.session_1_end and now < config.session_2_end:
         current_session = "night1"
     elif now > config.session_2_end and now < config.session_3_end:
         current_session = "night2"
@@ -619,7 +622,7 @@ def collect_points(request):
         seminar_list.remove(current_seminar)
         seminar_list.insert(0,current_seminar)
     return render(request,'recruit/admin/collect_points.html', locals())
-        
+
 def query_points(request):
     student = None
     if(request.POST):

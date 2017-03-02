@@ -440,10 +440,10 @@ class SlotColor(models.Model):
 
     def __str__(self):
         return self.place
-        
+
 
 class Student(models.Model):
-    card_num = models.CharField(u'學生證卡號',max_length=20,primary_key=True) 
+    card_num = models.CharField(u'學生證卡號',max_length=20,primary_key=True)
     student_id = models.CharField(u'學號',max_length=10,blank=True,null=True)
     phone = models.CharField(u'手機',max_length=15,blank=True,null=True)
     name = models.CharField(u'姓名',max_length=30,blank=True,null=True)
@@ -461,9 +461,11 @@ class Student(models.Model):
     class Meta:
         verbose_name = u'說明會學生'
         verbose_name_plural = u'說明會學生'
-    
+    def __str__(self):
+        return self.card_num
+
 class StuAttendance(models.Model):
-    student = models.ForeignKey(Student, to_field='card_num') 
+    student = models.ForeignKey(Student, to_field='card_num')
     seminar = models.ForeignKey(SeminarSlot,to_field='id')
     class Meta:
         unique_together = ('student','seminar')

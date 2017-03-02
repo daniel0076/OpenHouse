@@ -23,15 +23,15 @@ class StuAttendanceInline(admin.TabularInline):
 class StuAttendanceAdmin(admin.ModelAdmin):
     list_display=['seminar']
 admin.site.register(StuAttendance,StuAttendanceAdmin)
-    
-    
+
+
 
 class StudentAdmin(admin.ModelAdmin):
     inlines = (StuAttendanceInline,)
     list_display = ('card_num', 'student_id', 'name', 'phone')
 
 admin.site.register(Student,StudentAdmin)
-        
+
 class RecruitSignupAdmin(admin.ModelAdmin):
     search_fields = ('cid','seminar',)
     list_display = ('cid','company_name','seminar','jobfair','career_tutor','company_visit','lecture','payment')
