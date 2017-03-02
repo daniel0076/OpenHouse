@@ -20,6 +20,11 @@ class StuAttendanceInline(admin.TabularInline):
     model = StuAttendance
     extra = 0
 
+class StuAttendanceAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(StuAttendance,StuAttendanceAdmin)
+    
+    
 
 class StudentAdmin(admin.ModelAdmin):
     inlines = (StuAttendanceInline,)
