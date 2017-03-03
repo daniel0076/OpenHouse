@@ -6,8 +6,11 @@
 {% block 'body' %}
 <form class="ui form" action="." method="post">
     {%csrf_token%}
+    {% if message %}
+        <div class="ui red message">報名已額滿，目前排入候補</div>
+    {% endif %}
     <div class="disabled field">
-        <label>參訪公司</label>
+        <label>活動</label>
         {{form.event}}
     </div>
     <div class="field">

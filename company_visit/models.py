@@ -21,11 +21,15 @@ class CompanyVisit(models.Model):
     def get_absolute_url(self):
         return reverse('company_visit_info', args=[self.id])
 
+    def get_people_num(self):
+        students = StudentApply.objects.filter(event=self)
+        return sum([1 for student in students ])
+        
     class Meta:
         managed = True
     
     def __str__(self):
-        return self.company
+        return self.title
 
 class StudentApply(models.Model):
     GENDER = (
@@ -34,7 +38,7 @@ class StudentApply(models.Model):
         (u'other', u'其他'),
     )
     id = models.AutoField(primary_key=True)
-    event = models.ForeignKey(CompanyVisit,to_field='id')
+    event = models.ForeignKey(CompanyVisit,to_field='id',verbose_name=u'場次/編號')
     name = models.CharField(u'姓名', max_length=10)
     student_id = models.CharField(u'學號', max_length=7)
     gender = models.CharField(u'性別', choices=GENDER, max_length=8)

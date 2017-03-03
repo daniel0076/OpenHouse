@@ -1,6 +1,26 @@
 {% extends 'general_base.html' %}
 {% load staticfiles %}
+{% block 'custom_head' %}
+    <link href={% static "css/visit/visit_success.css" %} rel="stylesheet">
+{% endblock %}
 {% block 'body' %}
-
-
+<div id="visit_success">
+    <div class="ui segment"> 
+        <h1 class="ui center aligned  header">報名成功</h1>
+        <table class="ui celled table">
+            <tbody>
+                <tr>
+                    <td>場次</td>
+                    <td>{{form.instance.event}}</td>
+                </tr>
+                {% for item in form %}     
+                    <tr>
+                        <td>{{item.label}}</td>
+                        <td>{{item.value}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

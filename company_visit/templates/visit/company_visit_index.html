@@ -45,7 +45,7 @@
                     <td>{{event.date}}</td>
                     <td>{{event.start_time}}~{{event.end_time}}</td>
                     <td>{{event.place}}</td>
-                    <td>{{event.limit}}</td>
+                    <td>{{event.get_people_num}}/{{event.limit}}</td>
                     <td><a href={% url 'company_visit_apply' event.id %}>報名</a></td>
                 </tr>
             {% endfor %}
