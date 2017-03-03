@@ -40,7 +40,7 @@ class StudentApply(models.Model):
     gender = models.CharField(u'性別', choices=GENDER, max_length=8)
     SSN = models.CharField(u'身分證字號/居留證字號', max_length=15)
     date = models.DateField(u'出生年月日')
-    department = models.CharField(u'系級', max_length=40)
+    department = models.CharField(u'科系與年級', max_length=40)
     mobile = models.CharField(u'手機', max_length=15)
     email = models.EmailField(u'email')
     country = models.CharField(u'國籍', max_length=20, blank=True, null=True)

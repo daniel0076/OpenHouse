@@ -6,8 +6,8 @@
 {% block 'body' %}
 <form class="ui form" action="." method="post">
     {%csrf_token%}
-    <div class="field">
-        <label>{{form.event.lable}}</label>
+    <div class="disabled field">
+        <label>參訪公司</label>
         {{form.event}}
     </div>
     <div class="field">
@@ -16,11 +16,11 @@
     </div>
     <div class="two fields">
         <div class="field">
-            <label>{{form.date.label}}</label>
+            <label>{{form.date.label}} (辦理旅行平安保險)</label>
             {{form.date}}
         </div>
         <div class="field">
-            <label>{{form.SSN.label}}</label>
+            <label>{{form.SSN.label}} (辦理旅行平安保險)</label>
             {{form.SSN}}
         </div>
     </div>
@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="field">
-        <label>{{form.country.label}}</label>
+        <label>{{form.country.label}} (外籍生填寫)</label>
         {{form.country}}
     </div>
     <button class="ui teal button" type="submit">送出</button>
