@@ -23,7 +23,9 @@ class CompanyVisit(models.Model):
 
     class Meta:
         managed = True
-
+    
+    def __str__(self):
+        return self.company
 
 class StudentApply(models.Model):
     GENDER = (
