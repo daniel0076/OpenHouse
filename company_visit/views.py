@@ -5,7 +5,7 @@ def company_visit_index(request):
     events = CompanyVisit.objects.all()
 
     return render(request, "visit/company_visit_index.html", locals())
-    
+
 def company_visit_info(request,id):
     event = get_object_or_404(CompanyVisit, id=id)
     return render(request, "visit/visit_info.html", locals())
@@ -17,8 +17,6 @@ def company_visit_apply(request,id):
     if event.get_people_num() >= event.limit:
         message = True
     if(request.method=='POST'):
-        if event.get_people_num() >= 60:
-            return render(request,"visit/error.html",locals()) 
         data = request.POST.copy()
         form = StudentApplyForm(data)
         if form.is_valid():
