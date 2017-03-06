@@ -6,6 +6,6 @@ class CompanyVisitAdmin(admin.ModelAdmin):
 admin.site.register(models.CompanyVisit, CompanyVisitAdmin)
 
 class StudentApplyAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('event','name','date','SSN','mobile','email','student_id','department','gender','country') 
+    
 admin.site.register(models.StudentApply,StudentApplyAdmin)
