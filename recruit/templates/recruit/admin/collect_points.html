@@ -18,7 +18,7 @@
                         <label>校徵場次</label>
                         <select class="ui dropdown" name="seminar_id">
                             {% for seminar in seminar_list %}
-                                 <option value={{seminar.id}}>{{seminar.date|date:"m/d (D)"}}-{{seminar.get_seminar_display}}({{seminar.place}})-{{seminar.company}}</option>
+                                 <option value={{seminar.id}}>{{seminar.date|date:"m/d (D)"}}-{{seminar.get_session_display}}({{seminar.place}})-{{seminar.company}}</option>
                             {% endfor %}
                         </select>
                     </div>
