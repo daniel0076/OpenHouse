@@ -42,7 +42,7 @@ class CustomDashboard(Dashboard):
                     'url': '/admin/recruit/export_jobfair_info/',
                     'external': False,
                 },
-                
+
                 {
                     'title': _('廠商Logo和簡介(廣告用)'),
                     'url': '/admin/recruit/export_ad/',
@@ -74,7 +74,7 @@ class CustomDashboard(Dashboard):
                     'title':_('兌換獎品'),
                     'url': '/admin/recruit/exchange_prize',
                     'external': False,
-                }.
+                },
             ],
             column=2,
             order=1
