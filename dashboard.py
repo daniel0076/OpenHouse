@@ -70,6 +70,11 @@ class CustomDashboard(Dashboard):
                     'url': '/admin/recruit/reg_card/',
                     'external': False,
                 },
+                {
+                    'title':_('兌換獎品'),
+                    'url': '/admin/recruit/exchange_prize',
+                    'external': False,
+                }.
             ],
             column=2,
             order=1
