@@ -447,6 +447,7 @@ class Student(models.Model):
     student_id = models.CharField(u'學號',max_length=10,blank=True,null=True)
     phone = models.CharField(u'手機',max_length=15,blank=True,null=True)
     name = models.CharField(u'姓名',max_length=30,blank=True,null=True)
+    department = models.CharField(u'系級',max_length=20,blank=True,null=True)
     attendance = models.ManyToManyField(SeminarSlot, through='StuAttendance')
     def get_redeem_points(self):
         redeem_records = ExchangePrize.objects.filter(student=self)
@@ -458,6 +459,12 @@ class Student(models.Model):
         redeem_records = ExchangePrize.objects.filter(student=self)
         redeem_points = sum([i.points for i in redeem_records])
         return points - redeem_points
+    
+    def redeem_points(self):
+        redeem_records = ExchangePrize.objects.filter(student=self)
+        redeem_points = sum([i.points for i in redeem_records])
+        return redeem_points
+
     class Meta:
         verbose_name = u'說明會學生'
         verbose_name_plural = u'說明會學生'

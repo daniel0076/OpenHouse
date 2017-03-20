@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^export_jobfair_info/$',export.export_jobfair_info,name="recruit_export_jobfair_info"),
     url(r'^reg_card/$',views.reg_card,name='reg_card'),
     url(r'^collect_points/$',views.collect_points,name='collect_points'),
-	#export urls are defined in admin.py
+    url(r'^exchange_prize/$',views.exchange_prize,name='exchange_prize'),
+    #export urls are defined in admin.py
 ]

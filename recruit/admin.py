@@ -2,10 +2,15 @@ from django.contrib import admin
 from django.conf.urls import url
 from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,SponsorItem,SponsorShip,\
     Files,RecruitConfigs,CompanySurvey, Company, SeminarSlot, SlotColor, SeminarOrder, SeminarInfo,Student,StuAttendance
-from .models import JobfairOrder
+from .models import JobfairOrder,ExchangePrize
 from company.models import Company
 from recruit import export
 
+
+class ExchangePrizeAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(ExchangePrize,ExchangePrizeAdmin)
+        
 class SponsorshipInline(admin.TabularInline):
     model = SponsorShip
     extra = 0

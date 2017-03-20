@@ -1,7 +1,7 @@
 from django.core import urlresolvers
 from django.shortcuts import render,redirect
-from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm,StudentForm
-from .models import RecruitConfigs, SponsorItem, Files
+from .forms import RecruitSignupForm, JobfairInfoForm, SeminarInfoCreationForm,StudentForm,ExchangeForm
+from .models import RecruitConfigs, SponsorItem, Files,ExchangePrize
 from .models import RecruitSignup, SponsorShip, CompanySurvey
 from .models import SeminarSlot, SlotColor, SeminarOrder, SeminarInfo
 from .models import JobfairSlot, JobfairOrder, JobfairInfo,StuAttendance,Student
@@ -600,7 +600,6 @@ def collect_points(request):
     else:
         current_session = "night3"
     current_seminar = SeminarSlot.objects.filter(date=today,session=current_session).first()
-    print(current_seminar)
     seminars = SeminarSlot.objects.all()
     if(request.POST):
         card_num = request.POST['card_num']
@@ -614,6 +613,25 @@ def collect_points(request):
         seminar_list.insert(0,current_seminar)
     return render(request,'recruit/admin/collect_points.html', locals())
 
+@staff_member_required
+def exchange_prize(request):
+    if(request.GET):
+        if 'card_num' in request.GET:
+            student = Student.objects.filter(card_num=request.GET['card_num']).first()
+            form = StudentForm(instance=student)
+            exchange_form = ExchangeForm()
+    if(request.POST):
+        student = Student.objects.filter(card_num=request.POST['card_num']).first()
+        form = StudentForm(request.POST,instance=student)
+        if form.is_valid():
+            form.save()
+        data = request.POST.copy()
+        data['student'] = student
+        exchange_form = ExchangeForm(data)
+        if exchange_form.is_valid():
+            exchange_form.save()
+    return render(request,'recruit/admin/exchange_prize.html',locals())
+    
 def query_points(request):
     student = None
     if(request.POST):
