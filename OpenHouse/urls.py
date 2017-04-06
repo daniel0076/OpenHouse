@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'^mentor/', include('careermentor.urls')),
     url(r'^recruit/',include('recruit.public_urls')),
     url(r'^visit/',include('company_visit.urls')),
+    url(r'^vote/',include('vote.urls')),
 ]
