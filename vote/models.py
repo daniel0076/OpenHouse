@@ -8,7 +8,7 @@ class Participant(models.Model):
     school = models.CharField(u'學校',max_length=20)
     department = models.CharField(u'系級',max_length=20)
     def get_votes(self):
-        votes = sum([1 for i in Vote.objects.all() if i.id == self.id])
+        votes = sum([1 for i in Vote.objects.all() if i.participant.id == self.id])
         return votes
         
     

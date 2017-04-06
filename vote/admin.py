@@ -5,3 +5,6 @@ from . import models
 class ParticipantAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(models.Vote)
+class VoteAdmin(admin.ModelAdmin):
+    pass
