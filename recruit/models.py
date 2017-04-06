@@ -459,7 +459,7 @@ class Student(models.Model):
         redeem_records = ExchangePrize.objects.filter(student=self)
         redeem_points = sum([i.points for i in redeem_records])
         return points - redeem_points
-    
+
     def redeem_points(self):
         redeem_records = ExchangePrize.objects.filter(student=self)
         redeem_points = sum([i.points for i in redeem_records])
@@ -482,4 +482,8 @@ class ExchangePrize(models.Model):
     student = models.ForeignKey(Student,to_field='card_num',verbose_name='u學生證卡號')
     points = models.IntegerField(u'所需點數')
     prize = models.CharField(u'獎品', max_length=100)
+    class Meta:
+        verbose_name = u'兌獎紀錄'
+        verbose_name_plural = u'兌獎紀錄'
+
 

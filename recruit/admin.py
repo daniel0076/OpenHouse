@@ -8,9 +8,9 @@ from recruit import export
 
 
 class ExchangePrizeAdmin(admin.ModelAdmin):
-    pass
+    list_display=['student','prize','points']
 admin.site.register(ExchangePrize,ExchangePrizeAdmin)
-        
+
 class SponsorshipInline(admin.TabularInline):
     model = SponsorShip
     extra = 0
