@@ -2,46 +2,34 @@
 {% load staticfiles %}
 {% block 'custom_head'%}
     <script src={% static "js/vote/vote.js" %}></script>
+    <link href={% static "css/vote/vote.css" %} rel="stylesheet">
 {% endblock %}
 {% block 'body' %}
+<div id="vote_seg">
 {% if error_msg %}
     <div class="ui negative message">
         <div class="header">
             {{error_msg}} 
         </div>
     </div>
-
 {% else %}
-<table class="ui celled striped table">
-    <thead>
-        <tr>
-            <th class="five wide">影片</th>
-            <th>姓名</th>
-            <th>學校/系級</th>
-            <th>主題</th>
-            <th>目前投票數</th>
-            <th>投票</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="ui two column grid">    
         {% for participant in participants %}
-            <tr>
-                <td><div class="ui 4:1 embed" data-source="youtube" data-id="{{participant.video}}"></div></td>
-                <td>{{participant.name}}</td>
-                <td>{{participant.school}}/{{participant.department}}</td>
-                <td>{{participant.theme}}</td>
-                <td>{{participant.get_votes}}</td>
-                <td>
-                    <form action="." method="post">
-                        {% csrf_token %} 
-                        <input type="hidden" name="participant" value="{{participant.id}}">
-                        <button class="ui teal button" type="submit">投票</button>
-                    </form>
-                </td>
-            </tr>
-        {% endfor %} 
-    </tbody>
-</table>
+            <div class="center aligned column">
+                <div class="ui 4:1 embed" data-source="youtube" data-id="{{participant.video}}"></div>
+                <p>{{participant.theme}}</p>
+                <p>{{participant.name}}</p>
+                <p>{{participant.school}}/{{participant.department}}</p>
+                <p>{{participant.get_votes}}</p>
+                <form action="." method="post">
+                {% csrf_token %} 
+                <input type="hidden" name="participant" value="{{participant.id}}">
+                <button class="ui teal button" type="submit">投票</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
 {% endif %}
+</div>
 {% endblock %}
 
