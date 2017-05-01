@@ -16,3 +16,6 @@ def vote(request):
                 error_msg = "每人一天限投一票"
     participants = Participant.objects.all()
     return render(request,'vote.html',locals())
+                
+def index(request):
+    return render(request,'index.html',locals())

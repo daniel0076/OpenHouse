@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block 'custom_head'%}
+    <link href={% static "css/vote/index.css" %} rel="stylesheet">
+{% endblock %}
+{% block 'body' %}
+    <div id="vote_index">
+        <div class="ui negative message">
+            <h3>注意事項</h3>
+            <ol>
+                <li>開放投票時間：4/24 - 5/13</li>
+                <li>每人每天可以投票一次</li>
+                <li>投票票數將佔初賽總分之30%</li>
+            </ol>
+        </div>
+        <h1 class="ui dividing header">比賽時程</h1>
+        <p>預賽報名：4/24（一）- 5/13（六)</p>
+        <p>開放投票：4/24（一）- 5/13（六</p>
+        <p>初賽結果：5/17（三）確認決賽名單</p>
+        <p>決賽之夜：5/24（三）7PM at 合勤講堂</p>
+        <h1 class="ui dividing header">預賽規則</h1>
+        <p>請依「自身經驗」闡述一段有關自己的故事（例如：主張的理想、參與的組織、人生轉捩點、從實習工作獲得的啟發等
+        )</p>
+        <ol>
+            <li>填寫預賽報名表單</li>
+            <a href="http://bit.ly/2017_TellYourOwnStory_preliminary">http://bit.ly/2017_TellYourOwnStory_preliminary</a>
+            <li>參賽者準備90秒簡報，並錄製成短片（短片中參賽者與簡報均須入鏡）</li>
+            <li>上傳影片檔與簡報檔至雲端，並開放共享傳送連結給Tell Your Own Story粉絲專頁</li>
+            <li>待影片上傳作業完成便可以開始拉票！！！！</li>
+        </ol>
+        <h1 class="ui dividing header">決賽規則</h1>
+        <p>1. 決賽入選者準備 7 分鐘簡報，於5/24決賽之夜發表</p>
+        <p>2. 決賽主題須與預賽相同</p>
+        <h1 class="ui dividing header">評分標準</h1>
+        <p>預賽：投票數30%、評審評分70%</p>
+        <p>決賽：預賽分數15%、現場觀眾投票15%、評審評分70%</p>
+        <h1 class="ui dividing header">優勝獎項</h1>
+        <p>冠軍｜NT$ 5,000＋獎狀</p>
+        <p>亞軍｜NT$ 3,000＋獎狀</p>
+        <p>季軍｜NT$ 1,000＋獎狀</p>
+        <p>※主辦單位保有金額更動權力</p>
+        <h3>有任何問題歡迎私訊Tell Your Own Story - 交大簡報大賽粉絲專頁
+        或是來信 bestpitchcompetition.nctu@gmail.com 
+        我們會盡快回覆</h3>
+    </div>
+{% endblock %}
+
