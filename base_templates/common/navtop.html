@@ -62,9 +62,18 @@
     <a class="item" href="{% url 'company_visit_index' %}">
       企業參訪
     </a>
-    <a class="item" href="{% url 'vote_index' %}">
+    <div class="ui dropdown item" id="rdss_navtop_dropdown">
         簡報大賽
-    </a>
+      <i class="dropdown inverted icon"></i>
+      <div class="menu">
+        <a class="item" href="{% url 'vote_index' %}">
+          活動資訊
+        </a>
+        <a class="item" href="{% url 'vote' %}">
+          投票系統
+        </a>
+      </div>
+    </div>
     <a class="item" href="https://ejob.nctu.edu.tw/">
       交大哈職網
     </a>
