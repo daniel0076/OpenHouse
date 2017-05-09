@@ -11,6 +11,10 @@ class Participant(models.Model):
     def get_votes(self):
         votes = sum([1 for i in Vote.objects.all() if i.participant.id == self.id])
         return votes
+    class Meta:
+        managed = True
+        verbose_name = u"參賽者"
+        verbose_name_plural = u"參賽者"
         
     
 class Vote(models.Model):
