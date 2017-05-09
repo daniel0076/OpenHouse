@@ -7,6 +7,7 @@ class Participant(models.Model):
     video = models.CharField(u'影片',max_length=100)
     school = models.CharField(u'學校',max_length=20)
     department = models.CharField(u'系級',max_length=20)
+    intro = models.TextField()
     def get_votes(self):
         votes = sum([1 for i in Vote.objects.all() if i.participant.id == self.id])
         return votes
