@@ -16,7 +16,8 @@
     <div class="ui two column grid">    
         {% for participant in participants %}
             <div class="center aligned column">
-                <div class="ui 4:1 embed" data-source="youtube" data-id="{{participant.video}}"></div>
+                <div class="ui embed" data-source="youtube" data-id="{{participant.video}}" data-placeholder="/images/image-16by9.png">
+                </div>
                 <p>{{participant.theme}}</p>
                 <p>{{participant.name}}</p>
                 <p>{{participant.school}}/{{participant.department}}</p>

@@ -9,7 +9,8 @@ class Participant(models.Model):
     department = models.CharField(u'系級',max_length=20)
     intro = models.TextField()
     def get_votes(self):
-        votes = sum([1 for i in Vote.objects.all() if i.participant.id == self.id])
+#        votes = sum([1 for i in Vote.objects.all() if i.participant.id == self.id])
+        votes = Vote.objects.filter(participant=self).count()
         return votes
     class Meta:
         managed = True
