@@ -26,7 +26,7 @@
                 <form action="." method="post">
                 {% csrf_token %}
                 <input type="hidden" name="participant" value="{{participant.id}}">
-                <button class="ui teal button" type="submit">投票</button>
+                <button class="ui disabled button" type="submit">投票</button>
                 </form>
             </div>
         {% endfor %}
