@@ -9,14 +9,14 @@
 {% if error_msg %}
     <div class="ui negative message">
         <div class="header">
-            {{error_msg}} 
+            {{error_msg}}
         </div>
     </div>
 {% else %}
-    <div class="ui two column grid">    
+    <div class="ui two column grid">
         {% for participant in participants %}
             <div class="center aligned column">
-                <div class="ui embed" data-source="youtube" data-id="{{participant.video}}" data-placeholder="/images/image-16by9.png">
+                <div class="ui embed" data-source="youtube" data-id="{{participant.video}}">
                 </div>
                 <p>{{participant.theme}}</p>
                 <p>{{participant.name}}</p>
@@ -24,7 +24,7 @@
                 <p>{{participant.intro}}</p>
                 <p>{{participant.get_votes}}</p>
                 <form action="." method="post">
-                {% csrf_token %} 
+                {% csrf_token %}
                 <input type="hidden" name="participant" value="{{participant.id}}">
                 <button class="ui teal button" type="submit">投票</button>
                 </form>
