@@ -22,7 +22,7 @@ Make sure your database username and password settings are correct
 
 + `python manage.py makemigrations`
 + `python manage.py migrate`
-+ `python manage.py migrate --database=2016`
++ `python manage.py migrate --database=2017`
 
 ### Run the development server
 
