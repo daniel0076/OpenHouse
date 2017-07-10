@@ -143,8 +143,14 @@ class SeminarInfoAdmin(admin.ModelAdmin):
 class JobfairInfoAdmin(admin.ModelAdmin):
     list_display=('company', 'signname','meat_lunchbox','vege_lunchbox',
                   'parking_tickets', 'contact_email','contact_mobile', 'updated' )
-
-
+@admin.register(models.RdssInfo)
+class RdssInfoAdmin(admin.ModelAdmin):
+	list_display=('title',)
+	def has_add_permission(self, request):
+		count = rdss.models.RdssInfo.objects.all().count()
+		if count ==0:
+			return True
+		return False
 # Register your models here.
 admin.site.register(models.Sponsorship)
 admin.site.register(models.JobfairSlot)

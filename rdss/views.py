@@ -669,13 +669,14 @@ def RegisterCard(request):
 
 # ========================RDSS public view=================
 def RDSSPublicIndex(request):
-    all_company = company.models.Company.objects.all()
-    rdss_company = rdss.models.Signup.objects.all()
-    company_list = [
-        all_company.get(cid=c.cid) for c in rdss_company
-    ]
-    company_list.sort(key=lambda item:getattr(item,'category'))
-    return render(request,'public/rdss_index.html',locals())
+	all_company = company.models.Company.objects.all()
+	rdss_company = rdss.models.Signup.objects.all()
+	rdss_info = rdss.models.RdssInfo.objects.all()
+	company_list = [
+		all_company.get(cid=c.cid) for c in rdss_company
+	]
+	company_list.sort(key=lambda item:getattr(item,'category'))
+	return render(request,'public/rdss_index.html',locals())
 
 def SeminarPublic(request):
     #semanti ui control

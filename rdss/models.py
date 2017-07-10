@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.db.models.signals import pre_save
 from django.db.models import Q
 from django.db.models import Count, Sum
+from ckeditor.fields import RichTextField
 import company.models
 import rdss.models
 
@@ -554,4 +556,14 @@ class CompanySurvey(models.Model):
         managed = True
         verbose_name = u"企業滿意度問卷"
         verbose_name_plural =u"企業滿意度問卷"
+class RdssInfo(models.Model):
 
+	title = models.CharField(u'標題',default='',max_length=10)
+	content = RichTextField(u'內容', default='', null=True, blank=True)
+	updated = models.DateTimeField(u'更新時間', auto_now=True)
+	def __str__(self):
+		return "Rdss_info"
+	class Meta:
+		managed = True
+		verbose_name = u"研替活動資訊"
+		verbose_name_plural =u"研替活動資訊"
