@@ -26,10 +26,12 @@ collect_pts_logger = logging.getLogger('stu_attend')
 
 @login_required(login_url='/company/login/')
 def RDSSCompanyIndex(request):
-    sidebar_ui = {'index': 'active'}
-    configs=rdss.models.RdssConfigs.objects.all()[0]
-    plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
-    return render(request,'company/rdss_company_entrance.html',locals())
+	sidebar_ui = {'index': 'active'}
+	configs=rdss.models.RdssConfigs.objects.all()[0]
+	rdss_company_info = rdss.models.RdssCompanyInfo.objects.all()
+	plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
+	print(locals())
+	return render(request,'company/rdss_company_entrance.html',locals())
 
 @login_required(login_url='/company/login/')
 def Status(request):

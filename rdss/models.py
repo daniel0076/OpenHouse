@@ -567,3 +567,14 @@ class RdssInfo(models.Model):
 		managed = True
 		verbose_name = u"研替活動資訊"
 		verbose_name_plural =u"研替活動資訊"
+class RdssCompanyInfo(models.Model):
+
+	title = models.CharField(u'標題',default='',max_length=10)
+	content = RichTextField(u'內容', default='', null=True, blank=True)
+	updated = models.DateTimeField(u'更新時間', auto_now=True)
+	def __str__(self):
+		return "Rdss_Company_info"
+	class Meta:
+		managed = True
+		verbose_name = u"研替活動資訊(公司)"
+		verbose_name_plural =u"研替活動資訊(公司)"

@@ -151,6 +151,14 @@ class RdssInfoAdmin(admin.ModelAdmin):
 		if count ==0:
 			return True
 		return False
+@admin.register(models.RdssCompanyInfo)
+class RdssInfoAdmin(admin.ModelAdmin):
+	list_display=('title',)
+	def has_add_permission(self, request):
+		count = rdss.models.RdssCompanyInfo.objects.all().count()
+		if count ==0:
+			return True
+		return False
 # Register your models here.
 admin.site.register(models.Sponsorship)
 admin.site.register(models.JobfairSlot)
