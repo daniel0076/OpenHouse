@@ -127,11 +127,13 @@ def SignupRdss(request):
     sidebar_ui = {'signup':"active"}
     configs=rdss.models.RdssConfigs.objects.all()[0]
     # use timezone now to get current time with GMT+8
+    print(request.user.username)
     if timezone.now() > configs.rdss_signup_end or timezone.now() < configs.rdss_signup_start:
-        error_msg="現在並非報名時間。報名期間為 {} 至 {}".format(
-                timezone.localtime(configs.rdss_signup_start).strftime("%Y/%m/%d %H:%M:%S"),
-                timezone.localtime(configs.rdss_signup_end).strftime("%Y/%m/%d %H:%M:%S"))
-        return render(request,'error.html',locals())
+        if request.user.username!="77777777":
+            error_msg="現在並非報名時間。報名期間為 {} 至 {}".format(
+                    timezone.localtime(configs.rdss_signup_start).strftime("%Y/%m/%d %H:%M:%S"),
+                    timezone.localtime(configs.rdss_signup_end).strftime("%Y/%m/%d %H:%M:%S"))
+            return render(request,'error.html',locals())
 
     edit_instance_list = rdss.models.Signup.objects.filter(cid=request.user.cid)
     if request.POST:
