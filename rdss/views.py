@@ -494,13 +494,14 @@ def Sponsor(request):
 
 
     #活動專刊的部份是變動不大，且版面特殊，採客製寫法
-    monograph_main = rdss.models.SponsorItems.objects.filter(name="活動專刊").first()
-    monograph_items = rdss.models.SponsorItems.objects.filter(name__contains="活動專刊(" )\
+    monograph_main = rdss.models.SponsorItems.objects.filter(name="活動筆記本").first()
+    monograph_items = rdss.models.SponsorItems.objects.filter(name__contains="活動筆記本" )\
             .annotate(num_sponsor = Count('sponsorship'))
-    other_items = rdss.models.SponsorItems.objects.all().exclude(name__contains="活動專刊")\
+    other_items = rdss.models.SponsorItems.objects.all().exclude(name__contains="活動筆記本")\
             .annotate(num_sponsor = Count('sponsorship'))
     sponsorship = rdss.models.Sponsorship.objects.filter(company=sponsor)
     my_sponsor_items = [s.item for s in sponsorship ]
+    print(monograph_items)
     return render(request,'company/sponsor.html',locals())
 
 @staff_member_required
