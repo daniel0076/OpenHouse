@@ -252,6 +252,7 @@ class SeminarInfo(models.Model):
     contact_email = models.EmailField(u'聯絡人Email', max_length=254)
     ps = models.TextField(u'其它需求', null=True, blank=True)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
+    carcard_number = models.SmallIntegerField(u'汽車停車卡數量',default = 0)
 
     class Meta:
         managed = True
