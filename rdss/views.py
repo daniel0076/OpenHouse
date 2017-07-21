@@ -155,8 +155,8 @@ def SignupRdss(request):
         signup_edit_ui = True # for semantic ui control
     else:
         form = rdss.forms.SignupCreationForm
-
     plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
+    print(locals())
     return render(request,'company/signup_form.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -675,7 +675,6 @@ def RDSSPublicIndex(request):
 	rdss_company = rdss.models.Signup.objects.all()
 	rdss_info = rdss.models.RdssInfo.objects.all()
 	#rdss_history = rdss.models.RdssInfo.objects.using("oh_2016").all()
-	#print(rdss_history)
 	company_list = [
 		all_company.get(cid=c.cid) for c in rdss_company
 	]

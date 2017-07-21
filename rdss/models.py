@@ -67,7 +67,7 @@ class Signup(models.Model):
             (u'', u'不參加說明會'),
             (u'noon', u'中午場'),
             (u'night', u'晚上場'),
-            (u'company_day', u'專屬企業日'),
+            #(u'company_day', u'專屬企業日'),
             )
     id = models.AutoField(primary_key=True)
     cid = models.CharField(u'公司統一編號', unique=True, max_length=8, null=False)
