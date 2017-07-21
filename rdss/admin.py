@@ -67,6 +67,7 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('cid','category','hr_name','hr_phone','hr_mobile','hr_email')
 
     def get_urls(self):
+        print("Hi")
         urls = super(CompanyAdmin, self).get_urls()
         my_urls = [
                 url(r'^export/$', rdss.export.Export_Company),
@@ -159,6 +160,8 @@ class RdssInfoAdmin(admin.ModelAdmin):
 		if count ==0:
 			return True
 		return False
+
+
 # Register your models here.
 admin.site.register(models.Sponsorship)
 admin.site.register(models.JobfairSlot)

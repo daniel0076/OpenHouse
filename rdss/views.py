@@ -30,7 +30,6 @@ def RDSSCompanyIndex(request):
 	configs=rdss.models.RdssConfigs.objects.all()[0]
 	rdss_company_info = rdss.models.RdssCompanyInfo.objects.all()
 	plan_file = rdss.models.Files.objects.filter(category = "企畫書").first()
-	print(locals())
 	return render(request,'company/rdss_company_entrance.html',locals())
 
 @login_required(login_url='/company/login/')
@@ -127,7 +126,6 @@ def SignupRdss(request):
     sidebar_ui = {'signup':"active"}
     configs=rdss.models.RdssConfigs.objects.all()[0]
     # use timezone now to get current time with GMT+8
-    print(request.user.username)
     if timezone.now() > configs.rdss_signup_end or timezone.now() < configs.rdss_signup_start:
         if request.user.username!="77777777":
             error_msg="現在並非報名時間。報名期間為 {} 至 {}".format(
@@ -676,6 +674,8 @@ def RDSSPublicIndex(request):
 	all_company = company.models.Company.objects.all()
 	rdss_company = rdss.models.Signup.objects.all()
 	rdss_info = rdss.models.RdssInfo.objects.all()
+	#rdss_history = rdss.models.RdssInfo.objects.using("oh_2016").all()
+	#print(rdss_history)
 	company_list = [
 		all_company.get(cid=c.cid) for c in rdss_company
 	]
