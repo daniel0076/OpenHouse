@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block 'nav_head' %}
+    <script src={% static "js/recruit/nav.js" %}></script>
+    <script src={% static "js/recruit/signup.js" %}></script>
+    <link href={% static "css/recruit/submenu.css" %} rel="stylesheet">
+{% endblock %}
+{% block 'body' %}
+    <div class="ui inverted blue secondary main menu">
+        <a href="{% url 'recruit_company_index' %}" class="item">活動首頁</a>
+	<a href="{% url 'recruit_signup' %}" class="item">填寫報名資料</a>
+	<a href="{% url 'recruit_survey' %}" class="item">填寫企業問卷</a>
+	<a href="{% url 'recruit_sponsor' %}" class="item">活動贊助</a>
+	<a href="{% url 'recruit_seminar_select' %}" class="item">說明會選位</a>
+	<a href="{% url 'recruit_seminar_info' %}" class="item">說明會資料填寫</a>
+	<a href="{% url 'recruit_jobfair_select' %}" class="item">就博會選位</a>
+    <a href="{% url 'recruit_jobfair_info' %}" class="item">就博會資料填寫</a>
+
+
+    </div>
+    <div class="ui grid">
+        <div class="two wide column"></div>
+        <div class="twelve wide column">
+
+            {% block 'content' %}
+            {% endblock %}
+        </div>
+        <div class="two wide column"></div>
+    </div>
+{% endblock %}

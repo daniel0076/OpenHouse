@@ -1,30 +1,49 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 {% load staticfiles %}
-{% block 'nav_head' %}
-    <script src={% static "js/recruit/nav.js" %}></script>
-    <script src={% static "js/recruit/signup.js" %}></script>
-    <link href={% static "css/recruit/submenu.css" %} rel="stylesheet">
-{% endblock %}
+
 {% block 'body' %}
-    <div class="ui inverted blue secondary main menu">
-        <a href="{% url 'recruit_company_index' %}" class="item">活動首頁</a>
-	<a href="{% url 'recruit_signup' %}" class="item">填寫報名資料</a>
-	<a href="{% url 'recruit_survey' %}" class="item">填寫企業問卷</a>
-	<a href="{% url 'recruit_sponsor' %}" class="item">活動贊助</a>
-	<a href="{% url 'recruit_seminar_select' %}" class="item">說明會選位</a>
-	<a href="{% url 'recruit_seminar_info' %}" class="item">說明會資料填寫</a>
-	<a href="{% url 'recruit_jobfair_select' %}" class="item">就博會選位</a>
-    <a href="{% url 'recruit_jobfair_info' %}" class="item">就博會資料填寫</a>
+<link href={% static "css/rdss/sidebar.css" %} rel="stylesheet">
+<div class="ui stackable grid">
+	<div class="three wide column" style="margin-left:1em">
+		<div class="ui vertical stackable menu" style="width:85%">
+			<a class="{{sidebar_ui.index}} item" href="{%url 'recruit_company_index' %}">
+				活動首頁
+			</a>
+			<div class="item">
+				<div class="header">活動報名相關</div>
+				<div class="menu">
+			<a class="{{sidebar_ui.signup}} item big" href="{%url 'recruit_signup' %}">
+				填寫報名資料
+			</a>
+			<a class="{{sidebar_ui.survey}} item big" href="{%url 'recruit_survey' %}">
+				填寫企業問卷
+			</a>
+			<a class="{{sidebar_ui.sponsor}} item big" href="{%url 'recruit_sponsor' %}">
+				活動贊助
+			</a>
+			</div>
+				</div>
+			<a class="{{sidebar_ui.seminar_select}} item" href="{%url 'recruit_seminar_select' %}">
+				說明會選位
+			</a>
+			<a class="{{sidebar_ui.seminar_info}} item" href="{%url 'recruit_seminar_info' %}">
+				說明會資訊填寫
+			</a>
+			<a class="{{sidebar_ui.jobfair_select}} item" href="{%url 'recruit_jobfair_select' %}">
+				就博會選位
+			</a>
+			<a class="{{sidebar_ui.jobfair_info}} item" href="{%url 'recruit_jobfair_info' %}">
+				就博會資訊填寫
+			</a>
+		 </div>
+		 </div>
+		 <div class="twelve wide column">
+		 {% block 'content' %}
+
+		 {% endblock %}
+		 </div>
+		 </div>
+
+		 {% endblock %}
 
 
-    </div>
-    <div class="ui grid">
-        <div class="two wide column"></div>
-        <div class="twelve wide column">
-
-            {% block 'content' %}
-            {% endblock %}
-        </div>
-        <div class="two wide column"></div>
-    </div>
-{% endblock %}
