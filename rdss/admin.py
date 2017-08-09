@@ -159,8 +159,10 @@ class RdssInfoAdmin(admin.ModelAdmin):
 		if count ==0:
 			return True
 		return False
-
+@admin.register(models.Sponsorship)
+class SponsorshipAdmin(admin.ModelAdmin):
+    list_display = ('company_id','item_id','updated',)
 
 # Register your models here.
-admin.site.register(models.Sponsorship)
+#admin.site.register(models.Sponsorship)
 admin.site.register(models.JobfairSlot)

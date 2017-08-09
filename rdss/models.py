@@ -352,7 +352,8 @@ class Sponsorship(models.Model):
     updated = models.DateTimeField(u'更新時間', auto_now=True)
 
     class Meta:
-        unique_together = ("company",  "item")
+        managed = True
+        #unique_together = ("company",  "item")
         verbose_name = u"5. 贊助情況"
         verbose_name_plural = u"5. 贊助情況"
 
