@@ -212,13 +212,28 @@ def ExportAll(request):
 def ExportSurvey(request):
     # Create the HttpResponse object with the appropriate Excel header.
     filename = "rdss_survey_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=' + filename
+    response = HttpResponse(content_type='application/ms-excel') # microsoft excel
+    response['Content-Disposition'] = 'attachment; filename=' + filename # set "attachment" filename
+    print(response)
+    with xlsxwriter.Workbook(response) as workbook:
+        survey_worksheet = workbook.add_worksheet("廠商滿意度問卷")# set the excel sheet
+        survey_worksheet.write(0, 0, "廠商") # The execl at(0,0) name is "廠商"
+        fields = rdss.models.CompanySurvey._meta.get_fields()[1:-1]
+        print(fields)
+        for index, field in enumerate(fields,1):
+            survey_worksheet.write(0, index,field.verbose_name) # set the title for each colume
+        survey_list = rdss.models.CompanySurvey.objects.all()
+        for row_count, survey in enumerate(survey_list,1):
+            survey_worksheet.write(row_count, 0, survey.company)
+            for col_count, field in enumerate(fields,1):
+                survey_worksheet.write(row_count, col_count, getattr(survey, field.name))
+    '''
     workbook = xlsxwriter.Workbook(response)
 
     survey_worksheet = workbook.add_worksheet("廠商滿意度問卷")
-    survey_worksheet.write(0, 0, "廠商")
+    survey_worksheet.write(0, 0, "廠商") # The execl at(0,0) name is "廠商"
     # start from index 1 because I don't want id field
+    
     fields = rdss.models.CompanySurvey._meta.get_fields()[1:]
     for index, field in enumerate(fields):
         survey_worksheet.write(0, index+1, field.verbose_name)
@@ -228,8 +243,10 @@ def ExportSurvey(request):
         survey_worksheet.write(row_count+1, 0, survey.company)
         for col_count, field in enumerate(fields):
             survey_worksheet.write(row_count+1, col_count+1, getattr(survey, field.name))
-
+    
     workbook.close()
+    '''
+
     return response
 
 @staff_member_required
