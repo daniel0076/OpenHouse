@@ -214,19 +214,24 @@ def ExportSurvey(request):
     filename = "rdss_survey_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
     response = HttpResponse(content_type='application/ms-excel') # microsoft excel
     response['Content-Disposition'] = 'attachment; filename=' + filename # set "attachment" filename
-    print(response)
     with xlsxwriter.Workbook(response) as workbook:
         survey_worksheet = workbook.add_worksheet("廠商滿意度問卷")# set the excel sheet
         survey_worksheet.write(0, 0, "廠商") # The execl at(0,0) name is "廠商"
-        fields = rdss.models.CompanySurvey._meta.get_fields()[1:-1]
-        print(fields)
+        fields = rdss.models.CompanySurvey._meta.get_fields()[1:]
+        #print(fields)
         for index, field in enumerate(fields,1):
             survey_worksheet.write(0, index,field.verbose_name) # set the title for each colume
         survey_list = rdss.models.CompanySurvey.objects.all()
+        #print(survey_list)
         for row_count, survey in enumerate(survey_list,1):
             survey_worksheet.write(row_count, 0, survey.company)
             for col_count, field in enumerate(fields,1):
-                survey_worksheet.write(row_count, col_count, getattr(survey, field.name))
+                value = getattr(survey,field.name)
+                # We need to adjust the time zone
+                if field.name == "updated":
+                    value = timezone.localtime(value).strftime("%Y-%m%d-%H%M")
+                    print(value)
+                survey_worksheet.write(row_count, col_count,value)
     '''
     workbook = xlsxwriter.Workbook(response)
 
