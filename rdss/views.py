@@ -689,6 +689,7 @@ def SeminarPublic(request):
     seminar_end_date = configs.seminar_end_date
     seminar_days = (seminar_end_date - seminar_start_date).days
     table_start_date = seminar_start_date
+    rdss_seminar_info = rdss.models.RdssSeminarInfo.objects.all()
     # find the nearest Monday
     while(table_start_date.weekday() != 0 ):
         table_start_date -= datetime.timedelta(days=1)

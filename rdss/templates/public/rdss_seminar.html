@@ -8,6 +8,7 @@
 {% endblock %}
 {% block 'content' %}
 <h1 class="ui header">企業徵才說明會</h2>
+<!--
 <h2 class="ui dividing header">活動時間</h2>
   <ol class="ui list">
 
@@ -40,6 +41,10 @@
   <li>21點：威秀影城電影票乙張，共50份</li>
   <li>30點：新竹老爺飯店下午茶券兩張，共15份</li>
 </ul>
+-->
+{%for rdssseminar in rdss_seminar_info%}
+    {{rdssseminar.content|safe}}
+{%endfor%}
 <h2 class="ui dividing header">場次時間表</h2>
 <ul class="ui list">
   <p>場地資訊</p>
@@ -49,6 +54,7 @@
   </li>
   {% endfor %}
 </ul>
+<!--
 <h3 style="color:red">因颱風延期之場次</h3>
 	<table class="ui celled striped table" style="text-align:center">
 		<thead>
@@ -74,6 +80,7 @@
 			</tr>
 		</tbody>
 	</table>
+-->
 	<table class="ui celled striped table" style="text-align:center">
 		{% for week in dates_in_week %}
 		<thead>
