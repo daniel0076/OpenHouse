@@ -732,6 +732,7 @@ def SeminarPublic(request):
 def JobfairPublic(request):
     place_map = rdss.models.Files.objects.filter(category='就博會攤位圖').first()
     slots = rdss.models.JobfairSlot.objects.all()
+    rdss_jobfair_info = rdss.models.RdssJobfairInfo.objects.all()
     return render(request,'public/rdss_jobfair.html',locals())
 
 def QueryPoints(request):

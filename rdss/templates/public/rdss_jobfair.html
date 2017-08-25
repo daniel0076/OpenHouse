@@ -8,6 +8,7 @@
 
 {% block 'content' %}
 <h1 class="ui header">研發替代役就業博覽會</h1>
+<!--
 <h2 class="ui dividing header">1. 時間與地點</h2>
   <ul class="ui list">
 
@@ -50,7 +51,10 @@
   <li>小米藍芽喇叭 四組</li>
   <li>Transcend 32GB 隨身碟 六份</li>
 </ul>
-
+-->
+{%for rdssjobfair in rdss_jobfair_info%}
+    {{rdssjobfair.content|safe}}
+{%endfor%}
 <h2 class="ui dividing header">就博會攤位圖</h2>
 <img class="ui image" src="{{place_map.upload_file.url}}" alt="就博會攤位圖">
 	<div class="ui six column padded grid">

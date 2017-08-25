@@ -167,6 +167,14 @@ class SeminarContentAdmin(admin.ModelAdmin):
 		if count ==0:
 			return True
 		return False
+@admin.register(models.RdssJobfairInfo)
+class JobfairContentAdmin(admin.ModelAdmin):
+	list_display=('title',)
+	def has_add_permission(self, request):
+		count = rdss.models.RdssJobfairInfo.objects.all().count()
+		if count ==0:
+			return True
+		return False
 @admin.register(models.Sponsorship)
 class SponsorshipAdmin(admin.ModelAdmin):
     list_display = ('company_id','item_id','updated',)
