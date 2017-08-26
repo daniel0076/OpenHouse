@@ -207,6 +207,29 @@ def ExportAll(request):
     workbook.close()
     return response
 
+@staff_member_required
+def ExportJobfair(request):
+    # Create the HttpREsponse object with the appropriate Excel header
+    filename = "rdss_jobfair_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    response = HttpResponse(content_type='application/ms-excel') # microsoft excel
+    response['Content-Disposition'] = 'attachment; filename=' + filename # set "attachment" filename
+    with xlsxwriter.Workbook(response) as workbook:
+        jobfair_worksheet = workbook.add_worksheet("就博會資訊") # set the excel sheet
+        jobfair_worksheet.write(0,0,"廠商") # The excel at (0,0) name is "廠商"
+        fields = rdss.models.JobfairInfo._meta.get_fields()[1:]
+        for index, field in enumerate(fields,1):
+            jobfair_worksheet.write(0,index,field.verbose_name) # set the title for each colume
+        jobfair_list = rdss.models.JobfairInfo.objects.all()
+        for row_count, jobfair in enumerate(jobfair_list,1):
+            jobfair_worksheet.write(row_count, 0, jobfair.company)
+            for col_count, field in enumerate(fields,1):
+                value = getattr(jobfair,field.name)
+                # We need to adjust the time zone
+                if field.name == "updated":
+                    value = timezone.localtime(value).strftime("%Y-%m%d-%H%M")
+                    print(value)
+                jobfair_worksheet.write(row_count, col_count,value)
+    return response
 
 @staff_member_required
 def ExportSurvey(request):
@@ -216,7 +239,7 @@ def ExportSurvey(request):
     response['Content-Disposition'] = 'attachment; filename=' + filename # set "attachment" filename
     with xlsxwriter.Workbook(response) as workbook:
         survey_worksheet = workbook.add_worksheet("廠商滿意度問卷")# set the excel sheet
-        survey_worksheet.write(0, 0, "廠商") # The execl at(0,0) name is "廠商"
+        survey_worksheet.write(0, 0, "廠商") # The excel at(0,0) name is "廠商"
         fields = rdss.models.CompanySurvey._meta.get_fields()[1:]
         #print(fields)
         for index, field in enumerate(fields,1):
@@ -230,28 +253,8 @@ def ExportSurvey(request):
                 # We need to adjust the time zone
                 if field.name == "updated":
                     value = timezone.localtime(value).strftime("%Y-%m%d-%H%M")
-                    print(value)
+                 #   print(value) #for debug
                 survey_worksheet.write(row_count, col_count,value)
-    '''
-    workbook = xlsxwriter.Workbook(response)
-
-    survey_worksheet = workbook.add_worksheet("廠商滿意度問卷")
-    survey_worksheet.write(0, 0, "廠商") # The execl at(0,0) name is "廠商"
-    # start from index 1 because I don't want id field
-    
-    fields = rdss.models.CompanySurvey._meta.get_fields()[1:]
-    for index, field in enumerate(fields):
-        survey_worksheet.write(0, index+1, field.verbose_name)
-
-    survey_list = rdss.models.CompanySurvey.objects.all()
-    for row_count, survey in enumerate(survey_list):
-        survey_worksheet.write(row_count+1, 0, survey.company)
-        for col_count, field in enumerate(fields):
-            survey_worksheet.write(row_count+1, col_count+1, getattr(survey, field.name))
-    
-    workbook.close()
-    '''
-
     return response
 
 @staff_member_required
