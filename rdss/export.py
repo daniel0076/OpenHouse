@@ -220,15 +220,17 @@ def ExportJobfair(request):
         for index, field in enumerate(fields,1):
             jobfair_worksheet.write(0,index,field.verbose_name) # set the title for each colume
         jobfair_list = rdss.models.JobfairInfo.objects.all()
+        print(jobfair_list[0])
+        
         for row_count, jobfair in enumerate(jobfair_list,1):
-            jobfair_worksheet.write(row_count, 0, jobfair.company)
+            jobfair_worksheet.write(row_count, 0, str(jobfair.company)) # the jobfair.company is type of rdss.models.Signup, so we change to str
             for col_count, field in enumerate(fields,1):
-                value = getattr(jobfair,field.name)
-                # We need to adjust the time zone
-                if field.name == "updated":
-                    value = timezone.localtime(value).strftime("%Y-%m%d-%H%M")
-                    print(value)
-                jobfair_worksheet.write(row_count, col_count,value)
+                try:
+                    jobfair_worksheet.write(row_count, col_count, getattr(jobfair, field.name))
+                except TypeError as e:
+                    # xlsxwriter do not accept django timzeone aware time, so use
+                    # except, to write string
+                    jobfair_worksheet.write(row_count, col_count,jobfair.updated.strftime("%Y-%m-%d %H:%M:%S"))
     return response
 
 @staff_member_required
@@ -249,12 +251,12 @@ def ExportSurvey(request):
         for row_count, survey in enumerate(survey_list,1):
             survey_worksheet.write(row_count, 0, survey.company)
             for col_count, field in enumerate(fields,1):
-                value = getattr(survey,field.name)
-                # We need to adjust the time zone
-                if field.name == "updated":
-                    value = timezone.localtime(value).strftime("%Y-%m%d-%H%M")
-                 #   print(value) #for debug
-                survey_worksheet.write(row_count, col_count,value)
+                try:
+                    survey_worksheet.write(row_count, col_count, getattr(survey, field.name))
+                except TypeError as e:
+                    # xlsxwriter do not accept django timzeone aware time, so use
+                    # except, to write string
+                    survey_worksheet.write(row_count, col_count,survey.updated.strftime("%Y-%m-%d %H:%M:%S"))
     return response
 
 @staff_member_required
