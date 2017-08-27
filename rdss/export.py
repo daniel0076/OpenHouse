@@ -216,7 +216,7 @@ def ExportSeminar(request):
     with xlsxwriter.Workbook(response) as workbook:
         seminar_worksheet = workbook.add_worksheet("說明會資訊") # set the excel sheet
         seminar_worksheet.write(0,0,"廠商") # The excel at (0,0) name is "廠商"
-        fields = rdss.models.SeminarInfo._meta.get_fields()[1:]
+        fields = rdss.models.SeminarInfo._meta.get_fields()[2:]
         for index, field in enumerate(fields,1):
             seminar_worksheet.write(0,index,field.verbose_name) # set the title for each colume
         seminar_list = rdss.models.SeminarInfo.objects.all()
@@ -229,7 +229,7 @@ def ExportSeminar(request):
                 except TypeError as e:
                     # xlsxwriter do not accept django timzeone aware time, so use
                     # except, to write string
-                    seminar_worksheet.write(row_count, col_count,seminar.updated.strftime("%Y-%m-%d %H:%M:%S"))
+                    seminar_worksheet.write(row_count, col_count,timezone.localtime(getattr(seminar,field.name)).strftime("%Y-%m-%d %H:%M:%S"))
     return response
 @staff_member_required
 def ExportJobfair(request):
