@@ -208,6 +208,30 @@ def ExportAll(request):
     return response
 
 @staff_member_required
+def ExportSeminar(request):
+    # Create the HttpResponse object with the appropriate Excel header
+    filename = "rdss_seminar_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
+    response = HttpResponse(content_type='application/ms-excel') # microsoft excel
+    response['Content-Disposition'] = 'attachment; filename=' + filename # set "attachment" filename
+    with xlsxwriter.Workbook(response) as workbook:
+        seminar_worksheet = workbook.add_worksheet("說明會資訊") # set the excel sheet
+        seminar_worksheet.write(0,0,"廠商") # The excel at (0,0) name is "廠商"
+        fields = rdss.models.SeminarInfo._meta.get_fields()[1:]
+        for index, field in enumerate(fields,1):
+            seminar_worksheet.write(0,index,field.verbose_name) # set the title for each colume
+        seminar_list = rdss.models.SeminarInfo.objects.all()
+        
+        for row_count, seminar in enumerate(seminar_list,1):
+            seminar_worksheet.write(row_count, 0, str(seminar.company)) # the jobfair.company is type of rdss.models.Signup, so we change to str
+            for col_count, field in enumerate(fields,1):
+                try:
+                    seminar_worksheet.write(row_count, col_count, getattr(seminar, field.name))
+                except TypeError as e:
+                    # xlsxwriter do not accept django timzeone aware time, so use
+                    # except, to write string
+                    seminar_worksheet.write(row_count, col_count,seminar.updated.strftime("%Y-%m-%d %H:%M:%S"))
+    return response
+@staff_member_required
 def ExportJobfair(request):
     # Create the HttpREsponse object with the appropriate Excel header
     filename = "rdss_jobfair_{}.xlsx".format(timezone.localtime(timezone.now()).strftime("%m%d-%H%M"))
@@ -216,21 +240,20 @@ def ExportJobfair(request):
     with xlsxwriter.Workbook(response) as workbook:
         jobfair_worksheet = workbook.add_worksheet("就博會資訊") # set the excel sheet
         jobfair_worksheet.write(0,0,"廠商") # The excel at (0,0) name is "廠商"
-        fields = rdss.models.JobfairInfo._meta.get_fields()[1:]
+        fields = rdss.models.JobfairInfo._meta.get_fields()[2:]
         for index, field in enumerate(fields,1):
             jobfair_worksheet.write(0,index,field.verbose_name) # set the title for each colume
         jobfair_list = rdss.models.JobfairInfo.objects.all()
-        print(jobfair_list[0])
-        
+        # We need to remove company beacuse it's type is rdss.models.Signup, and it just a id
         for row_count, jobfair in enumerate(jobfair_list,1):
-            jobfair_worksheet.write(row_count, 0, str(jobfair.company)) # the jobfair.company is type of rdss.models.Signup, so we change to str
+            jobfair_worksheet.write(row_count, 0, jobfair.signname)
             for col_count, field in enumerate(fields,1):
                 try:
                     jobfair_worksheet.write(row_count, col_count, getattr(jobfair, field.name))
                 except TypeError as e:
                     # xlsxwriter do not accept django timzeone aware time, so use
                     # except, to write string
-                    jobfair_worksheet.write(row_count, col_count,jobfair.updated.strftime("%Y-%m-%d %H:%M:%S"))
+                    jobfair_worksheet.write(row_count, col_count,timezone.localtime(getattr(jobfair,field.name)).strftime("%Y-%m-%d %H:%M:%S"))
     return response
 
 @staff_member_required
@@ -256,7 +279,7 @@ def ExportSurvey(request):
                 except TypeError as e:
                     # xlsxwriter do not accept django timzeone aware time, so use
                     # except, to write string
-                    survey_worksheet.write(row_count, col_count,survey.updated.strftime("%Y-%m-%d %H:%M:%S"))
+                    survey_worksheet.write(row_count, col_count,timezone.localtime(getattr(survey,field.name)).strftime("%Y-%m-%d %H:%M:%S"))
     return response
 
 @staff_member_required

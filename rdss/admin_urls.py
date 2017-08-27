@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^export_all/$', export.ExportAll, name="rdss_export_all"),
     url(r'^export_ad/$', export.ExportAdFormat,name="rdss_export_ad"),
     url(r'^export_jobfair/$', export.ExportJobfair,name="rdss_export_jobfair"),
+    url(r'^export_seminar/$', export.ExportSeminar,name="rdss_export_seminar"),
 
 	#export urls are defined in admin.py
 ]
