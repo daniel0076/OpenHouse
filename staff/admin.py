@@ -69,7 +69,7 @@ class StaffAdmin(UserAdmin):
 			("基本資料", {
 				'classes': ('wide',),
 				'fields': ('username','password','name','gender','birthday','g2_email', 'idno','role',
-					'mobile','email','fb_url','account')
+					'mobile','email','fb_url','account_bank','account')
 				}
 				),
 			("權限設定", {
@@ -84,7 +84,7 @@ class StaffAdmin(UserAdmin):
 			("基本資料", {
 				'classes': ('wide',),
 				'fields': ('username','password1','password2','name','gender','g2_email','birthday','idno','role',
-					'mobile','email','fb_url','account')
+					'mobile','email','fb_url','account_bank','account')
 				}
 				),
 			("權限設定", {
