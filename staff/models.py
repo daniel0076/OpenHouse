@@ -39,7 +39,8 @@ class Staff(AbstractUser):
 			(u'編輯部 - 部員',  u'編輯部 - 部員'),
 
 			)
-
+	ACCOUNT_CHOICE =((u'郵局',u'郵局'),(u'玉山銀行',u'玉山銀行'),)
+	
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(u'姓名',max_length=10)
 	g2_email = models.EmailField(u'G2信箱',max_length=100,
@@ -50,9 +51,10 @@ class Staff(AbstractUser):
 	role = models.CharField(u'職位', choices=ROLE, blank=True, max_length=10)
 	mobile = models.CharField(u'手機',max_length=12,help_text='格式: 0912-345678')
 	fb_url = models.CharField(u'FB個人首頁連結', default='', max_length=100)
-	account = models.CharField(u'郵局或玉山帳號', max_length=25,help_text='帳戶必需是自己的',
+	account = models.CharField(u'帳號', max_length=25,help_text='帳戶必需是自己的',
 			blank=True, null=True
 			)
+	account_bank = models.CharField(u'帳戶選擇',choices=ACCOUNT_CHOICE,blank=True, max_length=20)
 
 	class Meta:
 		managed = True
