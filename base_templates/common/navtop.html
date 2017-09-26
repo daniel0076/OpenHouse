@@ -2,12 +2,14 @@
 
 <div class="ui inverted teal segment" id="navtop_outer">
   <div class="ui inverted teal stackable secondary menu" id="navtop">
-    <h3 class="header item">OpenHouse 交通大學 企業校園徵才</h3>
+    <h3 class="header item" ><a href="/">OpenHouse 交通大學 企業校園徵才</a></h3>
     <!--公司部份!-->
     {% if user.is_authenticated and user.is_company %}
+    <!--
     <a class="item" href="/">
       首頁
     </a>
+    -->
     <a class="{{nav_company_index}} item" href="{% url 'company_index' %}">
       廠商入口
     </a>
@@ -29,9 +31,11 @@
 
     <!--一般使用者(學生)!-->
     {% else %}
+    <!--
     <a class="item" href="/">
       首頁
     </a>
+    -->
     <div class="ui dropdown item" id="rdss_navtop_dropdown">
       研發替代役
       <i class="dropdown inverted icon"></i>
