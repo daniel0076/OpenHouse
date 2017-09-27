@@ -57,9 +57,32 @@
         </a>
       </div>
     </div>
+    <!--
     <a class="item navtop_rdss_popup" href="{% url 'public' %}">
       校園徵才
     </a>
+    -->
+    <div class="ui dropdown item" id="recruit_navtop_dropdown">
+      校園徵才
+      <i class="dropdown inverted icon"></i>
+      <div class="menu">
+        <a class="item" href="{% url 'public' %}">
+          活動資訊
+        </a>
+        <a class="item" href="{% url 'list_jobs' %}">
+          職缺列表
+        </a>
+        <a class="item" href="{% url 'seminar' %}">
+          說明會
+        </a>
+        <a class="item" href="{% url 'jobfair' %}">
+          就博會
+        </a>
+        <a class="item" href="{% url 'query_points' %}">
+          查集點
+        </a>
+      </div>
+    </div>
     <a class="item navtop_rdss_popup" href="{% url 'mentor_index' %}">
       企業職場導師
     </a>
