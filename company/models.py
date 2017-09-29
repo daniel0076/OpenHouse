@@ -42,6 +42,7 @@ class Company(AbstractBaseUser):
 	website = models.CharField(u'公司網站',max_length=64)
 	brief = models.CharField(u'公司簡介',max_length=110,help_text='為了印刷效果，限110字內')
 	recruit_info = models.CharField(u'職缺內容',max_length=260,help_text='為了印刷效果，限260字內')
+	recruit_url = models.CharField(u'招募網址',max_length=110,help_text='報名網站或詳細職缺說明',blank=True)
 	hr_name = models.CharField(u'人資姓名',max_length=32)
 	hr_phone = models.CharField(u'人資電話',max_length=32,help_text='格式: 區碼-號碼#分機')
 	hr_fax = models.CharField(u'人資傳真',max_length=32,help_text='格式: 區碼-號碼#分機')

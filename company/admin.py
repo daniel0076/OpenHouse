@@ -70,7 +70,7 @@ class UserAdmin(BaseUserAdmin):
             ("基本資料", {
                 'classes': ('wide',),
                 'fields': ('cid','password','name','shortname','category','phone',
-               'postal_code','address','website','brief','recruit_info','logo')
+               'postal_code','address','website','brief','recruit_info','logo','recruit_url')
                 }
                 ),
             ("人資資料", {
@@ -90,7 +90,7 @@ class UserAdmin(BaseUserAdmin):
             ("基本資料", {
                 'classes': ('wide',),
                 'fields': ('cid','password1', 'password2','name','shortname',
-               'category','phone','postal_code','address','website','brief','recruit_info','logo')
+               'category','phone','postal_code','address','website','brief','recruit_info','logo','recruit_url')
                 }
                 ),
             ("人資資料", {
