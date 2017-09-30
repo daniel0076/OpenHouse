@@ -24,10 +24,10 @@
                         <td width="20%"> {{company.recruit_info}}</td> 
                         <td>
                             <!--<br>聯絡人 </br>-->
-                            <br>公司線上招募網站: {{company.recruit_url}}</br>
+                            <br>公司線上招募網站: <a href="{{company.recruit_url}}" target="_blank"> {{company.recruit_url}}</a></br>
                             <br>公司地址: {{company.address}}</br>
                             <br>公司電話: {{company.phone}}</br>
-                            <br>公司網址: {{company.website}}</br>
+                            <br>公司網址: <a href="{{company.website}}" target="_blank">{{company.website}}</a></br>
                         </td>
                     </tr>    
                 {% endfor %} 
