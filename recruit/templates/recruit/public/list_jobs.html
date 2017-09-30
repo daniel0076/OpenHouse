@@ -17,17 +17,17 @@
                 {% for company in companys %}
                     <tr> 
                         <!--<td> <img class="ui small image" src="{{company.logo.url}}"></td> -->
-                        <td> <img  height="100" width="100" src="{{company.logo.url}}"></td>
+                        <td width="10%"> <img class="ui small image" src="{{company.logo.url}}"></td>
                         <td> {{company.name}}</td> 
                         <td> {{company.category}} </td>
                         <td width="20%"> {{company.brief}} </td>
                         <td width="20%"> {{company.recruit_info}}</td> 
                         <td>
                             <!--<br>聯絡人 </br>-->
-                            <br>公司線上招募網站 {{company.recruit_url}}</br>
-                            <br>公司地址 {{company.address}}</br>
-                            <br>公司電話 {{company.phone}}</br>
-                            <br>公司網址 {{company.website}}</br>
+                            <br>公司線上招募網站: {{company.recruit_url}}</br>
+                            <br>公司地址: {{company.address}}</br>
+                            <br>公司電話: {{company.phone}}</br>
+                            <br>公司網址: {{company.website}}</br>
                         </td>
                     </tr>    
                 {% endfor %} 
