@@ -5,6 +5,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.conf.urls import url,include
+import staff.export as export
 
 #class StaffCreationForm(forms.ModelForm):
 #	"""A form for creating new users. Includes all the required
@@ -96,6 +98,12 @@ class StaffAdmin(UserAdmin):
 	search_fields = ['username', 'name', ]
 	ordering = ('role',)
 	filter_horizontal = ()
+	def get_urls(self):
+		urls = super(StaffAdmin, self).get_urls()
+		my_urls = [
+			url(r'^export/$',export.ExportStaff,name="staff_export"),
+		]
+		return my_urls + urls
 
 # Now register the new UserAdmin...
 admin.site.register(Staff, StaffAdmin)
