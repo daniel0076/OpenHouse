@@ -129,6 +129,14 @@ class RecruitContentAdmin(admin.ModelAdmin):
         if count ==0:
             return True
         return False
+@admin.register(models.RecruitCompanyInfo)
+class RecruitCompanyContentAdmin(admin.ModelAdmin):
+    list_display=('title',)
+    def has_add_permission(self, request):
+        count = models.RecruitCompanyInfo.objects.all().count()
+        if count ==0:
+            return True
+        return False
 @admin.register(models.RecruitJobfairInfo)
 class RecruitJobfairContentAdmin(admin.ModelAdmin):
     list_display=('title',)

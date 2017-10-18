@@ -2,14 +2,19 @@
 
 {% block 'content' %}
 <div class="ui segment">
+{%for company_info in recruit_company_info%}
+    {{company_info.content|safe}}
+{%endfor%}
+<!--
 	<h2 id="intro" class="ui dividing header">簡介</h2>
   <p>
   企業發展最需要好人才，為了讓貴公司順利深入交通大學徵聘優秀人才，提昇企業知名度、建立良好形象，本屆活動小組發揮靈活的創意及思維，為企業校園徵才活動帶來嶄新的面貌；以服務企業、幫助同學的理念，將徵才活動結合電子與平面媒體、網路宣傳行銷等方式，創造企業校園徵才活動最大的附加價值及經濟效益，以期達到適才適用、產學雙贏之效果。
 	</p>
+-->
 	<h2 id="intro" class="ui dividing header">活動企畫書</h2>
 	<p style="color:red">活動詳細內容及規範皆載於企畫書，請務必詳細閱讀</p>
 	<a class="ui blue button" href={{plan_file.upload_file.url}} target="_blank">{{plan_file.title}}</a>
-
+<!--
 	<h2 id="register" class="ui dividing header">活動時間及地點</h2>
 	<ol class="ui list">
     <li> 公司說明會日期：{{configs.seminar_start_date|date:"Y年m月d日(D)"}} ~ {{configs.seminar_end_date|date:"Y年m月d日(D)"}}
@@ -62,7 +67,7 @@
 
 
 	</ol>
-
+-->
 	<h2 id="register" class="ui dividing header">廠商報名</h2>
 
   <p>本活動統一採網路報名的方式，請填寫報名資料(左方導覽列或下方按鈕)。</p><p style="color:red">報名時間為 即日起 到 {{configs.recruit_signup_end|date:"Y年m月d日(D) H:i"}}</p>

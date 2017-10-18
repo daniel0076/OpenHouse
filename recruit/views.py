@@ -27,6 +27,7 @@ def recruit_company_index(request):
     sidebar_ui = {'index': 'active'}
     configs=RecruitConfigs.objects.all()[0]
     plan_file = Files.objects.filter(category = "企畫書").first()
+    recruit_company_info = recruit.models.RecruitCompanyInfo.objects.all()
     return render(request,'recruit/company/index.html',locals())
 
 @login_required(login_url='/company/login/')
