@@ -2,7 +2,7 @@ from django.db import models
 from company.models import Company
 from django.db.models import Q
 from django.db.models import Count, Sum
-
+from ckeditor.fields import RichTextField
 CATEGORYS = (
     (u'半導體', u'半導體'),
     (u'消費電子', u'消費電子'),
@@ -485,5 +485,47 @@ class ExchangePrize(models.Model):
     class Meta:
         verbose_name = u'兌獎紀錄'
         verbose_name_plural = u'兌獎紀錄'
+class RecruitInfo(models.Model):
+    title = models.CharField(u'標題',default='',max_length=10)
+    content = RichTextField(u'內容', default='', null=True, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+    def __str__(self):
+        return "Recruit_Info"
+    class Meta:
+        managed = True
+        verbose_name = u"校徵活動資訊"
+        verbose_name_plural =u"校徵活動資訊"
+class RecruitCompanyInfo(models.Model):
+    title = models.CharField(u'標題',default='',max_length=10)
+    content = RichTextField(u'內容', default='', null=True, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+    def __str__(self):
+        return "Recruit_Company_Info"
+    class Meta:
+        managed = True
+        verbose_name = u"校徵活動資訊(公司)"
+        verbose_name_plural =u"校徵活動資訊(公司)"
+class RecruitSeminarInfo(models.Model):
+    title = models.CharField(u'標題',default='',max_length=10)
+    content = RichTextField(u'內容', default='', null=True, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+    def __str__(self):
+        return "Recruit_Seminar_Info"
+    class Meta:
+        managed = True
+        verbose_name = u"說明會資訊編輯頁面"
+        verbose_name_plural =u"說明會資訊編輯頁面"
+class RecruitJobfairInfo(models.Model):
+    title = models.CharField(u'標題',default='',max_length=10)
+    content = RichTextField(u'內容', default='', null=True, blank=True)
+    updated = models.DateTimeField(u'更新時間', auto_now=True)
+    def __str__(self):
+        return "Recruit_Jobfair_Info"
+    class Meta:
+        managed = True
+        verbose_name = u"就博會資訊編輯頁面"
+        verbose_name_plural =u"就博會資訊編輯頁面"
+
+
 
 

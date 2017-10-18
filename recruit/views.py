@@ -18,6 +18,8 @@ import logging
 from ipware.ip import get_real_ip
 from company.models import Company
 from datetime import timedelta
+import recruit.models
+
 logger = logging.getLogger('recruit')
 
 @login_required(login_url='/company/login/')
@@ -559,14 +561,19 @@ def seminar(request):
             weekday_info.append(slot_info)
         week_info.append(weekday_info)
     locations = SlotColor.objects.all()
+    recruit_seminar_info = recruit.models.RecruitSeminarInfo.objects.all()
     return render(request,'recruit/public/seminar.html',locals())
 
 def jobfair(request):
     jobfair_imgs = Files.objects.filter(category='就博會攤位圖-新')
     jobfair_slots = JobfairSlot.objects.all().order_by('serial_no')
+    recruit_jobfair_info = recruit.models.RecruitJobfairInfo.objects.all()
     return render(request,'recruit/public/jobfair.html',locals())
 
 def public(request):
+    
+    recruit_info = recruit.models.RecruitInfo.objects.all()
+    print(recruit_info)
     return render(request,'recruit/public/public.html',locals())
 
 @staff_member_required

@@ -5,6 +5,7 @@ from .models import RecruitConfigs, RecruitSignup,JobfairSlot,JobfairInfo,Sponso
 from .models import JobfairOrder,ExchangePrize
 from company.models import Company
 from recruit import export
+import recruit.models as models
 
 
 class ExchangePrizeAdmin(admin.ModelAdmin):
@@ -119,3 +120,12 @@ class SurveyAdmin(admin.ModelAdmin):
 @admin.register(Files)
 class RecruitFilesAdmin(admin.ModelAdmin):
     list_display=('title','category','upload_file','updated')
+
+@admin.register(models.RecruitInfo)
+class RecruitContentAdmin(admin.ModelAdmin):
+    list_display=('title',)
+    def has_add_permission(self, request):
+        count = models.RecruitInfo.objects.all().count()
+        if count ==0:
+            return True
+        return False
