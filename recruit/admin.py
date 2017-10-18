@@ -137,3 +137,11 @@ class RecruitJobfairContentAdmin(admin.ModelAdmin):
         if count ==0:
             return True
         return False
+@admin.register(models.RecruitSeminarInfo)
+class RecruitSeminarContentAdmin(admin.ModelAdmin):
+    list_display=('title',)
+    def has_add_permission(self, request):
+        count = models.RecruitSeminarInfo.objects.all().count()
+        if count ==0:
+            return True
+        return False

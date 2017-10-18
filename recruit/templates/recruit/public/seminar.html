@@ -2,6 +2,7 @@
 {% block 'content' %}
 <title>校園徵才 - 說明會</title>
 <h1 class="ui header">說明會</h1>
+<!--
 <h2 class="ui dividing header">活動時間</h2>
 <ol class="ui list">
     <li><p>日期：2017年3月2日(四) ~ 3月24日(五)</p>
@@ -33,6 +34,10 @@
     <li>38點：威秀影城電影票兩張，共50份</li>
     <li>50點：西堤套餐禮券兩張或$1,000元郵政禮券乙張，共12份</li>
 </ul>
+-->
+{%for seminar_info in recruit_seminar_info%}
+    {{seminar_info.content|safe}}
+{%endfor%}
 <h1 class="ui dividing header">場次時間表</h1>
 <ul>
     <p> 場地資訊</p>
