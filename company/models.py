@@ -33,6 +33,7 @@ class Company(AbstractBaseUser):
 
 	id = models.AutoField(primary_key=True)
 	cid = models.CharField(u'公司統一編號',unique=True,max_length=8)
+	receipt_title = models.CharField(u'公司收據抬頭',max_length=20,default="")
 	name = models.CharField(u'公司名稱',max_length=64)
 	shortname = models.CharField(u'公司簡稱',max_length=20)
 	category = models.CharField(u'類別',max_length=37,choices=CATEGORYS,help_text='公司主要事業類別')
