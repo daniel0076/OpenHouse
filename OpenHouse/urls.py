@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^company/rdss/', include('rdss.internal_urls')),  # add '' on the include path!!!
     url(r'^company/recruit/', include('recruit.internal_urls')),  # add '' on the include path!!!
     url(r'^staff/', include('staff.urls')),  # add '' on the include path!!!
+    url(r'^admin/staff/', include('staff.admin_urls')),
+
     url(r'^rdss/', include('rdss.public_urls')),  # add '' on the include path!!!
 	url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^mentor/', include('careermentor.urls')),

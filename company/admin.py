@@ -70,7 +70,7 @@ class UserAdmin(BaseUserAdmin):
             ("基本資料", {
                 'classes': ('wide',),
                 'fields': ('cid','password','name','shortname','category','phone',
-               'postal_code','address','website','brief','recruit_info','logo','recruit_url')
+               'postal_code','address','website','brief','recruit_info','logo','recruit_url','business_project','relation_business','subsidiary')
                 }
                 ),
             ("人資資料", {
