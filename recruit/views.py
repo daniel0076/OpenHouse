@@ -34,10 +34,11 @@ def recruit_company_index(request):
 def recruit_signup(request):
         configs = RecruitConfigs.objects.all()[0]
         if timezone.now() < configs.recruit_signup_start or timezone.now() > configs.recruit_signup_end:
-            error_msg = "非報名時間。期間為 {} 至 {}".format(
-            timezone.localtime(configs.recruit_signup_start).strftime("%Y/%m/%d %H:%M:%S"),
-            timezone.localtime(configs.recruit_signup_end).strftime("%Y/%m/%d %H:%M:%S"))
-            return render(request, 'recruit/error.html', locals())
+            if request.user.username != "77777777":
+                error_msg = "非報名時間。期間為 {} 至 {}".format(
+                timezone.localtime(configs.recruit_signup_start).strftime("%Y/%m/%d %H:%M:%S"),
+                timezone.localtime(configs.recruit_signup_end).strftime("%Y/%m/%d %H:%M:%S"))
+                return render(request, 'recruit/error.html', locals())
         signup_info_exist_exist = False
         recruit_configs = RecruitConfigs.objects.all()[0]
         try:
