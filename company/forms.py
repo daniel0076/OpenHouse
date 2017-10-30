@@ -85,6 +85,7 @@ class CompanyEditForm(forms.ModelForm):
         widgets = {
                 'brief': forms.Textarea(),
                 'recruit_info': forms.Textarea(),
+                'recruit_url': forms.Textarea(),
                 }
 
     #css/js for the form, need to put {{form.media}} in template
