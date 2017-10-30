@@ -13,6 +13,9 @@
     <a class="{{nav_company_index}} item" href="{% url 'company_index' %}">
       廠商入口
     </a>
+    <a class="item" href="{%url 'info' %}">
+      公司資料
+    </a>
     <a class="{{nav_rdss}} item" href="{% url 'rdss_company_index' %}">
       研發替代役
     </a>
@@ -21,9 +24,6 @@
     </a>
     <a class="item" id="navtop_rdss_btn" data-content="籌備中，11月初與大家相見">
       企業職場導師
-    </a>
-    <a class="item" href="{%url 'info' %}">
-      公司資料
     </a>
     <a class="right item" href="{% url 'logout' %}">
       登出 {{request.user.username}}
