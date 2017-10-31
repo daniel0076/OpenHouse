@@ -34,6 +34,7 @@ class CompanyCreationForm(forms.ModelForm):
         widgets = {
                 'brief': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
                 'recruit_info': forms.Textarea(attrs={'cols': 80, 'rows': 8}),
+                'recruit_url': forms.Textarea(attrs={'cols':80, 'rows': 8}),
                 }
 
     class Media:

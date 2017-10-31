@@ -37,7 +37,27 @@
 			{{form.shortname}}
 		</div>
 	</div>
+	<div class="two fields">
+		<div class="required field">
+			<label>{{form.receipt_title.label_tag}}</label>
+			{{form.receipt_title}}
+		</div>
+		<div class="required field">
+			<label>{{form.business_project.label_tag}}</label>
+			{{form.business_project}}
+		</div>
+	</div>
 
+	<div class="two fields">
+		<div class="field">
+			<label>{{form.relation_business.label_tag}}</label>
+			{{form.relation_business}}
+		</div>
+		<div class="field">
+			<label>{{form.subsidiary.label_tag}}</label>
+			{{form.subsidiary}}
+		</div>
+	</div>
 	<div class="two fields">
 		<div class="required field">
 			<label>{{form.password1.label_tag}}</label>
@@ -154,6 +174,11 @@
 		<label>{{form.recruit_info.label_tag}}</label>
 		{{form.recruit_info.help_text}}
 		{{form.recruit_info}}
+	</div>
+	<div class="required field">
+		<label>{{form.recruit_url.label_tag}}</label>
+		{{form.recruit_url.help_text}}
+		{{form.recruit_url}}
 	</div>
 	<div class="ui error message"></div>
 	<button class="ui teal button" type="submit">{{submit_btn_name}}</button>
