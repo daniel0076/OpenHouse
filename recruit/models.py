@@ -38,6 +38,7 @@ class RecruitConfigs(models.Model):
     session_3_end = models.TimeField(u'說明會場次3_結束時間')
     session_4_start = models.TimeField(u'說明會場次4_開始時間')
     session_4_end = models.TimeField(u'說明會場次4_結束時間')
+    session_5_end = models.TimeField(u'說明會場次5_結束時間')
     # 費用
     session_1_fee = models.IntegerField(u'說明會場次1_費用')
     session_2_fee = models.IntegerField(u'說明會場次2_費用')
