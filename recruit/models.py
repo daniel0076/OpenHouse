@@ -139,10 +139,12 @@ class JobfairSlot(models.Model):
 class SeminarSlot(models.Model):
     # (value in db,display name)
     SESSIONS = (
-            ("noon", "中午場1"),
-            ("night1", "中午場2"),
-            ("night2", "晚場1"),
-            ("night3", "晚場2"),
+            ("noon1", "中午場1"),
+            ("noon2", "中午場2"),
+            ("noon3", "中午場3"),
+            ("night1", "晚場1"),
+            ("night2", "晚場2"),
+            ("night3", "晚場3"),
             ("extra", "加(補)場"),
             ("jobfair", "就博會"), # 因為集點需要，公司留空
             )

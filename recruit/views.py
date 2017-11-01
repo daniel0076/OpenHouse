@@ -102,10 +102,12 @@ def seminar_select_form_gen(request):
 
     slot_colors = SlotColor.objects.all()
     session_list = [
-        {"name":"noon", "start_time":configs.session_1_start, "end_time":configs.session_1_end},
-        {"name":"night1", "start_time":configs.session_2_start, "end_time":configs.session_2_end},
-        {"name":"night2", "start_time":configs.session_3_start, "end_time":configs.session_3_end},
-        {"name":"night3", "start_time":configs.session_4_start, "end_time":configs.session_4_end},
+        {"name":"noon1", "start_time":configs.session_1_start, "end_time":configs.session_1_end},
+        {"name":"noon2", "start_time":configs.session_2_start, "end_time":configs.session_2_end},
+        {"name":"noon3", "start_time":configs.session_3_start, "end_time":configs.session_3_end},
+        {"name":"night1", "start_time":configs.session_4_start, "end_time":configs.session_4_end},
+        {"name":"night2", "start_time":configs.session_5_start, "end_time":configs.session_5_end},
+        {"name":"night3", "start_time":configs.session_6_start, "end_time":configs.session_6_end},
     ]
     return render(request,'recruit/company/seminar_select.html',locals())
 
