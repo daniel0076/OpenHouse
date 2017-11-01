@@ -649,3 +649,93 @@ def query_points(request):
         student = Student.objects.filter(student_id = request.POST['student_id'],phone = request.POST['phone']).first()
         records = StuAttendance.objects.filter(student=student)
     return render(request,'recruit/public/query_points.html',locals())
+
+@login_required(login_url='/company/login/')
+def Status(request):
+    if request.user.is_staff:
+        return redirect("/admin")
+    mycid = request.user.cid
+    # get the dates from the configs
+    configs=recruit.models.RecruitConfigs.objects.all()[0]
+    signup_data = recruit.models.RecruitSignup.objects.filter(cid=mycid).first()
+    
+    slot_info = {
+        "seminar_select_time":"選位時間正在排定中",
+        "jobfair_select_time":"選位時間正在排定中",
+        "seminar_slot":"-",
+        "jobfair_slot":"-",
+        }
+    seminar_session_display = {
+        "noon1":"{}~{}".format(configs.session_1_start,configs.session_1_end),
+        "noon2":"{}~{}".format(configs.session_2_start,configs.session_2_end),
+        "noon3":"{}~{}".format(configs.session_3_start,configs.session_3_end),
+        "night1":"{}~{}".format(configs.session_4_start,configs.session_4_end),
+        "night2":"{}~{}".format(configs.session_5_start,configs.session_5_end),
+        "night3":"{}~{}".format(configs.session_6_start,configs.session_6_end),
+        "extra":"補場",
+        "jobfair":"就博會",
+        }
+    # 問卷狀況
+    try:
+        recruit.models.CompanySurvey.objects.get(cid = request.user.cid)
+        fill_survey = True
+    except:
+        fill_survey = False
+        
+    # 選位時間和數量狀態
+    seminar_select_time = recruit.models.SeminarOrder.objects.filter(company=mycid).first()
+    jobfair_select_time = recruit.models.JobfairOrder.objects.filter(company=mycid).first()
+    seminar_slot = recruit.models.SeminarSlot.objects.filter(company=mycid).first()
+    jobfair_slot = recruit.models.JobfairSlot.objects.filter(company=mycid)
+    if seminar_select_time and not seminar_slot:
+        slot_info['seminar_select_time'] = seminar_select_time.time
+        slot_info['seminar_slot'] = "請依時段於左方選單選位"
+    if jobfair_select_time and not jobfair_slot:
+        slot_info['jobfair_select_time'] = jobfair_select_time.time
+        slot_info['jobfair_slot'] = "請依時段於左方選單選位"  
+    if seminar_slot:
+        slot_info['seminar_slot'] = "{} {}".format(seminar_slot.date,
+        seminar_session_display[seminar_slot.session])
+    if jobfair_slot:
+        slot_info['jobfair_slot'] = [int(s.serial_no) for s in jobfair_slot]
+        
+    # Fee display
+    fee = 0
+    try:
+        if signup_data.seminar == "noon":
+            fee += configs.session1_fee
+        elif signup_data.seminar == "night":
+            fee += configs.session2_fee
+        fee += signup_data.jobfair*configs.jobfair_booth_fee
+    except AttributeError:
+        pass
+        
+    # Sponsor fee display
+    sponsor_amount = 0
+    sponsorships = recruit.models.SponsorShip.objects.filter(company__cid = request.user.cid)
+    for s in sponsorships:
+        sponsor_amount += s.item.price
+        
+    # Seminar and Jobfair info status
+    try:
+        seminar_info = recruit.models.SeminarInfo.objects.get(company = request.user.cid)
+    except ObjectDoesNotExist:
+        seminar_info = None
+    try:
+        jobfair_info = recruit.models.JobfairInfo.objects.get(company = request.user.cid)
+    except ObjectDoesNotExist:
+        jobfair_info = None
+        
+    # control semantic ui class
+    step_ui = ["","",""] # for step ui in template
+    nav_recruit="active"
+    sidebar_ui = {'status':"active"}
+        
+        
+    step_ui[0] = "completed" if signup_data else "active"
+    step_ui[1] = "completed" if jobfair_slot or seminar_slot else "active"
+    step_ui[2] = "completed" if jobfair_info or seminar_info else "active"
+
+
+    
+    return render(request,'recruit/company/status.html',locals())

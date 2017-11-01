@@ -2,7 +2,9 @@
 {% load staticfiles %}
 
 {% block 'body' %}
-<link href={% static "css/rdss/sidebar.css" %} rel="stylesheet">
+<!--
+<link href={% static "css/recruit/sidebar.css" %} rel="stylesheet">
+-->
 <div class="ui stackable grid">
 	<div class="three wide column" style="margin-left:1em">
 		<div class="ui vertical stackable menu" style="width:85%">
@@ -15,6 +17,9 @@
 			<div class="item">
 				<div class="header">活動報名相關</div>
 				<div class="menu">
+			<a class="{{sidebar_ui.status}} item big" href="{%url 'recruit_status' %}">
+				報名狀況總覽
+			</a>
 			<a class="{{sidebar_ui.signup}} item big" href="{%url 'recruit_signup' %}">
 				填寫報名資料
 			</a>
