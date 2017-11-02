@@ -714,6 +714,10 @@ def Status(request):
     print(sponsorships)
     for s in sponsorships:
         sponsor_amount += s.sponsor_item.price
+
+    # All the fee of Sponsor and Display
+
+    all_fee = fee + sponsor_amount
         
     # Seminar and Jobfair info status
     try:
