@@ -703,13 +703,12 @@ def Status(request):
     fee = 0
     try:
         if signup_data.seminar == "noon":
-            fee += configs.session1_fee
+            fee += configs.session_2_fee
         elif signup_data.seminar == "night":
-            fee += configs.session2_fee
+            fee += configs.session_4_fee
         fee += signup_data.jobfair*configs.jobfair_booth_fee
     except AttributeError:
         pass
-        
     # Sponsor fee display
     sponsor_amount = 0
     sponsorships = recruit.models.SponsorShip.objects.filter(company__cid = request.user.cid)
