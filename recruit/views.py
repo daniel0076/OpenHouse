@@ -710,9 +710,10 @@ def Status(request):
         pass
     # Sponsor fee display
     sponsor_amount = 0
-    sponsorships = recruit.models.SponsorShip.objects.filter(company__cid = request.user.cid)
+    sponsorships = recruit.models.SponsorShip.objects.filter(company = request.user.cid)
+    print(sponsorships)
     for s in sponsorships:
-        sponsor_amount += s.item.price
+        sponsor_amount += s.sponsor_item.price
         
     # Seminar and Jobfair info status
     try:
