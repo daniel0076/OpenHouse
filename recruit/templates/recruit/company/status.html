@@ -1,0 +1,170 @@
+{% extends 'recruit_base.html' %}
+
+{% block 'custom_head' %}
+    <title>報名狀況-OpenHouse</title>
+{% endblock %}
+
+{% block 'content' %}
+
+<div class="ui header">
+	交通大學OpenHouse 校園徵才 活動報名流程
+</div>
+
+<div class="ui ordered steps">
+	<div class="{{step_ui.0}} step">
+		<div class="content">
+			<div class="title">線上報名校徵活動</div>
+			<div class="description">報名時間至{{configs.recruit_signup_end}}截止</div>
+		</div>
+	</div>
+	<div class="{{step_ui.1}} step">
+		<div class="content">
+			<div class="title">線上選時間、位置</div>
+			<div class="description">請按照您的選位時間線上選位</div>
+		</div>
+	</div>
+	<div class="{{step_ui.2}} step">
+		<div class="content">
+			<div class="title">填寫活動相關資料</div>
+			<div class="description">選定位置後，填妥說明會/就博會資料</div>
+		</div>
+	</div>
+</div>
+
+<div class="ui header">
+	{{request.user.shortname}} 報名狀況總覽
+</div>
+
+{%if not signup_data %}
+
+<div class="ui warning icon message">
+	<i class="warning icon"></i>
+	<div class="content">
+		<div class="header">
+			貴公司尚未報名本年度「研發替代役」徵才活動
+		</div>
+		<p><a href="{% url 'recruit_signup'%}">點此前往活動報名頁面</a>，活動將於{{configs.recruit_signup_end}}截止報名</p>
+	</div>
+</div>
+{%endif%}
+
+<div class="ui two column grid">
+	<div class="column">
+		<table class="ui selectable celled striped table">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>狀態</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td>企業滿意度問卷</td>
+					<td>
+						{% if fill_survey %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						<a href="{% url 'recruit_survey' %}">點此填寫問卷</a>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td>說明會場次</td>
+					<td>
+						{{ signup_data.get_seminar_display}}
+					</td>
+				</tr>
+				<tr>
+					<td>就博會攤位數量</td>
+					<td>{{ signup_data.jobfair }}</td>
+				</tr>
+				<tr>
+					<td>提供 企業職場導師</td>
+					<td>
+						{% if signup_data.career_tutor %}
+						<i class="large green checkmark icon"></i>
+						{% else %}
+						<i class="large red remove icon"></i>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td>活動贊助金額</td>
+					<td>
+						{{sponsor_amount}} 元
+					</td>
+				</tr>
+				<tr>
+					<td>活動費用</td>
+					<td>
+						{{fee}} 元
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="column">
+		<table class="ui selectable celled striped table">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>狀態</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>說明會選位時間</td>
+					<td>{{slot_info.seminar_select_time}}</td>
+				</tr>
+				<tr>
+					<td>就博會選位時間</td>
+					<td>{{slot_info.jobfair_select_time}}</td>
+				</tr>
+				<tr>
+					<td>說明會已選場次</td>
+					<td>{{slot_info.seminar_slot}}</td>
+				</tr>
+				<tr>
+					<td>就博會已選攤位</td>
+					<td>編號： {{slot_info.jobfair_slot}}</td>
+				</tr>
+
+				<tr>
+					<td>說明會資訊</td>
+					<td>
+						{% if seminar_info %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						<a href="{% url 'recruit_seminar_info' %}">點此填寫問卷</a>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td>就博會資訊</td>
+					<td>
+						{% if jobfair_info %}
+						<i class="large green checkmark icon"></i>
+						已填寫
+						{% else %}
+						<i class="large red remove icon"></i>
+						<a href="{% url 'recruit_jobfair_info' %}">點此填寫</a>
+						{% endif %}
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+
+
+</div>
+
+
+{% endblock %}
