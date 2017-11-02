@@ -425,7 +425,7 @@ class CompanySurvey(models.Model):
             (u'30000人以上', u'30000人以上'),
             )
     company_size        = models.CharField(u'貴企業規模', max_length=20, choices=SIZE)
-    plan_to_recruit     = models.IntegerField(u'2017年預計招募職缺數', help_text="此數據不會對外公開，僅供主辦單位內部作業統計用途。")
+    #plan_to_recruit     = models.IntegerField(u'2017年預計招募職缺數', help_text="此數據不會對外公開，僅供主辦單位內部作業統計用途。")
     nctu_employees      = models.IntegerField(u'交大校友人數')
     category            = models.CharField(u'企業類別', max_length=10, choices=CATEGORYS)
     updated = models.DateTimeField(u'更新時間', auto_now=True)
