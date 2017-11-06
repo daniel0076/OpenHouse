@@ -576,7 +576,6 @@ def jobfair(request):
 def public(request):
     
     recruit_info = recruit.models.RecruitInfo.objects.all()
-    print(recruit_info)
     return render(request,'recruit/public/public.html',locals())
 
 @staff_member_required
@@ -711,7 +710,6 @@ def Status(request):
     # Sponsor fee display
     sponsor_amount = 0
     sponsorships = recruit.models.SponsorShip.objects.filter(company = request.user.cid)
-    print(sponsorships)
     for s in sponsorships:
         sponsor_amount += s.sponsor_item.price
 

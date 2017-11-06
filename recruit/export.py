@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from django.core import serializers
@@ -241,3 +242,10 @@ def ExportAdFormat(request):
     company_list.sort(key=lambda item:getattr(item,'category'))
 
     return render(request,'admin/export_ad.html',locals())
+def PayInfo(request):
+    with open('static/data/payinfo.doc', 'rb') as pay:
+        response = HttpResponse(pay.read())
+        reponse['content_type'] = 'application/pdf'
+        response['Content-Disposition'] = 'attachment;filename=payinfo.doc'
+    return response
+    
