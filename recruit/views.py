@@ -657,6 +657,9 @@ def Status(request):
     configs=recruit.models.RecruitConfigs.objects.all()[0]
     signup_data = recruit.models.RecruitSignup.objects.filter(cid=mycid).first()
     
+    pay_info_file = Files.objects.filter(category = "繳費資訊").first() 
+
+
     slot_info = {
         "seminar_select_time":"選位時間正在排定中",
         "jobfair_select_time":"選位時間正在排定中",
@@ -737,6 +740,6 @@ def Status(request):
     step_ui[1] = "completed" if jobfair_slot or seminar_slot else "active"
     step_ui[2] = "completed" if jobfair_info or seminar_info else "active"
 
-
+    
     
     return render(request,'recruit/company/status.html',locals())

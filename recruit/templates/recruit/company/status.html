@@ -30,6 +30,12 @@
 		</div>
 	</div>
 </div>
+<a>
+    <button class="ui blue button" style="float: right;" onclick="window.print();">列印繳費金額</button>
+</a>
+<a href={{pay_info_file.upload_file.url}}>
+    <button class="ui teal button" style="float: right;">下載繳費資訊</button>
+</a>
 <div class="ui header">
 	{{request.user.shortname}} 報名狀況總覽
 </div>
@@ -46,7 +52,6 @@
 	</div>
 </div>
 {%endif%}
-
 <div class="ui two column grid">
 	<div class="column">
 		<table class="ui selectable celled striped table">
