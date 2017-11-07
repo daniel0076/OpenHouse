@@ -280,7 +280,7 @@ def jobfair_select_form_gen(request):
         my_signup = RecruitSignup.objects.get(cid=request.user.cid)
         # check the company have signup seminar
         if my_signup.jobfair== 0:
-            error_msg="貴公司已報名本次研替活動，但並末填寫就博會攤位。"
+            error_msg="貴公司已報名本次校徵活動，但並末填寫就博會攤位。"
             return render(request,'recruit/error.html',locals())
     except Exception as e:
         error_msg="貴公司尚未報名本次活動，請於左方點選「填寫報名資料」"
