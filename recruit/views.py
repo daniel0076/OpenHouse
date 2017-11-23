@@ -135,7 +135,6 @@ def seminar_select_control(request):
                 s.company.get_company_name()
 
             my_seminar_session = RecruitSignup.objects.filter(cid=request.user.cid).first().seminar
-            print(my_seminar_session, s.session,SeminarSlot.objects.filter(session__contains=my_seminar_session, company=None).exists(), (my_seminar_session not in s.session))
 
             #session wrong (signup noon but choose night)
             #and noon is not full yet
