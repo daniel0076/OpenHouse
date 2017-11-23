@@ -102,12 +102,12 @@ def seminar_select_form_gen(request):
 
     slot_colors = SlotColor.objects.all()
     session_list = [
-        {"name":"noon1", "start_time":configs.session_1_start, "end_time":configs.session_1_end},
+        {"name":"other1", "start_time":configs.session_1_start, "end_time":configs.session_1_end},
         {"name":"noon2", "start_time":configs.session_2_start, "end_time":configs.session_2_end},
-        {"name":"noon3", "start_time":configs.session_3_start, "end_time":configs.session_3_end},
-        {"name":"night1", "start_time":configs.session_4_start, "end_time":configs.session_4_end},
-        {"name":"night2", "start_time":configs.session_5_start, "end_time":configs.session_5_end},
-        {"name":"night3", "start_time":configs.session_6_start, "end_time":configs.session_6_end},
+        {"name":"other2", "start_time":configs.session_3_start, "end_time":configs.session_3_end},
+        {"name":"other3", "start_time":configs.session_4_start, "end_time":configs.session_4_end},
+        {"name":"other4", "start_time":configs.session_5_start, "end_time":configs.session_5_end},
+        {"name":"other5", "start_time":configs.session_6_start, "end_time":configs.session_6_end},
     ]
     return render(request,'recruit/company/seminar_select.html',locals())
 
@@ -135,6 +135,8 @@ def seminar_select_control(request):
                 s.company.get_company_name()
 
             my_seminar_session = RecruitSignup.objects.filter(cid=request.user.cid).first().seminar
+            print(my_seminar_session, s.session,SeminarSlot.objects.filter(session__contains=my_seminar_session, company=None).exists(), (my_seminar_session not in s.session))
+
             #session wrong (signup noon but choose night)
             #and noon is not full yet
             if (my_seminar_session not in s.session) and\
@@ -667,12 +669,12 @@ def Status(request):
         "jobfair_slot":"-",
         }
     seminar_session_display = {
-        "noon1":"{}~{}".format(configs.session_1_start,configs.session_1_end),
+        "other1":"{}~{}".format(configs.session_1_start,configs.session_1_end),
         "noon2":"{}~{}".format(configs.session_2_start,configs.session_2_end),
-        "noon3":"{}~{}".format(configs.session_3_start,configs.session_3_end),
-        "night1":"{}~{}".format(configs.session_4_start,configs.session_4_end),
-        "night2":"{}~{}".format(configs.session_5_start,configs.session_5_end),
-        "night3":"{}~{}".format(configs.session_6_start,configs.session_6_end),
+        "other2":"{}~{}".format(configs.session_3_start,configs.session_3_end),
+        "other3":"{}~{}".format(configs.session_4_start,configs.session_4_end),
+        "other4":"{}~{}".format(configs.session_5_start,configs.session_5_end),
+        "other5":"{}~{}".format(configs.session_6_start,configs.session_6_end),
         "extra":"補場",
         "jobfair":"就博會",
         }

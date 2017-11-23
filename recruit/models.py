@@ -65,7 +65,7 @@ class RecruitSignup(models.Model):
     SEMINAR_CHOICES = (
         (u'none', u'不參加說明會'),
         (u'noon', u'12:10場'),
-        (u'night', u'其餘場'),
+        (u'other', u'其餘場'),
     )
     cid = models.CharField(u'公司統一編號', max_length=8, unique=True)
     seminar = models.CharField(u'說明會場次', choices=SEMINAR_CHOICES, max_length=15, default='none')
@@ -140,12 +140,12 @@ class JobfairSlot(models.Model):
 class SeminarSlot(models.Model):
     # (value in db,display name)
     SESSIONS = (
-            ("noon1", "中午場1"),
+            ("other1", "中午場1"),
             ("noon2", "中午場2"),
-            ("noon3", "中午場3"),
-            ("night1", "晚場1"),
-            ("night2", "晚場2"),
-            ("night3", "晚場3"),
+            ("other2", "中午場3"),
+            ("other3", "晚場1"),
+            ("other4", "晚場2"),
+            ("other5", "晚場3"),
             ("extra", "加(補)場"),
             ("jobfair", "就博會"), # 因為集點需要，公司留空
             )
