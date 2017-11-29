@@ -10,7 +10,6 @@
 {% block 'content' %}
 <form class="ui info form" method="POST" action="{% url 'recruit_seminar_info' %}" >
 	<h1 class="ui dividing header">說明會資訊</h1>
-  <p>填寫期限:106年2月13日</p>
 	{% csrf_token %}
 	{% if seminar_info %}
         <div class="ui teal compact message">
