@@ -706,7 +706,7 @@ def Status(request):
     try:
         if signup_data.seminar == "noon":
             fee += configs.session_2_fee
-        elif signup_data.seminar == "night":
+        elif signup_data.seminar == "other":
             fee += configs.session_4_fee
         fee += signup_data.jobfair*configs.jobfair_booth_fee
     except AttributeError:
