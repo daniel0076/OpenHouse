@@ -442,7 +442,11 @@ def Add_SponsorShip(sponsor_items,post_data,sponsor):
 def Sponsor(request):
     #semantic ui
     sidebar_ui = {'sponsor':"active"}
+    
 
+    if request.user.username != "77777777":
+        error_msg = "非贊助時間。如有問題請洽負責人員"
+        return render(request, 'recruit/error.html', locals())
     # get form post
     try:
         sponsor = RecruitSignup.objects.get(cid=request.user.cid)
