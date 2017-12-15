@@ -272,6 +272,10 @@ def seminar_info(request):
 
 @login_required(login_url='/company/login/')
 def jobfair_select_form_gen(request):
+    # Lock
+    if request.user.username != "77777777":
+        error_msg = "非選位時間。如有問題請洽負責人員"
+        return render(request, 'recruit/error.html', locals())
     #semanti ui control
     sidebar_ui = {'jobfair_select':"active"}
 
