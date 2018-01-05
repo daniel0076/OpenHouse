@@ -726,12 +726,13 @@ def Status(request):
     all_fee = fee + sponsor_amount
         
     # Seminar and Jobfair info status
+    company = RecruitSignup.objects.get(cid=request.user.cid)
     try:
         seminar_info = recruit.models.SeminarInfo.objects.get(company = request.user.cid)
     except ObjectDoesNotExist:
         seminar_info = None
     try:
-        jobfair_info = recruit.models.JobfairInfo.objects.get(company = request.user.cid)
+        jobfair_info = JobfairInfo.objects.get(company = company)
     except ObjectDoesNotExist:
         jobfair_info = None
         
