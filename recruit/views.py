@@ -541,8 +541,12 @@ def sponsorship_admin(request):
 def list_jobs(request):
     recruit_companys = RecruitSignup.objects.all()
     companys = []
+    company_err = [] # for err
     for company in recruit_companys:
-        companys.append(Company.objects.get(cid=company.cid))
+        try:
+            companys.append(Company.objects.get(cid=company.cid))
+        except:
+            company_err.append(company.cid)
     return render(request,'recruit/public/list_jobs.html',locals())
 
 def seminar(request):
