@@ -60,25 +60,37 @@
             <tr>
                 <td>{{recruit_config.session_1_start}}~{{recruit_config.session_1_end}}</td>
                 {% for weekday in week %}
-                <td style="color:{{weekday.noon.place.css_color}}">{{weekday.noon.company}}</td>
+                <td style="color:{{weekday.other1.place.css_color}}">{{weekday.other1.company}}</td>
                 {% endfor %} 
             </tr>
             <tr>    
                 <td>{{recruit_config.session_2_start}}~{{recruit_config.session_2_end}}</td>
                 {% for weekday in week %}
-                <td style="color:{{weekday.night1.place.css_color}}">{{weekday.night1.company}}</td>
+                <td style="color:{{weekday.noon.place.css_color}}">{{weekday.noon.company}}</td>
                 {% endfor %} 
             </tr>
             <tr>
                 <td>{{recruit_config.session_3_start}}~{{recruit_config.session_3_end}}</td>
                 {% for weekday in week %}
-                <td style="color:{{weekday.night2.place.css_color}}">{{weekday.night2.company}}</td>
+                <td style="color:{{weekday.other2.place.css_color}}">{{weekday.other2.company}}</td>
                 {% endfor %} 
             </tr>
             <tr>
                 <td>{{recruit_config.session_4_start}}~{{recruit_config.session_4_end}}</td>
                 {% for weekday in week %}
-                <td style="color:{{weekday.night3.place.css_color}}">{{weekday.night3.company}}</td>
+                <td style="color:{{weekday.other3.place.css_color}}">{{weekday.other3.company}}</td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td>{{recruit_config.session_5_start}}~{{recruit_config.session_5_end}}</td>
+                {% for weekday in week %}
+                <td style="color:{{weekday.other4.place.css_color}}">{{weekday.other4.company}}</td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td>{{recruit_config.session_6_start}}~{{recruit_config.session_6_end}}</td>
+                {% for weekday in week %}
+                <td style="color:{{weekday.other5.place.css_color}}">{{weekday.other5.company}}</td>
                 {% endfor %} 
             </tr>
         </tbody>

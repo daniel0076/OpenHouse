@@ -559,16 +559,20 @@ def seminar(request):
         weekday_info = []
         for weekday in range(5):
             today = start_date + timedelta(days=week*7 + weekday - start_date.isocalendar()[2] + 1)
-            noon = SeminarSlot.objects.filter(date=today,session='noon').first()
-            night1= SeminarSlot.objects.filter(date=today,session='night1').first()
-            night2= SeminarSlot.objects.filter(date=today,session='night2').first()
-            night3= SeminarSlot.objects.filter(date=today,session='night3').first()
+            other1 = SeminarSlot.objects.filter(date=today,session='other1').first()
+            noon2= SeminarSlot.objects.filter(date=today,session='noon2').first()
+            other2= SeminarSlot.objects.filter(date=today,session='other2').first()
+            other3= SeminarSlot.objects.filter(date=today,session='other3').first()
+            other4= SeminarSlot.objects.filter(date=today,session='other4').first()
+            other5= SeminarSlot.objects.filter(date=today,session='other5').first()
             slot_info = {
                 'date': today,
-                'noon': noon,
-                'night1':night1,
-                'night2':night2,
-                'night3':night3,
+                'other1': other1,
+                'noon': noon2,
+                'other2': other2,
+                'other3': other3,
+                'other4': other4,
+                'other5': other5,
             }
             weekday_info.append(slot_info)
         week_info.append(weekday_info)
