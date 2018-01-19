@@ -76,6 +76,7 @@ class CompanyEditForm(forms.ModelForm):
         self.fields['category'].widget.attrs.update({
                 'class': 'ui disabled dropdown',
                 })
+        self.fields['cid'].widget.attrs['readonly'] = True
 
         required_css_class = 'required'
 
