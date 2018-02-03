@@ -21,7 +21,6 @@ from datetime import timedelta
 import recruit.models
 
 logger = logging.getLogger('recruit')
-
 @login_required(login_url='/company/login/')
 def recruit_company_index(request):
     sidebar_ui = {'index': 'active'}
@@ -583,7 +582,12 @@ def seminar(request):
 def jobfair(request):
     jobfair_imgs = Files.objects.filter(category='就博會攤位圖-新')
     jobfair_slots = JobfairSlot.objects.all().order_by('serial_no')
-    recruit_jobfair_info = recruit.models.RecruitJobfairInfo.objects.all()
+    elc_slots =  JobfairSlot.objects.filter(category="消費電子").order_by('serial_no')
+    semi_slots =  JobfairSlot.objects.filter(category="半導體").order_by('serial_no')
+    photo_slots = JobfairSlot.objects.filter(category="光電光學").order_by('serial_no')
+    info_slots = JobfairSlot.objects.filter(category="資訊軟體").order_by('serial_no')
+    network_slots = JobfairSlot.objects.filter(category="網路通訊").order_by('serial_no')
+    synthesis_slots = JobfairSlot.objects.filter(category="綜合").order_by('serial_no')
     return render(request,'recruit/public/jobfair.html',locals())
 
 def public(request):
